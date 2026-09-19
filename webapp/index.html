@@ -126,6 +126,7 @@
   .topic .tsum { color: var(--muted); font-size: .8rem; margin-left: auto; }
   .topicbody { padding: 0 10px 10px; display: flex; flex-direction: column; gap: 8px; }
   .topicbody .tfull { margin: 0; font-size: .86rem; color: var(--muted); max-width: 76ch; }
+  .topicbody .spent { margin: 0; padding: 7px 10px; border-left: 3px solid var(--line); background: var(--chip); font-size: .86rem; color: var(--muted); max-width: 76ch; }
   .topicbody h5 { margin: 0 0 4px; font-size: .74rem; text-transform: uppercase; letter-spacing: .05em; color: var(--muted); font-weight: 600; }
   /* A named video carries channel + full title, which is far too long for a pill.
      Give these rows their own line and let the text wrap. */
@@ -515,9 +516,17 @@
     // screens kept the day short and made the links invisible on the device they
     // exist for - a one-line row reads as a label, not as something to tap.
     return `<div class="topics">${topics.map((topic, i) => {
-      const lectures = topic.lectures.map(chip).join("");
+      // A topic recurs across many sessions, so its videos are dealt out rather
+      // than repeated: this session gets the slice the parser assigned it.
+      const cut = (task.videoCut || {})[topic.id] || null;
+      const lecAll = topic.lectures || [];
+      const pyqAll = topic.pyqVideos || [];
+      const lecMine = cut ? cut.lidx.map((i) => lecAll[i]) : lecAll;
+      const pyqMine = cut ? cut.pidx.map((i) => pyqAll[i]) : pyqAll;
+      const lectures = lecMine.map(chip).join("");
       const searches = (topic.search || []).map(chip).join("");
-      const pyq = (topic.pyqVideos || []).map(chip).join("");
+      const pyq = pyqMine.map(chip).join("");
+      const spent = cut && !lecMine.length && !pyqMine.length;
       const practice = topic.practice.map(chip).join("");
       const notes = topic.notes
         ? chip({ label: topic.notes.split("/").pop(), path: topic.notes, kind: "file" })
@@ -525,11 +534,12 @@
       const gem = state.plan.geminiPrompts.map((g, gi) =>
         `<a class="chip gem" href="${esc(promptUrl(topic, task, day, gi))}" target="_blank" rel="noopener noreferrer" data-gem="${esc(topic.id)}" data-task="${esc(task.id)}" data-day="${day.dayNumber}" data-prompt="${gi}" title="Opens Gemini with this prompt and today's context already filled in">${ICONS.gem}${esc(g.label)}</a>`).join("");
       return `<details class="topic"${i === 0 ? " open" : ""}>
-        <summary><span class="tid">${esc(topic.id)}</span> ${esc(topic.short)}<span class="tsum">${topic.lectures.length} lectures &middot; ${(topic.pyqVideos || []).length} solved &middot; ${topic.practice.length} practice</span></summary>
+        <summary><span class="tid">${esc(topic.id)}</span> ${esc(topic.short)}<span class="tsum">${lecMine.length ? `${lecMine.length} new lecture${lecMine.length === 1 ? "" : "s"}` : "revisit"}${pyqMine.length ? ` &middot; ${pyqMine.length} solved` : ""} &middot; ${topic.practice.length} practice</span></summary>
         <div class="topicbody">
           ${topic.name === topic.short ? "" : `<p class="tfull">${esc(topic.name)}</p>`}
-          <div><h5>Watch &mdash; ${topic.lectures.length} ${topic.lectures.length === 1 ? "lecture" : "lectures"} on this topic</h5><div class="links vids">${lectures}</div></div>
-          ${searches ? `<div><h5>If none of those land</h5><div class="links">${searches}</div></div>` : ""}
+          ${lectures ? `<div><h5>Watch &mdash; ${lecMine.length} new ${lecMine.length === 1 ? "lecture" : "lectures"}</h5><div class="links vids">${lectures}</div></div>` : ""}
+          ${spent ? `<p class="spent">All ${lecAll.length} lectures and ${pyqAll.length} solved-question videos for this topic were listed on ${cut.listed === cut.lastListed ? `day ${cut.listed}` : `days ${cut.listed}–${cut.lastListed}`}. Today is practice.</p>` : ""}
+          ${searches && lectures ? `<div><h5>If none of those land</h5><div class="links">${searches}</div></div>` : ""}
           <div><h5>Questions on this topic</h5><div class="links">${practice}</div></div>
           ${pyq ? `<div><h5>GATE questions solved on video &mdash; watch after you attempt</h5><div class="links vids">${pyq}</div></div>` : ""}
           <div><h5>Ask Gemini${notes ? " &middot; your notes" : ""}</h5><div class="links">${gem}${notes}</div></div>

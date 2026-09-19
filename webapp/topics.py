@@ -519,3 +519,54 @@ def match_topics(focus, output, candidates, catalogue, limit=3):
 def public(entry):
     """The topic record as the planner sees it - without the matching internals."""
     return {k: v for k, v in entry.items() if not k.startswith("_")}
+
+
+# A topic recurs across many sessions - PD-3 appears in 22, GA-1 in 29 - so showing
+# all of its videos on each one repeats the same links for weeks. Deal them out
+# instead: each video is offered on exactly one day, and a session that has run out
+# says where the rest were listed. Practice links still repeat, because a question
+# bank is a reference, not something you finish.
+FIRST_SESSION_LECTURES = 2
+
+
+def deal_videos(ordered_days, catalogue):
+    """Give each topic's videos to the sessions that carry it, once each.
+
+    Two topics can legitimately share a video - one lecture covering both arrays
+    and pointers - so a URL already handed out anywhere is skipped rather than
+    offered again under the second topic.
+    """
+    cursor = {}
+    given = set()
+
+    def take(items, start, limit):
+        """Next `limit` items from `start` that have not been shown anywhere."""
+        picked, i = [], start
+        while i < len(items) and len(picked) < limit:
+            url = items[i].get("url")
+            if url not in given:
+                given.add(url)
+                picked.append(i)
+            i += 1
+        return picked, i
+
+    for day in ordered_days:
+        for task in day["tasks"]:
+            cut = {}
+            for tid in task["topics"]:
+                entry = catalogue.get(tid)
+                if not entry:
+                    continue
+                seen = cursor.setdefault(tid, {"l": 0, "p": 0, "days": []})
+                first = not seen["days"]
+
+                lec_idx, seen["l"] = take(entry["lectures"], seen["l"],
+                                          FIRST_SESSION_LECTURES if first else 1)
+                pyq_idx, seen["p"] = take(entry.get("pyqVideos", []), seen["p"], 1)
+                if lec_idx or pyq_idx:
+                    seen["days"].append(day["dayNumber"])
+
+                cut[tid] = {"lidx": lec_idx, "pidx": pyq_idx,
+                            "listed": seen["days"][0] if seen["days"] else None,
+                            "lastListed": seen["days"][-1] if seen["days"] else None}
+            task["videoCut"] = cut

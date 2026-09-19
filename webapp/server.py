@@ -441,8 +441,10 @@ def parse_plan():
                     "notes": f"notes/{v['notes']}/_index.md",
                     "sheet": f"notes/formula-sheets/{v['sheet']}.md" if v["sheet"] else None}
                 for k, v in SUBJECTS.items()}
+    ordered_days = sorted(days.values(), key=lambda d: d["date"])
+    topic_catalogue.deal_videos(ordered_days, catalogue)
     used = {t for d in days.values() for task in d["tasks"] for t in task["topics"]}
-    return {"start": START.isoformat(), "phases": phases, "days": sorted(days.values(), key=lambda d: d["date"]),
+    return {"start": START.isoformat(), "phases": phases, "days": ordered_days,
             "subjects": subjects,
             "topics": {tid: topic_catalogue.public(catalogue[tid]) for tid in sorted(used)},
             "geminiHead": topic_catalogue.GEMINI_HEAD,

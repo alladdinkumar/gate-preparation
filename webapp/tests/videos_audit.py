@@ -115,6 +115,22 @@ def main():
     print(f"sessions                   {len(sessions)}")
     print(f"  with a topic             {len(studied)}")
     print(f"  with at least one video  {video_sessions}")
+    # Videos are dealt out, not repeated: count how many days each one appears on.
+    from collections import Counter as _C
+    shown = _C()
+    for d in days:
+        for t in d["tasks"]:
+            for tid, c in (t.get("videoCut") or {}).items():
+                e = catalogue.get(tid) or {}
+                for i in c.get("lidx", []):
+                    shown[e["lectures"][i]["url"]] += 1
+                for i in c.get("pidx", []):
+                    shown[e.get("pyqVideos", [])[i]["url"]] += 1
+    repeats = [u for u, n in shown.items() if n > 1]
+    print(f"videos dealt to a day      {len(shown)}")
+    print(f"  shown on more than one   {len(repeats)}")
+    if repeats:
+        problems.append(("-", "-", f"{len(repeats)} video(s) repeat across days"))
     print(f"topics                     {len(catalogue)}")
     print(f"  with videos              {sum(1 for t in catalogue if cat_videos.get(t))}")
     print(f"  with 3 or more           {sum(1 for t in catalogue if len(cat_videos.get(t, [])) >= 3)}")
