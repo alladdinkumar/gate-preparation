@@ -483,30 +483,35 @@ SUBJECT_SLUGS = {"c": "c-programming", "ds": "data-structures", "dm": "discrete-
                  "os": "os", "dbms": "dbms", "cn": "cn", "toc": "toc", "cd": "compiler-design", "mixed": "mixed"}
 
 
-def daily_log(date_str):
+def daily_log_text(date_str):
+    """The Markdown a new daily log starts from. Pure: reads only the template."""
     date = dt.date.fromisoformat(date_str)
-    target = ROOT / "daily-logs" / f"{date.isoformat()}.md"
+    week = (date - START).days // 7 + 1
+    phase = max(p for p, w in PHASE_START_WEEK.items() if week >= w) if week >= 1 else 1
+    subj = WEEK_SUBJECTS.get(week, ["mixed"])[0]
+    weekday = date.strftime("%A")
+    hours = "0" if weekday == "Sunday" else "4.0" if weekday == "Saturday" else "3.0"
+    text = (ROOT / "daily-logs" / "TEMPLATE.md").read_text(encoding="utf-8")
+    repl = {
+        r"^date: .*$": f"date: {date.isoformat()}",
+        r"^day_of_week: .*$": f"day_of_week: {weekday}",
+        r"^phase: .*$": f"phase: {PHASE_SLUGS[phase]}",
+        r"^phase_week: .*$": f"phase_week: {week - PHASE_START_WEEK[phase] + 1}",
+        r"^overall_week: .*$": f"overall_week: {week}",
+        r"^target_hours: .*$": f"target_hours: {hours}",
+        r"^subject: .*$": f"subject: {SUBJECT_SLUGS[subj]}",
+        r"^focus_topic: .*$": "focus_topic: ",
+    }
+    for pattern, value in repl.items():
+        text = re.sub(pattern, value, text, count=1, flags=re.M)
+    return text
+
+
+def daily_log(date_str):
+    target = ROOT / "daily-logs" / f"{dt.date.fromisoformat(date_str).isoformat()}.md"
     created = False
     if not target.exists():
-        week = (date - START).days // 7 + 1
-        phase = max(p for p, w in PHASE_START_WEEK.items() if week >= w) if week >= 1 else 1
-        subj = WEEK_SUBJECTS.get(week, ["mixed"])[0]
-        weekday = date.strftime("%A")
-        hours = "0" if weekday == "Sunday" else "4.0" if weekday == "Saturday" else "3.0"
-        text = (ROOT / "daily-logs" / "TEMPLATE.md").read_text(encoding="utf-8")
-        repl = {
-            r"^date: .*$": f"date: {date.isoformat()}",
-            r"^day_of_week: .*$": f"day_of_week: {weekday}",
-            r"^phase: .*$": f"phase: {PHASE_SLUGS[phase]}",
-            r"^phase_week: .*$": f"phase_week: {week - PHASE_START_WEEK[phase] + 1}",
-            r"^overall_week: .*$": f"overall_week: {week}",
-            r"^target_hours: .*$": f"target_hours: {hours}",
-            r"^subject: .*$": f"subject: {SUBJECT_SLUGS[subj]}",
-            r"^focus_topic: .*$": "focus_topic: ",
-        }
-        for pattern, value in repl.items():
-            text = re.sub(pattern, value, text, count=1, flags=re.M)
-        target.write_text(text, encoding="utf-8")
+        target.write_text(daily_log_text(date_str), encoding="utf-8")
         created = True
     return target, created
 
@@ -527,12 +532,20 @@ def read_markdown(target):
 
 def save_daily_progress(date_str):
     """Write the planner's current checklist to the day's Markdown log."""
-    date = dt.date.fromisoformat(date_str)
     target, created = daily_log(date_str)
     day = next((item for item in parse_plan()["days"] if item["date"] == date_str), None)
     if day is None:
         raise ValueError("That date is not in the study plan")
     done = read_progress().get("done", {})
+    block, completed = progress_block(day, done)
+    current = target.read_text(encoding="utf-8")
+    updated = apply_progress_block(current, block)
+    target.write_text(updated, encoding="utf-8")
+    return target, created, completed, len(day["tasks"]), updated
+
+
+def progress_block(day, done):
+    """The planner checklist snapshot for one day. Pure."""
     completed = sum(bool(done.get(task["id"])) for task in day["tasks"])
     timestamp = dt.datetime.now().astimezone().strftime("%Y-%m-%d %H:%M")
     lines = [
@@ -543,17 +556,19 @@ def save_daily_progress(date_str):
     ]
     for task in day["tasks"]:
         mark = "x" if done.get(task["id"]) else " "
-        focus = re.sub(r"`([^`]+)`", r"\\1", task["focus"])
+        focus = re.sub(r"`([^`]+)`", r"\1", task["focus"])
         lines.append(f"- [{mark}] **{task['slot']} ({task['time']})** — {focus}")
         if task["outputText"]:
             lines.append(f"  - Required record: {task['outputText']}")
     lines.extend(["", PROGRESS_END])
-    block = "\n".join(lines)
-    current = target.read_text(encoding="utf-8")
+    return "\n".join(lines), completed
+
+
+def apply_progress_block(text, block):
     pattern = re.compile(re.escape(PROGRESS_START) + r".*?" + re.escape(PROGRESS_END), re.S)
-    updated = pattern.sub(block, current) if pattern.search(current) else current.rstrip() + "\n\n" + block + "\n"
-    target.write_text(updated, encoding="utf-8")
-    return target, created, completed, len(day["tasks"]), updated
+    if pattern.search(text):
+        return pattern.sub(lambda _: block, text)
+    return text.rstrip() + "\n\n" + block + "\n"
 
 
 # ---------------------------------------------------------------------------
