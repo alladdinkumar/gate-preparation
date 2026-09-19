@@ -83,6 +83,10 @@ index.html ──► lib/backend.js ──┬─► backend-local.js  ──► 
   and a naive merge would resurrect it. The last action wins, whichever device made it.
 - The only logic that exists twice is the file-creation templates (`lib/templates.js` mirrors `server.py`),
   so a test asserts the two produce byte-identical Markdown, and CI will not deploy if they diverge.
+- Per-topic resources follow the same rule. `curriculum-*.md` already held each topic's note file and
+  GATE Overflow tags, so `plan/topic-lectures.md` adds only what was missing — a search phrase and three
+  teachers — and `webapp/topics.py` joins them at build time. A topic's links are therefore derived from
+  the curriculum, never a second copy of it that can drift.
 
 The dashboard features below remain deferred.
 

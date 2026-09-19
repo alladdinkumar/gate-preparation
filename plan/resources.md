@@ -2,6 +2,10 @@
 
 Single curated list. Every resource is free. **One primary per subject** — backups are for a specific concept that didn't land, not for re-watching the whole subject.
 
+> **Per-topic alternatives live in `topic-lectures.md`.** This file answers "which series do
+> I follow for DBMS". That one answers "three people who explain B+ tree insertion", for
+> each of the 124 syllabus topics, and the planner shows them under the day's sessions.
+
 > Playlist URLs were taken from the GO Classes official free-playlist list (verified 2026-09-13). YouTube playlists get renamed or re-ordered — if a link breaks, go to the channel's Playlists tab and search the subject name. Lecture numbering is **not** fixed in the phase plans: on the first day of each subject, map this week's topics to video numbers in your daily log.
 
 ---

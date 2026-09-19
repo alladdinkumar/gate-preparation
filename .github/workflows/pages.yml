@@ -43,6 +43,7 @@ jobs:
       - name: Check the plan parses and the JS twins still match Python
         run: |
           python webapp/build_site.py
+          python webapp/tests/topics_test.py
           python webapp/tests/make_fixtures.py
           node webapp/tests/parity.mjs
 

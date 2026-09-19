@@ -29,6 +29,7 @@ DAY_NAMES = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]
 WRITE_LOCK = threading.Lock()
 
 import gitsync  # noqa: E402  (needs nothing from this module, kept beside it)
+import topics as topic_catalogue  # noqa: E402
 
 # ---------------------------------------------------------------------------
 # Link table (mirrors plan/resources.md)
@@ -337,8 +338,27 @@ def slot_label(day, slot):
     return "Saturday block", slot
 
 
+TOPICS_RE = re.compile(r"\*\*Topics:\s*([^*]+)\*\*")
+
+
+def week_topics(meta, subjects, catalogue):
+    """The topic ids a week covers: declared in the phase table, else the whole subject.
+
+    Phases 1-4 name their topics on the "**Hours ... Topics: ...**" line. The revision,
+    test-series and sprint phases do not, because they revisit whole subjects - so there
+    the week's subjects supply the candidates instead.
+    """
+    m = TOPICS_RE.search(meta or "")
+    if m:
+        declared = [t for t in topic_catalogue.expand_ids(m.group(1)) if t in catalogue]
+        if declared:
+            return declared
+    return [tid for tid, entry in catalogue.items() if entry["subject"] in subjects]
+
+
 def parse_plan():
     load_note_index()
+    catalogue = topic_catalogue.build_catalogue(SUBJECTS)
     phases, days = [], {}
     for pf in sorted(PLAN.glob("phase-*.md")):
         lines = pf.read_text(encoding="utf-8").splitlines()
@@ -357,7 +377,8 @@ def parse_plan():
                 title = DATES_RE.sub("", rest).strip(" —-")
                 title = re.sub(r"\s+—\s+—\s+", " — ", title).strip(" —")
                 current = {"number": n, "title": title, "start": start.isoformat(), "meta": "", "notes": [],
-                           "subjects": WEEK_SUBJECTS.get(n, ["mixed"])}
+                           "subjects": WEEK_SUBJECTS.get(n, ["mixed"]), "topics": []}
+                current["topics"] = week_topics("", current["subjects"], catalogue)
                 phase["weeks"].append(current)
                 continue
             if current is None:
@@ -367,6 +388,7 @@ def parse_plan():
                 continue
             if line.startswith("**Hours"):
                 current["meta"] = line.strip()
+                current["topics"] = week_topics(line, current["subjects"], catalogue)
                 continue
             rm = ROW_RE.match(line)
             if rm:
@@ -387,6 +409,8 @@ def parse_plan():
                     "links": resolve_resources(resource, current["subjects"]),
                     "outputs": outputs,
                     "outputText": output if output not in ("—",) else "",
+                    "topics": topic_catalogue.match_topics(
+                        focus, output, current["topics"], catalogue),
                 }
                 key = date.isoformat()
                 if key not in days:
@@ -407,8 +431,12 @@ def parse_plan():
                     "notes": f"notes/{v['notes']}/_index.md",
                     "sheet": f"notes/formula-sheets/{v['sheet']}.md" if v["sheet"] else None}
                 for k, v in SUBJECTS.items()}
+    used = {t for d in days.values() for task in d["tasks"] for t in task["topics"]}
     return {"start": START.isoformat(), "phases": phases, "days": sorted(days.values(), key=lambda d: d["date"]),
             "subjects": subjects,
+            "topics": {tid: topic_catalogue.public(catalogue[tid]) for tid in sorted(used)},
+            "geminiHead": topic_catalogue.GEMINI_HEAD,
+            "geminiPrompts": topic_catalogue.GEMINI_PROMPTS,
             "common": [link("GO PDFs", GO_PDF, "material"), link("GO exams (test mode)", GO_EXAMS, "practice"),
                        link("Virtual calculator", CALCULATOR, "tool"), link("Official GATE site", OFFICIAL_SITE, "material")]}
 
@@ -430,7 +458,9 @@ def read_progress():
 
 def write_progress(data):
     tmp = PROGRESS_FILE.with_suffix(".json.tmp")
-    tmp.write_text(json.dumps(data, indent=2, sort_keys=True), encoding="utf-8")
+    # Trailing newline to match what backend-github.js writes; without it every
+    # switch between the phone and this machine shows up as a whitespace diff.
+    tmp.write_text(json.dumps(data, indent=2, sort_keys=True) + "\n", encoding="utf-8")
     os.replace(tmp, PROGRESS_FILE)
 
 

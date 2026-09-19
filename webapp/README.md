@@ -47,6 +47,7 @@ Opening `index.html` as a file does not work: the page needs either the server o
 
 - **Day view:** today's sessions (morning, evening, Saturday block, Sunday review), each with a checkbox, its focus, and the study record the plan requires.
 - **Links on every session:** red play icon → the lecture; green tick → the matching GATE Overflow PYQs; blue page → the material or tool; pencil → edit that Markdown file in the planner. Notes and reviews are created from their template if they don't exist yet.
+- **Topic blocks:** under each session, the syllabus topics it covers — each with **three lecture alternatives**, the PYQs tagged to it, its note file, and five Gemini prompts carrying that session's context. See [Topics on a session](#topics-on-a-session).
 - **Edit daily log:** creates `daily-logs/YYYY-MM-DD.md` from the template with phase, week and subject frontmatter filled in.
 - **Save daily progress:** writes a checklist snapshot into the day's log. Runs automatically when every session for the day is ticked.
 - **Day palette:** every day of the phase as a square — green done, amber partial, red missed, grey upcoming, violet ring on today. Tabs 1–7 switch phases. On a phone it starts collapsed behind a tap.
@@ -54,11 +55,66 @@ Opening `index.html` as a file does not work: the page needs either the server o
 
 Keyboard: ←/→ move days, `T` jumps to today, `Esc` closes a dialog. Each day has its own address (`#day-42`).
 
+## Topics on a session
+
+The subject playlist tells you where the lectures are. It does not help at 21:00 when
+pointer arithmetic will not go in. So each session also lists the **syllabus topics** it
+covers, and each topic carries:
+
+| Row | What it is |
+|-----|------------|
+| Lectures — three ways in | The same concept from three teachers, searched by topic instead of linked as a whole playlist |
+| Questions on this topic | The GATE Overflow tags for that topic, a GO search, and the subject's full PYQ list |
+| Ask Gemini · your notes | Five prompts (below) and the topic's note file |
+
+Open on a desktop, one tap on a phone.
+
+### The Gemini prompts
+
+**Make notes**, **Give me questions**, **Explain it**, **Where did I go wrong**, and
+**Ask anything** — the last one for follow-ups and half-remembered tangents.
+
+Tapping one copies the prompt and opens Gemini, so the new tab is one paste from useful.
+What gets copied is not just the topic name. It is:
+
+```
+<the goal: GATE 2028 CS, PSU shortlist, answer in GATE terms>
+
+Where I am: day 9 of 504, week 2 of 72, phase 1 (Foundations). Today is 2026-09-22.
+Subject: C Programming. Syllabus topic PD-3 - Pointers - declaration, dereferencing, ...
+This session (Evening, 20:00-21:30): Lecture: pointer arithmetic, arrays vs pointers, ...
+What I have to record from it: c-03
+Already done today: Morning - PYQs: pointer basics, swap-style output questions
+Still to do today: ...
+
+<the ask>
+```
+
+So the assistant is told where in 72 weeks you are, what tonight's session is, and what
+you have already ticked off today — which is the difference between a textbook answer
+and a useful one. Ticking sessions off as you go is what keeps that line accurate.
+
+The questions prompt tells Gemini to withhold the answers until you have committed to
+yours. That is the whole point of it; don't soften it.
+
+### Where the topic data comes from
+
+`curriculum-*.md` already had the topic text, its week, its note file and its GO tags.
+`plan/topic-lectures.md` adds the search phrase and the three teachers. `webapp/topics.py`
+joins them and works out which topics a session is about — by the ids the phase table
+names outright (`PD-1 … PD-4`), else by matching the focus text against topic names and
+tags. Nothing is written down twice.
+
+**To change a link for a whole subject,** edit the Sources table in `topic-lectures.md`
+and all 124 topics follow. **To change what a topic searches for,** edit its row. Keep
+three alternatives — a ladder, not a library.
+
 ## Where things are stored
 
 | What | Where |
 |---|---|
 | The plan | `plan/phase-*.md`, parsed on every local page load; baked into `site/data/plan.json` for the hosted build |
+| Topic resources | `plan/curriculum-*.md` (tags, note files) + `plan/topic-lectures.md` (search phrases, teachers) |
 | Checkbox progress | `webapp/progress.json` (task id → completion time) |
 | Daily checklist snapshots | `daily-logs/YYYY-MM-DD.md` |
 | Your token | That browser's localStorage. Nowhere else. |
@@ -83,16 +139,23 @@ index.html ──► lib/backend.js ──┬─► backend-local.js  ──► 
 
 ```sh
 python webapp/build_site.py          # build site/
+python webapp/tests/topics_test.py   # assert every topic still has its links
 python webapp/tests/make_fixtures.py # dump what server.py produces
 node webapp/tests/parity.mjs         # assert the JS twins match it byte for byte
 node webapp/tests/hosted.mjs         # drive the live repo end to end (needs gh auth)
 ```
 
-The first three run in CI on every push and gate the deploy. `hosted.mjs` writes real commits, so run it by hand; it restores everything it touches.
+The first four run in CI on every push and gate the deploy. `hosted.mjs` writes real commits, so run it by hand; it restores everything it touches.
 
 ## Links
 
-Link targets live in the `SUBJECTS` and `NAMED_LINKS` tables at the top of `server.py`, mirroring `plan/resources.md`. If a playlist moves, update both.
+Subject-level link targets live in the `SUBJECTS` and `NAMED_LINKS` tables at the top of
+`server.py`, mirroring `plan/resources.md`. If a playlist moves, update both.
+
+Topic-level links are not in `server.py` at all — they are built from
+`plan/topic-lectures.md`, so a channel that moves is fixed in one row of one Markdown
+file. `topics_test.py` fails the build if a link stops pointing at a source that file
+names.
 
 ## Safety
 

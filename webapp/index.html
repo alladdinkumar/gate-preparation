@@ -112,6 +112,24 @@
   .required { margin: 0 0 10px; padding: 8px 10px; max-width: 78ch; border-left: 3px solid var(--focus); background: var(--chip); font-size: .92rem; }
   .required strong { display: block; font-size: .8rem; color: var(--muted); text-transform: uppercase; letter-spacing: .04em; }
   .session.is-done .focus { color: var(--muted); }
+
+  /* Per-topic resources: three teachers, the PYQs, the note file, the prompts. */
+  .topics { margin: 10px 0 0; display: flex; flex-direction: column; gap: 6px; }
+  .topic { border: 1px solid var(--line); border-radius: 8px; background: var(--surface); }
+  .topic > summary { cursor: pointer; padding: 7px 10px; display: flex; align-items: baseline; flex-wrap: wrap; gap: 8px; font-size: .92rem; list-style: none; border-radius: 8px; }
+  .topic > summary::-webkit-details-marker { display: none; }
+  .topic > summary::before { content: "\25B8"; color: var(--muted); font-size: .8rem; }
+  .topic[open] > summary::before { content: "\25BE"; }
+  .topic > summary:hover { background: var(--chip); }
+  .topic > summary:focus-visible { outline: 3px solid var(--focus); outline-offset: -2px; }
+  .topic .tid { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: .78rem; color: var(--muted); }
+  .topic .tsum { color: var(--muted); font-size: .8rem; margin-left: auto; }
+  .topicbody { padding: 0 10px 10px; display: flex; flex-direction: column; gap: 8px; }
+  .topicbody .tfull { margin: 0; font-size: .86rem; color: var(--muted); max-width: 76ch; }
+  .topicbody h5 { margin: 0 0 4px; font-size: .74rem; text-transform: uppercase; letter-spacing: .05em; color: var(--muted); font-weight: 600; }
+  .chip.gem { background: transparent; border-color: var(--line); }
+  .chip.gem svg { color: var(--band); }
+  .chip.notes svg, .chip.error svg { color: var(--today); }
   .session.is-done .focus strong, .session.is-done .when strong { color: var(--muted); }
   code { font-family: var(--body); font-size: .92em; background: var(--chip); padding: 1px 5px; border-radius: 4px; }
 
@@ -349,6 +367,9 @@
     file: '<svg viewBox="0 0 16 16" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="1.6" d="M3 13l1-3.5L11 2.5l2.5 2.5-7 7z"/></svg>',
   };
   ICONS.tool = ICONS.material;
+  ICONS.notes = ICONS.file;
+  ICONS.error = '<svg viewBox="0 0 16 16" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="1.6" d="M8 2.2l6 11.6H2z M8 6.5v3.2 M8 11.6v.6"/></svg>';
+  ICONS.gem = '<svg viewBox="0 0 16 16" aria-hidden="true"><path fill="currentColor" d="M8 1.5l1.6 4.4 4.4 1.6-4.4 1.6L8 13.5 6.4 9.1 2 7.5l4.4-1.6z"/></svg>';
 
   const state = { plan: null, done: {}, index: 0, byDate: new Map(), tab: 1 };
 
@@ -398,6 +419,87 @@
     if (kind === "text") return `<span class="chip text">${esc(l.label)}</span>`;
     if (kind === "file") return `<button type="button" class="chip file" data-open="${esc(l.path)}" title="Edit ${esc(l.path)} here">${ICONS.file}${esc(l.label)}</button>`;
     return `<a class="chip ${kind}" href="${esc(l.url)}" target="_blank" rel="noopener noreferrer">${ICONS[kind] || ""}${esc(l.label)}</a>`;
+  }
+
+  // Prompts ship once and are filled in here; writing them per topic cost 187 KB
+  // of plan.json to say the same five things 124 times.
+  //
+  // The context block matters more than the prompt. "Explain cache mapping" gets a
+  // textbook answer; the same question from someone in week 25 of 72, tonight, who
+  // has already sat through the lecture and is about to do PYQs, gets a useful one.
+  function sessionContext(topic, task, day) {
+    const phase = state.plan.phases.find((p) => p.number === day.phase);
+    const lines = [
+      state.plan.geminiHead,
+      "",
+      `Where I am: day ${day.dayNumber} of ${state.plan.days.length}, week ${day.week} of 72` +
+        (phase ? `, phase ${phase.number} (${phase.title})` : "") + `. Today is ${day.date}.`,
+      `Subject: ${topic.subjectName}. Syllabus topic ${topic.id} - ${topic.name}.`,
+      `This session (${task.slot}, ${task.time}): ${task.focus.replace(/`/g, "")}`,
+    ];
+    if (task.outputText) lines.push(`What I have to record from it: ${task.outputText.replace(/`/g, "")}`);
+
+    // Everything already ticked today, in plan order - what I have actually covered.
+    const earlier = day.tasks.filter((t) => t.id !== task.id && state.done[t.id]);
+    if (earlier.length) {
+      lines.push("Already done today: " + earlier
+        .map((t) => `${t.slot} - ${t.focus.replace(/`/g, "")}`).join(" | "));
+    }
+    const rest = day.tasks.filter((t) => t.id !== task.id && !state.done[t.id]);
+    if (rest.length) {
+      lines.push("Still to do today: " + rest
+        .map((t) => `${t.slot} - ${t.focus.replace(/`/g, "")}`).join(" | "));
+    }
+    return lines.join("\n");
+  }
+
+  function promptText(topic, task, day, i) {
+    return `${sessionContext(topic, task, day)}\n\n${state.plan.geminiPrompts[i].text}`;
+  }
+
+  async function copyText(text) {
+    try {
+      await navigator.clipboard.writeText(text);
+      return true;
+    } catch {
+      // Clipboard API needs a secure context and a permission that can be refused.
+      const ta = document.createElement("textarea");
+      ta.value = text;
+      ta.setAttribute("readonly", "");
+      ta.style.cssText = "position:fixed;top:-1000px;opacity:0";
+      document.body.appendChild(ta);
+      ta.select();
+      let ok = false;
+      try { ok = document.execCommand("copy"); } catch { ok = false; }
+      ta.remove();
+      return ok;
+    }
+  }
+
+  function renderTopics(task, day) {
+    const topics = (task.topics || []).map((id) => state.plan.topics[id]).filter(Boolean);
+    if (!topics.length) return "";
+    // On a phone the chips stack one per row, so an open topic pushes the next
+    // session off the screen. Start closed there; on a wide screen show the first.
+    const openFirst = !window.matchMedia("(max-width: 620px)").matches;
+    return `<div class="topics">${topics.map((topic, i) => {
+      const lectures = topic.lectures.map(chip).join("");
+      const practice = topic.practice.map(chip).join("");
+      const notes = topic.notes
+        ? chip({ label: topic.notes.split("/").pop(), path: topic.notes, kind: "file" })
+        : "";
+      const gem = state.plan.geminiPrompts.map((g, gi) =>
+        `<a class="chip gem" href="https://gemini.google.com/app" target="_blank" rel="noopener noreferrer" data-gem="${esc(topic.id)}" data-task="${esc(task.id)}" data-day="${day.dayNumber}" data-prompt="${gi}" title="Copies the prompt (with today's context), then opens Gemini">${ICONS.gem}${esc(g.label)}</a>`).join("");
+      return `<details class="topic"${i === 0 && openFirst ? " open" : ""}>
+        <summary><span class="tid">${esc(topic.id)}</span> ${esc(topic.short)}<span class="tsum">${topic.lectures.length} lectures &middot; ${topic.practice.length} practice</span></summary>
+        <div class="topicbody">
+          ${topic.name === topic.short ? "" : `<p class="tfull">${esc(topic.name)}</p>`}
+          <div><h5>Lectures &mdash; three ways in</h5><div class="links">${lectures}</div></div>
+          <div><h5>Questions on this topic</h5><div class="links">${practice}</div></div>
+          <div><h5>Ask Gemini${notes ? " &middot; your notes" : ""}</h5><div class="links">${gem}${notes}</div></div>
+        </div>
+      </details>`;
+    }).join("")}</div>`;
   }
 
   function renderOverall() {
@@ -452,6 +554,7 @@
           <p class="focus">${md(task.focus)}</p>
           ${task.outputText ? `<div class="required"><strong>Required study record</strong>${md(task.outputText)}</div>` : ""}
           ${links.length ? `<div class="links">${links.map(chip).join("")}</div>` : ""}
+          ${renderTopics(task, day)}
         </div>
       </li>`;
     }).join("");
@@ -692,6 +795,20 @@
     if (g) { go(Number(g.dataset.goto)); return; }
     const tab = e.target.closest("[data-tab]");
     if (tab) { state.tab = Number(tab.dataset.tab); renderPalette(); return; }
+    const gem = e.target.closest("[data-gem]");
+    if (gem) {
+      // The link opens Gemini on its own; all this does is put the prompt on the
+      // clipboard first, so the tab that opens is one paste away from useful.
+      const topic = state.plan.topics[gem.dataset.gem];
+      const day = state.plan.days[Number(gem.dataset.day) - 1];
+      const task = day && day.tasks.find((t) => t.id === gem.dataset.task);
+      if (topic && task) {
+        copyText(promptText(topic, task, day, Number(gem.dataset.prompt))).then((ok) => {
+          toast(ok ? "Prompt copied \u2014 paste it into Gemini" : "Could not copy the prompt");
+        });
+      }
+      return;
+    }
     const f = e.target.closest("[data-open]");
     if (f) openFile(f.dataset.open);
   });
