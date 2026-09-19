@@ -47,7 +47,7 @@ Opening `index.html` as a file does not work: the page needs either the server o
 
 - **Day view:** today's sessions (morning, evening, Saturday block, Sunday review), each with a checkbox, its focus, and the study record the plan requires.
 - **Links on every session:** red play icon → the lecture; green tick → the matching GATE Overflow PYQs; blue page → the material or tool; pencil → edit that Markdown file in the planner. Notes and reviews are created from their template if they don't exist yet.
-- **Topic blocks:** under each session, the syllabus topics it covers — each with **three lecture alternatives**, the PYQs tagged to it, its note file, and five Gemini prompts carrying that session's context. See [Topics on a session](#topics-on-a-session).
+- **Topic blocks:** under each session, the syllabus topics it covers — each with **three lecture alternatives**, the PYQs tagged to it, its note file, and five Gemini prompts that open an answered chat, already carrying that session's context. See [Topics on a session](#topics-on-a-session).
 - **Edit daily log:** creates `daily-logs/YYYY-MM-DD.md` from the template with phase, week and subject frontmatter filled in.
 - **Save daily progress:** writes a checklist snapshot into the day's log. Runs automatically when every session for the day is ticked.
 - **Day palette:** every day of the phase as a square — green done, amber partial, red missed, grey upcoming, violet ring on today. Tabs 1–7 switch phases. On a phone it starts collapsed behind a tap.
@@ -72,30 +72,44 @@ The first topic on each session is open; the rest are one tap away.
 ### The Gemini prompts
 
 **Make notes**, **Give me questions**, **Explain it**, **Where did I go wrong**, and
-**Ask anything** — the last one for follow-ups and half-remembered tangents.
+**Ask anything** — the last for follow-ups and half-remembered tangents.
 
-Tapping one copies the prompt and opens Gemini, so the new tab is one paste from useful.
-What gets copied is not just the topic name. It is:
+Tapping one **opens an answered prompt**, not an empty chat. Two things make that work:
+
+**1. The link goes to Google's AI Mode, not gemini.google.com.** The Gemini web app
+ignores `?q=` and `?prompt=` — both were tested, the input box stays empty. AI Mode
+(`google.com/search?udm=50&q=...`) is the same model and does read the prompt from the
+URL. Its query survives to at least 2044 characters; the planner budgets 1900 and, on
+the rare prompt that would exceed it, drops the optional context lines before trimming.
+The full prompt is copied to the clipboard on every tap regardless, as a backstop.
+
+**2. Every prompt states the required answer format.** An ask without a shape comes back
+as an essay, which cannot be pasted into a note file or marked against a key. So
+"Make notes" demands `Must know / Worked example / Traps / Formula-sheet lines`,
+"Give me questions" demands `Q1. [MCQ | 1 mark]` with no answers printed and a fixed
+reply line, and so on. The topic test fails the build if a prompt stops specifying one.
+
+What actually gets sent is the context block plus the ask:
 
 ```
-<the goal: GATE 2028 CS, PSU shortlist, answer in GATE terms>
+<the goal: GATE 2028 CS, PSU shortlist, answer in GATE terms, no analogies>
 
 Where I am: day 9 of 504, week 2 of 72, phase 1 (Foundations). Today is 2026-09-22.
 Subject: C Programming. Syllabus topic PD-3 - Pointers - declaration, dereferencing, ...
-This session (Evening, 20:00-21:30): Lecture: pointer arithmetic, arrays vs pointers, ...
-What I have to record from it: c-03
-Already done today: Morning - PYQs: pointer basics, swap-style output questions
-Still to do today: ...
+This session (Morning, 08:30-10:00): PYQs: pointer basics, swap-style output questions
+What I have to record from it: Daily log + error log
+Already done today: ...
+Still to do today: Evening - Lecture: pointer arithmetic, arrays vs pointers, ...
 
-<the ask>
+<the ask, with its required answer structure>
 ```
 
-So the assistant is told where in 72 weeks you are, what tonight's session is, and what
-you have already ticked off today — which is the difference between a textbook answer
-and a useful one. Ticking sessions off as you go is what keeps that line accurate.
+So the model is told where in 72 weeks you are, what this session is, and what you have
+already ticked off today — the difference between a textbook answer and a useful one.
+**Ticking sessions off as you go is what keeps those two lines true.**
 
-The questions prompt tells Gemini to withhold the answers until you have committed to
-yours. That is the whole point of it; don't soften it.
+The questions prompt withholds answers until you have committed to yours. That is the
+whole point of it; don't soften it.
 
 ### Where the topic data comes from
 

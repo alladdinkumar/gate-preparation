@@ -467,6 +467,22 @@
     return `${sessionContext(topic, task, day)}\n\n${state.plan.geminiPrompts[i].text}`;
   }
 
+  // gemini.google.com ignores ?q= and ?prompt= - both were tested, the input box
+  // stays empty. Google's AI Mode is the same model and does read the URL, and its
+  // query survives past 2000 characters, so the button lands on an answered prompt
+  // rather than an empty chat. The clipboard copy still happens, as a fallback for
+  // the rare prompt long enough to need trimming here.
+  function promptUrl(topic, task, day, i) {
+    let text = promptText(topic, task, day, i);
+    const max = state.plan.geminiUrlMax || 1900;
+    if (text.length > max) {
+      // Drop the two optional context lines before touching the ask itself.
+      text = text.split("\n").filter((l) => !/^(Already done today|Still to do today):/.test(l)).join("\n");
+    }
+    if (text.length > max) text = text.slice(0, max - 1) + "…";
+    return state.plan.geminiUrl.replace("{q}", encodeURIComponent(text));
+  }
+
   async function copyText(text) {
     try {
       await navigator.clipboard.writeText(text);
@@ -499,7 +515,7 @@
         ? chip({ label: topic.notes.split("/").pop(), path: topic.notes, kind: "file" })
         : "";
       const gem = state.plan.geminiPrompts.map((g, gi) =>
-        `<a class="chip gem" href="https://gemini.google.com/app" target="_blank" rel="noopener noreferrer" data-gem="${esc(topic.id)}" data-task="${esc(task.id)}" data-day="${day.dayNumber}" data-prompt="${gi}" title="Copies the prompt (with today's context), then opens Gemini">${ICONS.gem}${esc(g.label)}</a>`).join("");
+        `<a class="chip gem" href="${esc(promptUrl(topic, task, day, gi))}" target="_blank" rel="noopener noreferrer" data-gem="${esc(topic.id)}" data-task="${esc(task.id)}" data-day="${day.dayNumber}" data-prompt="${gi}" title="Opens Gemini with this prompt and today's context already filled in">${ICONS.gem}${esc(g.label)}</a>`).join("");
       return `<details class="topic"${i === 0 ? " open" : ""}>
         <summary><span class="tid">${esc(topic.id)}</span> ${esc(topic.short)}<span class="tsum">${topic.lectures.length} lectures &middot; ${topic.practice.length} practice</span></summary>
         <div class="topicbody">
@@ -813,8 +829,10 @@
       const day = state.plan.days[Number(gem.dataset.day) - 1];
       const task = day && day.tasks.find((t) => t.id === gem.dataset.task);
       if (topic && task) {
+        // The link already carries the prompt; copying is the backstop for a
+        // prompt that had to be trimmed to fit the URL.
         copyText(promptText(topic, task, day, Number(gem.dataset.prompt))).then((ok) => {
-          toast(ok ? "Prompt copied \u2014 paste it into Gemini" : "Could not copy the prompt");
+          toast(ok ? "Opening Gemini \u2014 full prompt also copied" : "Opening Gemini");
         });
       }
       return;

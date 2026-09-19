@@ -437,6 +437,8 @@ def parse_plan():
             "topics": {tid: topic_catalogue.public(catalogue[tid]) for tid in sorted(used)},
             "geminiHead": topic_catalogue.GEMINI_HEAD,
             "geminiPrompts": topic_catalogue.GEMINI_PROMPTS,
+            "geminiUrl": topic_catalogue.GEMINI_URL,
+            "geminiUrlMax": topic_catalogue.PROMPT_URL_MAX,
             "common": [link("GO PDFs", GO_PDF, "material"), link("GO exams (test mode)", GO_EXAMS, "practice"),
                        link("Virtual calculator", CALCULATOR, "tool"), link("Official GATE site", OFFICIAL_SITE, "material")]}
 

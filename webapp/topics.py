@@ -131,40 +131,102 @@ def load_curriculum():
 
 # The five things worth asking an assistant about a topic, in order of use.
 #
+# Two rules learned the hard way:
+#
+# 1. Gemini's web app ignores ?q= and ?prompt= - both were tested and the input box
+#    stays empty. Google's AI Mode (udm=50) is the same model and does take the
+#    prompt in the URL, so that is what the buttons open. Its query survives to at
+#    least 2044 characters, hence PROMPT_URL_MAX below.
+# 2. An ask without a required answer shape gets an essay. Every prompt states the
+#    exact structure the reply must take, because a wall of prose at 21:00 is worse
+#    than no answer - it cannot be pasted into a note file or marked against a key.
+#
 # These ship once and are interpolated in the browser: written out per topic they
 # cost 187 KB of the plan payload to say the same thing 124 times. The browser
 # prepends a context block naming the day, week, phase, subject, syllabus topic, the
-# session's focus and whatever else was ticked off today - so the assistant is told
-# what is being studied and how far in, not just a topic name.
+# session's focus and what was already ticked off today.
+
+GEMINI_URL = "https://www.google.com/search?udm=50&q={q}"
+PROMPT_URL_MAX = 1900
+
 GEMINI_HEAD = (
     "I am preparing for GATE 2028 Computer Science (CS paper; the target is a PSU "
     "shortlist, so accuracy matters more than volume). Answer in GATE terms: exam "
-    "style, terse, no encouragement."
+    "style, terse, no encouragement, no analogies."
 )
 
 GEMINI_PROMPTS = [
     {"label": "Make notes", "icon": "notes", "text":
-        "Write me one page of revision notes: every definition and formula I must "
-        "memorise, one fully worked example, and the traps GATE questions set on this "
-        "topic. Be terse - I am a senior software engineer, not a beginner. Use plain "
-        "markdown so I can paste it straight into my notes file."},
+        "Write revision notes on this topic in exactly this structure and nothing else:\n"
+        "\n"
+        "## <topic>\n"
+        "### Must know\n"
+        "- one bullet per definition, rule or formula; define every symbol; no prose\n"
+        "### Worked example\n"
+        "one GATE-style question, then the solution line by line with the arithmetic shown\n"
+        "### Traps\n"
+        "- the exact misreading GATE exploits, and the wrong answer it produces\n"
+        "### Formula-sheet lines\n"
+        "- at most 5 lines, the ones worth copying verbatim\n"
+        "\n"
+        "Plain markdown, no preamble, no closing remarks. Leave out anything outside "
+        "the GATE CS syllabus."},
+
     {"label": "Give me questions", "icon": "practice", "text":
-        "Give me 5 GATE-style questions on this topic - a mix of MCQ, MSQ and NAT, with "
-        "the marks stated for each, at real GATE difficulty. Do NOT show the answers. "
-        "Wait for me to send my answers, then mark them and explain only what I got wrong."},
+        "Set me 5 questions on this topic at real GATE difficulty. Use this format "
+        "exactly:\n"
+        "\n"
+        "Q1. [MCQ | 1 mark] <question>\n"
+        "(A) ...  (B) ...  (C) ...  (D) ...\n"
+        "\n"
+        "Mix MCQ, MSQ and NAT, and mix 1-mark and 2-mark. State the type and marks on "
+        "every question. NAT questions take a number and get no options.\n"
+        "\n"
+        "Then stop. Print no answers, no hints, no method, no explanation. End with "
+        "exactly this line: Reply Q1:<ans> Q2:<ans> Q3:<ans> Q4:<ans> Q5:<ans>\n"
+        "\n"
+        "When I send my answers, reply with one table - Q | my answer | correct answer "
+        "| right or wrong | one line on what I got wrong - and then a single line "
+        "naming the one concept to revise. Nothing else."},
+
     {"label": "Explain it", "icon": "video", "text":
-        "Explain this topic from first principles, then show me the three hardest "
-        "variations GATE has asked on it and what makes each one hard. Assume I know how "
-        "to program but have not touched the theory in five years."},
+        "Explain this topic in exactly these four sections:\n"
+        "\n"
+        "1. Core idea - 5 lines maximum\n"
+        "2. How it works - the derivation or mechanism, with the assumptions stated\n"
+        "3. The three hardest GATE variations - for each: what is asked, why it is "
+        "hard, and the one move that cracks it\n"
+        "4. Formula-sheet lines - at most 5\n"
+        "\n"
+        "I write code for a living but have not touched the theory in five years. Skip "
+        "the history and the motivation."},
+
     {"label": "Where did I go wrong", "icon": "error", "text":
-        "I am working through previous-year questions on this topic. I will paste a "
-        "question and my attempt. Find the flaw in my reasoning and name the concept I am "
-        "missing - do not just give me the correct answer."},
+        "I will paste a previous-year question, my answer, and the official answer. "
+        "Reply in exactly this form:\n"
+        "\n"
+        "1. What the question actually asks - one line\n"
+        "2. Where my reasoning broke - quote the step\n"
+        "3. The concept I am missing - name it in three words\n"
+        "4. The rule for next time - one general line\n"
+        "5. One similar question to retry now - no answer\n"
+        "\n"
+        "Do not give a full worked solution unless I ask. If I was right for the wrong "
+        "reason, say so. Wait for me to paste it."},
+
     {"label": "Ask anything", "icon": "gem", "text":
-        "That is what I am working on right now. I am going to ask you questions about "
-        "it - follow-ups, things I half-remember, tangents I am not sure matter for the "
-        "exam. Keep answers short and tied to what GATE actually asks, and say so plainly "
-        "when something is out of syllabus. Wait for my question."},
+        "That is what I am working on right now. I will ask you questions about it - "
+        "follow-ups, things I half-remember, tangents I am unsure matter for the exam.\n"
+        "\n"
+        "Answer every one in exactly this shape:\n"
+        "- the direct answer first, in one line\n"
+        "- then at most 5 lines of why\n"
+        "- show the arithmetic for anything numerical\n"
+        "- if it is outside the GATE CS syllabus, open with \"Out of syllabus\" and say "
+        "so in one line\n"
+        "- no preamble, no encouragement, no summary at the end\n"
+        "\n"
+        "Wait for my first question."},
 ]
 
 

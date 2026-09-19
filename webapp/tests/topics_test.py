@@ -129,7 +129,27 @@ check("there are five prompts", len(plan["geminiPrompts"]) == 5)
 check("one of them is open-ended",
       any(p["label"] == "Ask anything" for p in plan["geminiPrompts"]))
 check("the questions prompt still withholds the answers",
-      any("Do NOT show the answers" in p["text"] for p in plan["geminiPrompts"]))
+      any("Print no answers" in p["text"] for p in plan["geminiPrompts"]))
+
+# Every prompt must dictate the shape of the reply. Without it the answer comes
+# back as an essay, which cannot be pasted into a note file or marked against a key.
+shapeless = [p["label"] for p in plan["geminiPrompts"] if "exactly" not in p["text"]]
+check("every prompt states a required answer format", not shapeless, f"{shapeless}")
+
+# gemini.google.com ignores ?q= and ?prompt=; AI Mode reads the URL. If this ever
+# goes back to a bare chat URL the buttons silently stop prefilling again.
+check("the Gemini link carries the prompt", "{q}" in plan.get("geminiUrl", ""),
+      plan.get("geminiUrl", "(missing)"))
+check("the link is AI Mode, not the empty chat app",
+      "udm=50" in plan.get("geminiUrl", ""), plan.get("geminiUrl", "(missing)"))
+
+# A prompt that overflows the URL gets trimmed in the browser, so keep the shipped
+# text comfortably under budget for a realistic context block.
+budget = plan["geminiUrlMax"]
+context = len(plan["geminiHead"]) + 760      # a long real session context, measured
+over = [(p["label"], context + len(p["text"]))
+        for p in plan["geminiPrompts"] if context + len(p["text"]) > budget]
+check(f"every prompt fits the {budget}-char URL budget", not over, f"{over}")
 
 print(f"\n{len(failures)} check(s) failed" if failures else "\nall topic checks passed")
 sys.exit(1 if failures else 0)
