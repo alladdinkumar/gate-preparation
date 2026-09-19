@@ -44,6 +44,7 @@ jobs:
         run: |
           python webapp/build_site.py
           python webapp/tests/topics_test.py
+          python webapp/tests/videos_audit.py
           python webapp/tests/make_fixtures.py
           node webapp/tests/parity.mjs
 

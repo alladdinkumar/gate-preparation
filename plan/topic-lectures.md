@@ -5,10 +5,13 @@ when a single concept refuses to land at 21:00 on a Wednesday. This file is the 
 for each of the 124 syllabus topics, a search phrase and **three teachers who cover it**, so
 "I don't get pipelining hazards" has three answers instead of a 40-video playlist.
 
-**How it is used.** The planner joins this file with the topic tables in `curriculum-*.md`
-(which already carry the note file and the GATE Overflow tags) and shows the result under every
-session whose focus mentions that topic. Nothing here is typed twice: the tags and note paths
-live in `curriculum-*.md`, the teachers live here.
+**How it is used.** The planner shows `topic-videos.md`'s named videos first; the searches
+below are the fallback for when a video is taken down or turns out to be wrong. The tags and
+note paths live in `curriculum-*.md`, the videos in `topic-videos.md`, the searches here —
+nothing is typed twice.
+
+> The search phrases in this file are also what `webapp/tools/build_videos.py` searches
+> YouTube with. Improve a phrase here and re-run it for that topic to get better videos.
 
 **Rules for editing:**
 - The search phrase is the valuable part. Write it as you would type it into YouTube.

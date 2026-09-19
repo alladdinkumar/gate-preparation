@@ -26,6 +26,10 @@ C_TOPICS = {f"PD-{n}" for n in range(1, 7)}
 
 GO_TAG = "https://gateoverflow.in/tag/{}"
 GO_SEARCH = "https://gateoverflow.in/search?q={}"
+WATCH = "https://www.youtube.com/watch?v={}"
+
+VIDEO_RE = re.compile(
+    r"^\|\s*([A-Z]{2}-\d+)\s*\|\s*([A-Za-z0-9_-]{11})\s*\|\s*([^|]+?)\s*\|\s*([^|]+?)\s*\|\s*$")
 
 ROW_RE = re.compile(r"^\|\s*([A-Z]{2})-(\d+)\s*\|(.+)\|\s*$")
 SOURCE_RE = re.compile(r"^\|\s*([a-z0-9-]+)\s*\|\s*([^|]+?)\s*\|\s*(\S+)\s*\|\s*$")
@@ -96,6 +100,27 @@ def load_lectures():
         if phrase and keys:
             lectures[f"{m.group(1)}-{m.group(2)}"] = (phrase, keys)
     return lectures
+
+
+def load_videos():
+    """Topic id -> [{id, channel, title}] from plan/topic-videos.md.
+
+    Written by webapp/tools/build_videos.py, which verifies every id against
+    YouTube's oEmbed endpoint before it is allowed into the file. Missing file or
+    missing topic is not an error - the channel searches cover it.
+    """
+    videos = {}
+    path = PLAN / "topic-videos.md"
+    if not path.exists():
+        return videos
+    for line in path.read_text(encoding="utf-8").splitlines():
+        m = VIDEO_RE.match(line)
+        if not m:
+            continue
+        tid, vid, channel, title = m.group(1), m.group(2), m.group(3), m.group(4)
+        videos.setdefault(tid, []).append(
+            {"id": vid, "channel": channel.strip(), "title": title.strip()})
+    return videos
 
 
 def load_curriculum():
@@ -256,6 +281,7 @@ def build_catalogue(subjects):
     curriculum = load_curriculum()
     lectures = load_lectures()
     sources = load_sources()
+    videos = load_videos()
     catalogue = {}
 
     for tid, topic in curriculum.items():
@@ -268,13 +294,26 @@ def build_catalogue(subjects):
         entry["subjectName"] = subjects[key]["name"]
         entry["phrase"] = phrase
 
-        entry["lectures"] = []
+        # Named videos first - these are the actual lecture, verified to exist.
+        # The channel searches from topic-lectures.md follow as a fallback, because
+        # a video can be pulled down and a search cannot.
+        entry["lectures"] = [
+            {"label": f"{v['channel']} — {v['title']}",
+             "url": WATCH.format(v["id"]), "kind": "video", "video": True}
+            for v in videos.get(tid, [])
+        ]
+        entry["search"] = []
         for k in alt_keys:
             if k not in sources:
                 continue
             label, template = sources[k]
             url = template.replace("{q}", quote_plus(phrase))
-            entry["lectures"].append({"label": label, "url": url, "kind": "video"})
+            entry["search"].append({"label": f"Search {label}", "url": url, "kind": "video"})
+        if not entry["lectures"]:
+            # No video survived verification for this topic; the searches are all
+            # there is, so promote them rather than show an empty row.
+            entry["lectures"] = entry["search"]
+            entry["search"] = []
 
         entry["practice"] = [
             {"label": f"PYQs tagged {tag}", "url": GO_TAG.format(tag), "kind": "practice"}

@@ -127,6 +127,12 @@
   .topicbody { padding: 0 10px 10px; display: flex; flex-direction: column; gap: 8px; }
   .topicbody .tfull { margin: 0; font-size: .86rem; color: var(--muted); max-width: 76ch; }
   .topicbody h5 { margin: 0 0 4px; font-size: .74rem; text-transform: uppercase; letter-spacing: .05em; color: var(--muted); font-weight: 600; }
+  /* A named video carries channel + full title, which is far too long for a pill.
+     Give these rows their own line and let the text wrap. */
+  .links.vids { display: block; }
+  .links.vids .chip { display: flex; width: 100%; margin-bottom: 6px; align-items: flex-start;
+                      border-radius: 8px; padding: 8px 10px; text-align: left; white-space: normal; }
+  .links.vids .chip svg { margin-top: 3px; }
   .chip.gem { background: transparent; border-color: var(--line); }
   .chip.gem svg { color: var(--band); }
   .chip.notes svg, .chip.error svg { color: var(--today); }
@@ -510,6 +516,7 @@
     // exist for - a one-line row reads as a label, not as something to tap.
     return `<div class="topics">${topics.map((topic, i) => {
       const lectures = topic.lectures.map(chip).join("");
+      const searches = (topic.search || []).map(chip).join("");
       const practice = topic.practice.map(chip).join("");
       const notes = topic.notes
         ? chip({ label: topic.notes.split("/").pop(), path: topic.notes, kind: "file" })
@@ -520,7 +527,8 @@
         <summary><span class="tid">${esc(topic.id)}</span> ${esc(topic.short)}<span class="tsum">${topic.lectures.length} lectures &middot; ${topic.practice.length} practice</span></summary>
         <div class="topicbody">
           ${topic.name === topic.short ? "" : `<p class="tfull">${esc(topic.name)}</p>`}
-          <div><h5>Lectures &mdash; three ways in</h5><div class="links">${lectures}</div></div>
+          <div><h5>Watch &mdash; ${topic.lectures.length} ${topic.lectures.length === 1 ? "lecture" : "lectures"} on this topic</h5><div class="links vids">${lectures}</div></div>
+          ${searches ? `<div><h5>If none of those land</h5><div class="links">${searches}</div></div>` : ""}
           <div><h5>Questions on this topic</h5><div class="links">${practice}</div></div>
           <div><h5>Ask Gemini${notes ? " &middot; your notes" : ""}</h5><div class="links">${gem}${notes}</div></div>
         </div>

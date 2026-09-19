@@ -63,7 +63,8 @@ covers, and each topic carries:
 
 | Row | What it is |
 |-----|------------|
-| Lectures — three ways in | The same concept from three teachers, searched by topic instead of linked as a whole playlist |
+| Watch | Up to three **named videos** — the actual lecture, one link each, from three different teachers |
+| If none of those land | Topic-scoped searches on the same channels, as a fallback when a video is pulled |
 | Questions on this topic | The GATE Overflow tags for that topic, a GO search, and the subject's full PYQ list |
 | Ask Gemini · your notes | Five prompts (below) and the topic's note file |
 
@@ -113,22 +114,47 @@ whole point of it; don't soften it.
 
 ### Where the topic data comes from
 
-`curriculum-*.md` already had the topic text, its week, its note file and its GO tags.
-`plan/topic-lectures.md` adds the search phrase and the three teachers. `webapp/topics.py`
-joins them and works out which topics a session is about — by the ids the phase table
-names outright (`PD-1 … PD-4`), else by matching the focus text against topic names and
-tags. Nothing is written down twice.
+Three files, none repeating another:
 
-**To change a link for a whole subject,** edit the Sources table in `topic-lectures.md`
-and all 124 topics follow. **To change what a topic searches for,** edit its row. Keep
-three alternatives — a ladder, not a library.
+| File | Holds |
+|------|-------|
+| `plan/curriculum-*.md` | The topic text, its week, its note file, its GATE Overflow tags |
+| `plan/topic-videos.md` | **The videos** — id, channel and title, one row per video |
+| `plan/topic-lectures.md` | The search phrase and which channels to search, used as the fallback |
+
+`webapp/topics.py` joins them and works out which topics a session is about — by the ids
+the phase table names outright (`PD-1 … PD-4`), else by matching the focus text against
+topic names and tags.
+
+**Why `topic-videos.md` exists.** The first version of this linked channel searches, so a
+session on C operators opened a list of search results rather than a lecture. Worse, the
+subject playlists `resources.md` points at are thinner than they look — the GO Classes
+"C Programming" playlist is nine videos, all about structs, with nothing on operators at
+all. So the videos are named individually.
+
+**How they were found.** `webapp/tools/build_videos.py` searches YouTube for each topic
+from three angles, ranks results by channel and title match, and keeps the best three
+from three different teachers. **Every id is then confirmed against YouTube's oEmbed
+endpoint**, which rejects anything that does not exist or cannot be embedded; the channel
+and title stored are the ones YouTube returned. A C topic hard-excludes any title
+mentioning Python, Java or C++ — GATE code questions are C, and "Operators in Python"
+outranked everything until that rule existed.
+
+It matches on **titles, not descriptions**. A title that lies will get through. If a link
+is wrong, delete its row and the planner falls back to the channel search for that topic.
+
+**To fix one topic:** `python webapp/tools/build_videos.py PD-3` after deleting its rows.
+**To change which channels are trusted:** the `TIER1` / `TIER2` tables in that script.
+**To change a fallback search:** the Sources table in `topic-lectures.md` — one row there
+covers all 124 topics.
 
 ## Where things are stored
 
 | What | Where |
 |---|---|
 | The plan | `plan/phase-*.md`, parsed on every local page load; baked into `site/data/plan.json` for the hosted build |
-| Topic resources | `plan/curriculum-*.md` (tags, note files) + `plan/topic-lectures.md` (search phrases, teachers) |
+| Topic videos | `plan/topic-videos.md` (video id, channel, title — verified against YouTube) |
+| Topic resources | `plan/curriculum-*.md` (tags, note files) + `plan/topic-lectures.md` (fallback searches) |
 | Checkbox progress | `webapp/progress.json` (task id → completion time) |
 | Daily checklist snapshots | `daily-logs/YYYY-MM-DD.md` |
 | Your token | That browser's localStorage. Nowhere else. |
@@ -152,8 +178,9 @@ index.html ──► lib/backend.js ──┬─► backend-local.js  ──► 
 ## Tests
 
 ```sh
-python webapp/build_site.py          # build site/
-python webapp/tests/topics_test.py   # assert every topic still has its links
+python webapp/build_site.py             # build site/
+python webapp/tests/topics_test.py      # assert every topic still has its links
+python webapp/tools/build_videos.py     # re-find the videos (slow, hits YouTube)
 python webapp/tests/make_fixtures.py # dump what server.py produces
 node webapp/tests/parity.mjs         # assert the JS twins match it byte for byte
 node webapp/tests/hosted.mjs         # drive the live repo end to end (needs gh auth)
