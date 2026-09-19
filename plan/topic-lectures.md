@@ -53,6 +53,7 @@ nothing is typed twice.
 | mit-prob | MIT RES.6-012 Introduction to Probability (Tsitsiklis) | https://ocw.mit.edu/courses/res-6-012-introduction-to-probability-spring-2018/ |
 | 3b1b-calc | 3Blue1Brown Essence of Calculus | https://www.3blue1brown.com/topics/calculus |
 | indiabix | IndiaBix drills | https://www.indiabix.com |
+| go-struct | GO Classes struct series (9 videos) | https://www.youtube.com/playlist?list=PLIPZ2_p3RNHgzQutUHGzqMjA1z7XJ_Uya |
 
 ---
 
@@ -65,7 +66,7 @@ nothing is typed twice.
 | PD-3 | C pointers pointer arithmetic arrays and pointers | go, smashers, yt |
 | PD-4 | C strings 2D arrays array of pointers declarations | go, smashers, yt |
 | PD-5 | C recursion output tracing number of function calls | go, smashers, bari |
-| PD-6 | C structures unions malloc free function pointers | go, smashers, yt |
+| PD-6 | C structures unions malloc free function pointers | go-struct, smashers, yt |
 
 ## Data Structures
 

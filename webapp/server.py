@@ -42,14 +42,17 @@ GO_CLASSES_COURSES = "https://www.goclasses.in/s/store/courses"
 OFFICIAL_SITE = "https://gate2027.iitm.ac.in"
 
 SUBJECTS = {
+    # No subject-wide video: GO Classes' "C Programming" playlist is nine videos on
+    # structs (checked 2026-09-19), so it now belongs to PD-6 only. The per-topic
+    # videos in plan/topic-videos.md carry C instead.
     "c": {"name": "C Programming", "notes": "programming-ds", "sheet": "programming-ds",
-          "video": "https://www.youtube.com/playlist?list=PLIPZ2_p3RNHgzQutUHGzqMjA1z7XJ_Uya",
+          "video": None,
           "pyq": "https://gateoverflow.in/questions/programming-in-c/programming/programming-in-c?sort=gate",
           "backup": [("NPTEL courses (search: Programming in C)", "https://nptel.ac.in/courses")]},
     "ds": {"name": "Data Structures", "notes": "programming-ds", "sheet": "programming-ds",
-           "video": "https://www.youtube.com/playlist?list=PLIPZ2_p3RNHi_0QW5bavzLyAJZ0ozFTJ3",
+           "video": "https://www.youtube.com/playlist?list=PLxCzCOWd7aiEwaANNt3OqJPVIxwp2ebiT",
            "pyq": "https://gateoverflow.in/questions/programming-in-c/data-structures?sort=gate",
-           "backup": [("Gate Smashers Data Structure", "https://www.youtube.com/playlist?list=PLxCzCOWd7aiEwaANNt3OqJPVIxwp2ebiT")]},
+           "backup": [("GO Classes DS standard questions (3)", "https://www.youtube.com/playlist?list=PLIPZ2_p3RNHi_0QW5bavzLyAJZ0ozFTJ3")]},
     "dm": {"name": "Discrete Maths", "notes": "maths", "sheet": "engineering-maths",
            "video": "https://www.youtube.com/playlist?list=PLIPZ2_p3RNHgjPQN2GtCVOCgrkH2zCkSU",
            "pyq": "https://gateoverflow.in/questions/mathematics/discrete-mathematics?sort=gate",
@@ -94,10 +97,9 @@ SUBJECTS = {
            "pyq": "https://gateoverflow.in/questions/computer-networks?sort=gate",
            "backup": [("NPTEL CN & IP", "https://nptel.ac.in/courses/106105183")]},
     "toc": {"name": "Theory of Computation", "notes": "toc", "sheet": "toc",
-            "video": "https://www.youtube.com/playlist?list=PLIPZ2_p3RNHhXeEdbXsi34ePvUjL8I-Q9",
+            "video": "https://www.youtube.com/playlist?list=PLBlnK6fEyqRgp46KUv4ZY69yXmpwKOIev",
             "pyq": "https://gateoverflow.in/questions/theory-of-computation?sort=gate",
-            "backup": [("Neso Academy TOC", "https://www.youtube.com/playlist?list=PLBlnK6fEyqRgp46KUv4ZY69yXmpwKOIev"),
-                       ("NPTEL TOC (Tewari)", "https://onlinecourses.nptel.ac.in/noc21_cs83/preview")]},
+            "backup": [("NPTEL TOC (Tewari)", "https://onlinecourses.nptel.ac.in/noc21_cs83/preview")]},
     "cd": {"name": "Compiler Design", "notes": "compiler", "sheet": "compiler",
            "video": "https://www.youtube.com/playlist?list=PLIPZ2_p3RNHjy3eH_qRImIs5dVUTpr9ga",
            "pyq": "https://gateoverflow.in/questions/compiler-design?sort=gate",

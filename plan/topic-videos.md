@@ -107,10 +107,12 @@ ids to redo only those.
 | CO-10 | Gp2cwH740O0 | NPTEL IIT Guwahati | Lec 9: Control Hazards and Branch Prediction |
 | DM-1 | HcS4lqXxrV4 | Neso Academy | Rules of Inference - Definition & Types of Inference Rules |
 | DM-1 | B6xo-2A8ano | GO Classes for GATE CS | Propositional Logic - GATE PYQs Part 1 / Discrete Mathematics / GO Classes / Deepak Poonia |
-| DM-1 | 6490tKrGEic | Gate Smashers | Lec-27: Propositional Logic in Artificial Intelligence / Knowledge Representation / All Imp Points |
-| DM-2 | qlfqKjOhbjY | GO Classes for GATE CS | English to First Order Logic Translation Part 2 /Discrete Maths /GATE CS / GO Classes /GATE Overflow |
-| DM-2 | Aw3EOSr64j0 | Gate Smashers | Lec-45: How to write First order/Predicate logic / Artificial Intelligence |
+| DM-1 | dzUXeAmddZE | Gate Smashers | Question on Mathematical Logic / Discrete Maths / UGC NTA NET May/June 2021 |
+| DM-1 | udp92HTtVLc | Sudhakar Atchala | Rules of Inference // 8 Solved Examples // Rule P // Rule  T // Rule  CP // DMS // MFCS |
+| DM-2 | IeCiksHTzjA | GO Classes for GATE CS | English to First Order Logic Translation Part 3 / Numerical Quantification / Discrete Mathematics |
 | DM-2 | UN6Hd4UlrnM | Neso Academy | Quantifiers |
+| DM-2 | 8Do6tC7ZDG0 | Sudhakar Atchala | Predicate Logic // Statement  Function  // Quantifiers // Universal  // Existential  // DMS // MFCS |
+| DM-2 | ttCEJ59q8WM | Unacademy Computer Science | 15 GATE PYQs on Predicate Logic within 30 Seconds Using 1 Single Trick / Sweta Kumari |
 | DM-3 | kSKmoNnXmHM | Gate Smashers | Comparison of All Relations / Reflexive,Irreflexive,Transitive, Symmetric,Antisymmetric, Asymmetric |
 | DM-3 | SgQJlKLWJmY | Neso Academy | Closure of Relations – Part 1 |
 | DM-3 | 0MMmaOcm6Jc | Education 4u - Hindi | reflexive symmetric transitive relations in hindi / types of relations / Niharika Panda |
@@ -188,7 +190,6 @@ ids to redo only those.
 | PS-5 | OQNTi4D2tfE | BYJU'S Exam Prep GATE & ESE: EE,EC,IN,CS | Continuous Random Variables / Probability and Distributions / GATE Engineering Mathematics / BYJU'S |
 | PD-1 | 8H9G621pQq0 | Neso Academy | Precedence and Associativity of Operators |
 | PD-1 | ql2F5Am3_9E | Gate Smashers | Typecasting in C programming / Implicit & Explicit type conversions |
-| PD-1 | 2KL1A4WTvok | CMTEQ | C Variables data types and sizes in Embedded System |
 | PD-1 | WGQRInmOBM8 | Neso Academy | Logical Operators in C |
 | PD-2 | jaiKkW2j2Wo | Gate Smashers | Introduction to Storage Classes in C &  its types / Programming in C Language |
 | PD-2 | 1ZicYbTSAD4 | Unacademy Computer Science | Storage Classes / Auto Extern Register Static / L 13 / GATE 2024/25 / C Language / Vishvadeep Gothi |

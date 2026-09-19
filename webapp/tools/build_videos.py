@@ -67,6 +67,15 @@ WRONG_LANG = re.compile(r"(python|\bjava\b|javascript|c\+\+|\bcpp\b|c#|kotlin|go
 RIGHT_LANG = re.compile(r"(\bin c\b|\bc program|\bc language|\bc\b(?!\+\+))", re.I)
 C_SUBJECTS = {"c", "ds"}
 
+# Same words, different course. "Propositional Logic in Artificial Intelligence" is a
+# real lecture on propositional logic and the wrong one for Discrete Maths; likewise
+# an embedded-systems take on C data types. None of these are on the GATE CS syllabus,
+# so a title that announces one is not the video for any topic here.
+OFF_DOMAIN = re.compile(
+    r"(artificial intelligence|machine learning|deep learning|neural network|data science|"
+    r"blockchain|cloud computing|embedded system|vhdl|verilog|microprocessor|8085|8086|"
+    r"software engineering|web development|android|excel|tally|digital marketing)", re.I)
+
 
 def seconds(text):
     if not text:
@@ -140,6 +149,8 @@ def pick(topic, entry, want=4):
                 continue
             if BAD_TITLE.search(v["title"]):
                 continue                  # marathons and non-teaching uploads, never
+            if OFF_DOMAIN.search(v["title"]):
+                continue                  # right words, wrong course
             s, tier = score(v, words, rare, entry["subject"])
             # An unrecognised channel has to be an overwhelming title match: at 6
             # this let in a lecture in Indonesian that happened to say "delay",

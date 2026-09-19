@@ -28,25 +28,54 @@ Single curated list. Every resource is free. **One primary per subject** — bac
 
 ## Primary Lecture Series by Subject
 
-| Subject | Primary (free) | URL | Backup |
-|---------|----------------|-----|--------|
-| C Programming | GO Classes — C Programming | https://www.youtube.com/playlist?list=PLIPZ2_p3RNHgzQutUHGzqMjA1z7XJ_Uya | NPTEL "Problem Solving through Programming in C" (IIT Kharagpur) — search at https://nptel.ac.in/courses |
-| Data Structures | GO Classes — Data Structures | https://www.youtube.com/playlist?list=PLIPZ2_p3RNHi_0QW5bavzLyAJZ0ozFTJ3 | Gate Smashers — Data Structure: https://www.youtube.com/playlist?list=PLxCzCOWd7aiEwaANNt3OqJPVIxwp2ebiT |
-| Discrete Maths | GO Classes — Discrete Mathematics (also a free full course on goclasses.in) | https://www.youtube.com/playlist?list=PLIPZ2_p3RNHgjPQN2GtCVOCgrkH2zCkSU | MIT OCW 6.042J Mathematics for CS: https://ocw.mit.edu/courses/6-042j-mathematics-for-computer-science-fall-2010/ ; GO Classes Graph Theory: https://www.youtube.com/playlist?list=PLIPZ2_p3RNHjQoj0k-BlI9zXE0QKdl-lI |
-| Algorithms | GO Classes — Algorithms | https://www.youtube.com/playlist?list=PLIPZ2_p3RNHjUCHdJp-_soSSmhgmO4i0T | NPTEL Design and Analysis of Algorithms (Madhavan Mukund, CMI): https://nptel.ac.in/courses/106106131 ; Abdul Bari: https://www.youtube.com/@abdul_bari |
-| Linear Algebra | GO Classes — Linear Algebra | https://www.youtube.com/playlist?list=PLIPZ2_p3RNHhGLQ1ZT37KLpBMAD90CM4_ | MIT OCW 18.06 (Gilbert Strang): https://ocw.mit.edu/courses/18-06-linear-algebra-spring-2010/ ; 3Blue1Brown Essence of Linear Algebra (intuition) |
-| Calculus | GO Classes free Engineering Mathematics course | https://www.goclasses.in (Courses → free Engineering Mathematics) | 3Blue1Brown Essence of Calculus (intuition); Gate Smashers / NPTEL calculus lectures |
-| Probability & Statistics | GO Classes free Engineering Mathematics course | https://www.goclasses.in (Courses → free Engineering Mathematics) | MIT OCW RES.6-012 Introduction to Probability (Tsitsiklis): https://ocw.mit.edu/courses/res-6-012-introduction-to-probability-spring-2018/ |
-| Digital Logic | GO Classes — Digital Logic | https://www.youtube.com/playlist?list=PLIPZ2_p3RNHiwFGR4fqKlj9C_eo8R6hbY | Neso Academy (Digital Electronics playlists): https://www.youtube.com/channel/UCQYMhOMi_Cdj1CEAU-fv80A |
-| COA | GO Classes — COA | https://www.youtube.com/playlist?list=PLIPZ2_p3RNHjMdZR3GYQ2KZio0NKczrik | NPTEL Computer Architecture and Organization (Indranil Sengupta, IIT KGP): https://nptel.ac.in/courses/106105163 ; Gate Smashers COA |
-| Operating Systems | GO Classes — Operating Systems | https://www.youtube.com/playlist?list=PLIPZ2_p3RNHixlIaarIXGPy-eggJQMxd_ | Gate Smashers OS (channel playlists); NPTEL Introduction to Operating Systems (Chester Rebeiro, IIT Madras): https://nptel.ac.in/courses/106106144 |
-| DBMS | GO Classes — DBMS | https://www.youtube.com/playlist?list=PLIPZ2_p3RNHhUXFx03wy3uFeCXRw6qlm8 | Gate Smashers DBMS (channel playlists); NPTEL Data Base Management System (Partha Pratim Das, IIT KGP): https://nptel.ac.in/courses/106105175 |
-| Computer Networks | GO Classes — Computer Networks | https://www.youtube.com/playlist?list=PLIPZ2_p3RNHim3NUSNOb7ffyhaE5MSkmE | Gate Smashers CN (channel playlists); NPTEL Computer Networks and Internet Protocol (IIT KGP): https://nptel.ac.in/courses/106105183 |
-| Theory of Computation | GO Classes — Theory of Computation | https://www.youtube.com/playlist?list=PLIPZ2_p3RNHhXeEdbXsi34ePvUjL8I-Q9 | Neso Academy TOC: https://www.youtube.com/playlist?list=PLBlnK6fEyqRgp46KUv4ZY69yXmpwKOIev ; NPTEL Theory of Computation (Raghunath Tewari, IIT Kanpur): https://onlinecourses.nptel.ac.in/noc21_cs83/preview |
-| Compiler Design | GO Classes — Compiler Design | https://www.youtube.com/playlist?list=PLIPZ2_p3RNHjy3eH_qRImIs5dVUTpr9ga | NPTEL Compiler Design (Santanu Chattopadhyay, IIT KGP): https://nptel.ac.in/courses/106105190 ; Ravindrababu Ravula free videos: https://www.youtube.com/channel/UCJjC1hn78yZqTf0vdTC6wAQ |
-| General Aptitude | GATE Overflow GA PYQs (GO PDF Volume 1) | https://github.com/GATEOverflow/GO-PDFs/releases | IndiaBix (topic drills): https://www.indiabix.com |
+> **Counted on 2026-09-19.** Every playlist below was opened and its videos listed.
+> The previous version of this table called the GO Classes playlist the primary for
+> all fourteen subjects. That was wrong for five of them, and one link was **empty**.
+> Numbers in brackets are the video count on that date.
 
-**Why GO Classes as primary across the board:** built specifically for GATE CS, run with GATE Overflow, free playlists cover every CS subject, and PYQ discussion lines up with GO tags. One teaching style for 49 weeks means less re-orientation cost per subject.
+**GO Classes free playlists are a full course for some subjects and a set of PYQ
+analysis sessions for others.** That distinction matters when you are learning a
+subject for the first time, so it is spelled out per row.
+
+| Subject | Primary (free) | What it actually is | URL |
+|---------|----------------|---------------------|-----|
+| C Programming | **No free GO course exists** | The "GO Classes C Programming" playlist is **9 videos, all about structs**. Use the per-topic videos in `topic-videos.md`; the struct playlist is attached to PD-6 where it belongs | (see `topic-videos.md`) |
+| Data Structures | Gate Smashers — Data Structure [66] | A full course, Lec-1 onward | https://www.youtube.com/playlist?list=PLxCzCOWd7aiEwaANNt3OqJPVIxwp2ebiT |
+| Discrete Maths | GO Classes — Discrete Mathematics [71] | Full course, summaries + PYQs per topic | https://www.youtube.com/playlist?list=PLIPZ2_p3RNHgjPQN2GtCVOCgrkH2zCkSU |
+| Graph Theory | GO Classes — Graph Theory [63] | Full course, numbered lectures | https://www.youtube.com/playlist?list=PLIPZ2_p3RNHjQoj0k-BlI9zXE0QKdl-lI |
+| Algorithms | GO Classes — Algorithms [17] | **PYQ analysis, not a course.** Pair with Abdul Bari or NPTEL DAA for first-pass teaching | https://www.youtube.com/playlist?list=PLIPZ2_p3RNHjUCHdJp-_soSSmhgmO4i0T |
+| Linear Algebra | GO Classes — Linear Algebra [45] | Full course | https://www.youtube.com/playlist?list=PLIPZ2_p3RNHhGLQ1ZT37KLpBMAD90CM4_ |
+| Calculus | GO Classes free Engineering Mathematics course | On goclasses.in, not YouTube | https://www.goclasses.in/s/store/courses |
+| Probability & Statistics | GO Classes free Engineering Mathematics course | On goclasses.in, not YouTube | https://www.goclasses.in/s/store/courses |
+| Digital Logic | GO Classes — Digital Logic [64] | Full course, from number systems onward | https://www.youtube.com/playlist?list=PLIPZ2_p3RNHiwFGR4fqKlj9C_eo8R6hbY |
+| COA | GO Classes — COA [29] | **Pipeline-heavy**, not full COA. Pair with NPTEL COA for cache, I/O, control unit | https://www.youtube.com/playlist?list=PLIPZ2_p3RNHjMdZR3GYQ2KZio0NKczrik |
+| Operating Systems | GO Classes — OS [11] | **PYQ sets, not a course.** Pair with NPTEL Intro to OS or Gate Smashers | https://www.youtube.com/playlist?list=PLIPZ2_p3RNHixlIaarIXGPy-eggJQMxd_ |
+| DBMS | GO Classes — DBMS [90] | Full course | https://www.youtube.com/playlist?list=PLIPZ2_p3RNHhUXFx03wy3uFeCXRw6qlm8 |
+| Computer Networks | GO Classes — CN [22] | **Partial** — strong on flow control. Pair with NPTEL CN & IP | https://www.youtube.com/playlist?list=PLIPZ2_p3RNHim3NUSNOb7ffyhaE5MSkmE |
+| Theory of Computation | Neso Academy — TOC [100] | **The GO Classes TOC playlist is empty.** Neso is the primary | https://www.youtube.com/playlist?list=PLBlnK6fEyqRgp46KUv4ZY69yXmpwKOIev |
+| Compiler Design | GO Classes — Compiler Design [22] | **Partial** — strong on SDT and parsing. Pair with NPTEL Compiler Design | https://www.youtube.com/playlist?list=PLIPZ2_p3RNHjy3eH_qRImIs5dVUTpr9ga |
+| General Aptitude | GATE Overflow GA PYQs (GO PDF Volume 1) | No single free video course worth naming | https://github.com/GATEOverflow/GO-PDFs/releases |
+
+**Backups by subject:** NPTEL DAA (Mukund) https://nptel.ac.in/courses/106106131 ·
+NPTEL COA (Sengupta) https://nptel.ac.in/courses/106105163 · NPTEL Intro to OS
+(Rebeiro) https://nptel.ac.in/courses/106106144 · NPTEL DBMS (Das)
+https://nptel.ac.in/courses/106105175 · NPTEL CN & IP
+https://nptel.ac.in/courses/106105183 · NPTEL TOC (Tewari)
+https://onlinecourses.nptel.ac.in/noc21_cs83/preview · NPTEL Compiler Design
+https://nptel.ac.in/courses/106105190 · MIT 18.06
+https://ocw.mit.edu/courses/18-06-linear-algebra-spring-2010/ · MIT 6.042J
+https://ocw.mit.edu/courses/6-042j-mathematics-for-computer-science-fall-2010/ ·
+MIT RES.6-012 https://ocw.mit.edu/courses/res-6-012-introduction-to-probability-spring-2018/ ·
+Abdul Bari https://www.youtube.com/@abdul_bari
+
+**Why GO Classes where it is a real course:** built for GATE CS, run with GATE
+Overflow, and the PYQ discussion lines up with GO tags. Where the playlist is only
+PYQ analysis, watch the teaching video first and use GO Classes for the exam-shaped
+practice afterwards.
+
+**Don't start from this table day to day.** `topic-videos.md` names the specific
+video for each of the 124 syllabus topics, and the planner shows it under the
+session. This table is for when you want the whole course.
 
 ---
 

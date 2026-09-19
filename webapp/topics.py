@@ -120,7 +120,42 @@ def load_videos():
         tid, vid, channel, title = m.group(1), m.group(2), m.group(3), m.group(4)
         videos.setdefault(tid, []).append(
             {"id": vid, "channel": channel.strip(), "title": title.strip()})
+    for tid in videos:
+        videos[tid] = in_order(videos[tid])
     return videos
+
+
+SEQ_RE = re.compile(
+    r"(?:^|[\s|(\[])(?:lec(?:ture)?[\s.-]*|part[\s.-]*|chapter[\s.-]*|#)(\d+)|^(\d+)[.\s]",
+    re.I)
+
+
+def sequence(title):
+    """The lecture number a title announces, if it announces one."""
+    m = SEQ_RE.search(title)
+    if not m:
+        return None
+    return int(m.group(1) or m.group(2))
+
+
+def in_order(videos):
+    """Group a topic's videos by teacher, and put each teacher's in lecture order.
+
+    Left alone, these come back ranked by search score, so "Part 2" can sit above
+    "Part 1" and two teachers interleave. Watching order is what matters at 21:00:
+    one teacher's videos together, lowest lecture number first. Channels keep the
+    order they were ranked in, so the strongest match is still the first thing shown.
+    """
+    order, seen = [], {}
+    for v in videos:
+        if v["channel"] not in seen:
+            seen[v["channel"]] = len(seen)
+        order.append(v)
+    return sorted(
+        order,
+        key=lambda v: (seen[v["channel"]],
+                       sequence(v["title"]) if sequence(v["title"]) is not None else 10 ** 6),
+    )
 
 
 def load_curriculum():
