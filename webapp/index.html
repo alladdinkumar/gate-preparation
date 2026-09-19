@@ -235,6 +235,10 @@
   </section>
 </div>
 
+<script src="lib/templates.js"></script>
+<script src="lib/backend-local.js"></script>
+<script src="lib/backend-github.js"></script>
+<script src="lib/backend.js"></script>
 <script>
 (() => {
   const $ = (id) => document.getElementById(id);
@@ -264,13 +268,9 @@
     toastTimer = setTimeout(() => { t.hidden = true; }, 3200);
   }
 
-  async function api(path, body) {
-    const opts = body === undefined ? {} : { method: "POST", headers: { "Content-Type": "application/json", "X-Gate-Planner": "1" }, body: JSON.stringify(body) };
-    const res = await fetch(path, opts);
-    const data = await res.json().catch(() => ({}));
-    if (!res.ok) throw new Error(data.error || `Request failed (${res.status})`);
-    return data;
-  }
+  // Set during boot by selectBackend(): either the local planner server or
+  // the GitHub Contents API. Every read and write below goes through it.
+  let backend = null;
 
   // ---- status helpers -----------------------------------------------------
   function dayStats(day) {
@@ -445,7 +445,7 @@
     renderOverall(); renderDay();
     pending++; setSave("Saving…");
     try {
-      const res = await api("/api/progress", { id, done });
+      const res = await backend.setTask(id, done);
       state.done = res.done;
       if (--pending === 0) setSave("Saved");
       const day = state.plan.days[state.index];
@@ -456,7 +456,9 @@
       if (prev) state.done[id] = prev; else delete state.done[id];
       renderOverall(); renderDay();
       setSave("Not saved", true);
-      toast(`Couldn't save: ${err.message}. Check that the planner server is still running.`);
+      toast(backend.kind === "github"
+        ? `Couldn't save: ${err.message}`
+        : `Couldn't save: ${err.message}. Check that the planner server is still running.`);
     }
   }
 
@@ -478,9 +480,7 @@
 
   async function openFile(path) {
     try {
-      const res = await fetch(`/api/file?path=${encodeURIComponent(path)}`, { cache: "no-store" });
-      const data = await res.json().catch(() => ({}));
-      if (!res.ok) throw new Error(data.error || `Request failed (${res.status})`);
+      const data = await backend.readFile(path);
       showEditor(data.path, data.content, data.created);
     } catch (err) {
       toast(err.message);
@@ -490,7 +490,7 @@
   async function openDailyLog() {
     const day = state.plan.days[state.index];
     try {
-      const res = await api("/api/daily-log", { date: day.date });
+      const res = await backend.createDailyLog(day.date);
       showEditor(res.path, res.content, res.created);
     } catch (err) {
       toast(`Couldn't load the daily log: ${err.message}`);
@@ -503,7 +503,7 @@
     button.disabled = true;
     $("editorState").textContent = "Saving…";
     try {
-      const res = await api("/api/file", { path: editorPath, content: $("editorText").value });
+      const res = await backend.writeFile(editorPath, $("editorText").value);
       $("editorState").textContent = `Saved ${res.path}.`;
       toast(`Saved ${res.path}`);
     } catch (err) {
@@ -518,8 +518,8 @@
     try {
       const logPath = `daily-logs/${day.date}.md`;
       // Preserve text currently being edited before replacing its planner snapshot.
-      if (editorPath === logPath) await api("/api/file", { path: editorPath, content: $("editorText").value });
-      const res = await api("/api/daily-progress", { date: day.date });
+      if (editorPath === logPath) await backend.writeFile(editorPath, $("editorText").value);
+      const res = await backend.saveDailyProgress(day.date, { day, done: state.done });
       if (editorPath === res.path) {
         $("editorText").value = res.content;
         $("editorState").textContent = "Checklist snapshot updated from the planner.";
@@ -566,7 +566,9 @@
   // ---- boot ---------------------------------------------------------------
   (async () => {
     try {
-      const [plan, progress] = await Promise.all([api("/api/plan"), api("/api/progress")]);
+      backend = await selectBackend();
+      if (backend.onStatus) backend.onStatus((text, kind) => setSave(text, kind === "error"));
+      const [plan, progress] = await Promise.all([backend.getPlan(), backend.getProgress()]);
       state.plan = plan;
       state.done = progress.done || {};
       const m = location.hash.match(/^#day-(\d+)$/);
@@ -579,7 +581,10 @@
       $("loading").hidden = true;
       const f = $("fatal");
       f.hidden = false;
-      f.innerHTML = `<h2>The plan didn't load</h2><p>${esc(err.message)}</p><p>Start the planner with <code>webapp\\start.bat</code> (or <code>python webapp/server.py</code>) and open <code>http://127.0.0.1:8765</code> — opening <code>index.html</code> directly won't work.</p>`;
+      const hint = backend && backend.kind === "github"
+        ? "The site build may still be running. Check the repository's Actions tab, then reload."
+        : "Start the planner with <code>webapp\\start.bat</code> (or <code>python webapp/server.py</code>) and open <code>http://127.0.0.1:8765</code> — opening <code>index.html</code> directly won't work.";
+      f.innerHTML = `<h2>The plan didn't load</h2><p>${esc(err.message)}</p><p>${hint}</p>`;
     }
   })();
 })();

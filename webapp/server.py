@@ -575,6 +575,18 @@ class Handler(BaseHTTPRequestHandler):
         self.end_headers()
         self.wfile.write(body)
 
+    def send_static(self, target, content_type):
+        if not target.exists():
+            self.send_json({"error": "Not found"}, 404)
+            return
+        body = target.read_bytes()
+        self.send_response(200)
+        self.send_header("Content-Type", content_type)
+        self.send_header("Cache-Control", "no-store")
+        self.send_header("Content-Length", str(len(body)))
+        self.end_headers()
+        self.wfile.write(body)
+
     def read_json(self):
         length = int(self.headers.get("Content-Length") or 0)
         if length > 1_000_000:
@@ -585,13 +597,13 @@ class Handler(BaseHTTPRequestHandler):
         request = urlparse(self.path)
         path = request.path
         if path in ("/", "/index.html"):
-            body = (WEBAPP / "index.html").read_bytes()
-            self.send_response(200)
-            self.send_header("Content-Type", "text/html; charset=utf-8")
-            self.send_header("Cache-Control", "no-store")
-            self.send_header("Content-Length", str(len(body)))
-            self.end_headers()
-            self.wfile.write(body)
+            self.send_static(WEBAPP / "index.html", "text/html; charset=utf-8")
+        elif re.fullmatch(r"/lib/[a-z0-9-]+\.js", path):
+            self.send_static(WEBAPP / path.lstrip("/"), "text/javascript; charset=utf-8")
+        elif path == "/manifest.webmanifest":
+            self.send_static(WEBAPP / "manifest.webmanifest", "application/manifest+json")
+        elif path == "/icon.svg":
+            self.send_static(WEBAPP / "icon.svg", "image/svg+xml")
         elif path == "/api/plan":
             try:
                 self.send_json(parse_plan())
