@@ -180,13 +180,23 @@ index.html ──► lib/backend.js ──┬─► backend-local.js  ──► 
 ```sh
 python webapp/build_site.py             # build site/
 python webapp/tests/topics_test.py      # assert every topic still has its links
+python webapp/tests/videos_audit.py     # walk all 504 days: on-topic videos, no channel pages
 python webapp/tools/build_videos.py     # re-find the videos (slow, hits YouTube)
+python webapp/tools/verify_videos.py    # check each video against its own description
 python webapp/tests/make_fixtures.py # dump what server.py produces
 node webapp/tests/parity.mjs         # assert the JS twins match it byte for byte
 node webapp/tests/hosted.mjs         # drive the live repo end to end (needs gh auth)
 ```
 
-The first four run in CI on every push and gate the deploy. `hosted.mjs` writes real commits, so run it by hand; it restores everything it touches.
+The first three run in CI on every push and gate the deploy; the two tools hit
+YouTube, so they are run by hand when the videos need refreshing.
+
+`tests/render-sweep.js` is the one that catches what the others cannot. Paste it into
+the browser console on the planner and it clicks through all 504 days, checking the
+DOM that actually came out: every video link a `watch?v=`, no channel pages, and no
+topic block that renders without something to watch. The Python checks inspect
+plan.json, which is the *input* to rendering - twice that passed while the page
+itself showed a channel page instead of a lecture. `hosted.mjs` writes real commits, so run it by hand; it restores everything it touches.
 
 ## Links
 

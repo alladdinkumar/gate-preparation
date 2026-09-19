@@ -30,6 +30,13 @@ except Exception:                  # the tool needs no deps, but don't die if it
     TRUSTED = {}
 
 WATCH = re.compile(r"^https://www\.youtube\.com/watch\?v=[A-Za-z0-9_-]{11}$")
+# A channel home page or a channel-scoped search. Never acceptable anywhere: both
+# land you on a list of a channel's output instead of a lecture.
+CHANNEL_PAGE = re.compile(r"youtube\.com/(@|channel/)")
+# A playlist is fine as a *subject* link when the playlist really is that subject's
+# course - Discrete Maths has 71 videos, DBMS 90. It is not fine as a *topic* link,
+# where the whole point is to name the one video that teaches this topic.
+PLAYLIST = re.compile(r"[?&]list=")
 
 
 def trusted(channel):
@@ -73,6 +80,20 @@ def main():
             for link in entry["lectures"]:
                 if link.get("video") and not WATCH.match(link["url"]):
                     problems.append((d["date"], t["id"], f"not a watch link: {link['url']}"))
+            # Everything the session renders, not just the videos. The chips built by
+            # resolve_resources and the topic fallback row are what actually broke
+            # twice: a subject with no playlist fell back to a channel page, and the
+            # fallback row linked channel-scoped searches. Checking the catalogue
+            # alone missed both, because neither lives in the catalogue's videos.
+            for link in entry["lectures"] + entry.get("search", []) + entry["practice"]:
+                url = link.get("url", "")
+                if CHANNEL_PAGE.search(url) or PLAYLIST.search(url):
+                    problems.append((d["date"], t["id"],
+                                     f"{tid} topic row links a channel or playlist: {url}"))
+        for link in t["links"]:
+            if CHANNEL_PAGE.search(link.get("url", "")):
+                problems.append((d["date"], t["id"],
+                                 f"session chip links a channel page: {link['url']}"))
         if vids:
             video_sessions += 1
         for tid, ch, title in off_topic:

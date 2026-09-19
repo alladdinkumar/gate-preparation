@@ -27,6 +27,12 @@ C_TOPICS = {f"PD-{n}" for n in range(1, 7)}
 GO_TAG = "https://gateoverflow.in/tag/{}"
 GO_SEARCH = "https://gateoverflow.in/search?q={}"
 WATCH = "https://www.youtube.com/watch?v={}"
+YOUTUBE_SEARCH = "https://www.youtube.com/results?search_query={}"
+# A topic row offers individual lectures. A channel page, a channel-scoped search
+# and a playlist all fail that in the same way: they hand over a list to sift
+# instead of the video that teaches this topic. Course playlists still appear as
+# subject links and in resources.md, which is where a whole course belongs.
+CHANNEL_PAGE = re.compile(r"youtube\.com/(@|channel/)|[?&]list=")
 
 VIDEO_RE = re.compile(
     r"^\|\s*([A-Z]{2}-\d+)\s*\|\s*([A-Za-z0-9_-]{11})\s*\|\s*([^|]+?)\s*\|\s*([^|]+?)\s*\|\s*$")
@@ -343,13 +349,24 @@ def build_catalogue(subjects):
              "url": WATCH.format(v["id"]), "kind": "video", "video": True}
             for v in videos.get(tid, [])
         ]
+        # Fallback row, for when one of the named videos is taken down. A search
+        # scoped to a channel lands on a channel page, which is the thing this whole
+        # file exists to avoid, so those are dropped: what is left is course pages
+        # (NPTEL, MIT, goclasses.in) plus one plain topic search on YouTube.
         entry["search"] = []
         for k in alt_keys:
             if k not in sources:
                 continue
             label, template = sources[k]
+            if CHANNEL_PAGE.search(template):
+                continue
             url = template.replace("{q}", quote_plus(phrase))
             entry["search"].append({"label": f"Search {label}", "url": url, "kind": "video"})
+        entry["search"].append({
+            "label": f'YouTube: "{phrase}"',
+            "url": YOUTUBE_SEARCH.format(quote_plus(phrase + " GATE")),
+            "kind": "video",
+        })
         if not entry["lectures"]:
             # No video survived verification for this topic; the searches are all
             # there is, so promote them rather than show an empty row.
