@@ -2,7 +2,7 @@
 
 A personal prep system to take Sandeep from "5 years out of college, core CS rusty" to a **PSU-grade GATE CS score** (target AIR ≤ 200, working target 75+ marks) in 72 weeks (Sep 2026 → Feb 2028).
 
-This repo is a **markdown-first prep tracker**, built on the same design as `D:\Projects\Study\`. The plan, curriculum, daily logs, trackers, and reviews are all plain markdown files you can edit in any editor. A local planner page (`webapp/`) shows each day's sessions with links and checkboxes — but everything works with nothing but a text editor too.
+This repo is a **markdown-first prep tracker**, built on the same design as `D:\Projects\Study\`. The plan, curriculum, daily logs, trackers, and reviews are all plain markdown files you can edit in any editor. A planner page (`webapp/`) shows each day's sessions with links and checkboxes — on the desk via `webapp\start.bat`, and from any other device at [https://alladdinkumar.github.io/gate-preparation/](https://alladdinkumar.github.io/gate-preparation/) — but everything works with nothing but a text editor too.
 
 ---
 
@@ -69,7 +69,8 @@ GATE flips the Study split: **new concepts enter in the evening, get tested next
 | `reviews/` | Weekly + monthly synthesis. **You write these on Sunday / month-end.** |
 | `notes/` | Short notes + formula sheets per subject. **You write these inline as you study.** |
 | `docs/` | How-to, architecture, FAQ. |
-| `webapp/` | Local study planner page: day-by-day checklist with lecture / PYQ / material links. Start with `webapp\start.bat`. See `webapp/README.md`. |
+| `webapp/` | Study planner: day-by-day checklist with lecture / PYQ / material links. Run locally with `webapp\start.bat`, or open the hosted copy at [https://alladdinkumar.github.io/gate-preparation/](https://alladdinkumar.github.io/gate-preparation/) from a phone. See `webapp/README.md`. |
+| `.github/workflows/` | Builds the hosted planner and runs the parity tests on every push. |
 
 ---
 
@@ -84,7 +85,7 @@ GATE flips the Study split: **new concepts enter in the evening, get tested next
 6. Read `plan/weekly-schedule.md` — set recurring calendar blocks for your sessions.
 
 **Monday 2026-09-14 (day 1):**
-1. Double-click `webapp\start.bat` — the planner page opens on today's sessions with every link you need. Tick sessions off as you finish them.
+1. Double-click `webapp\start.bat` — the planner page opens on today's sessions with every link you need. Tick sessions off as you finish them. Away from the desk, use [https://alladdinkumar.github.io/gate-preparation/](https://alladdinkumar.github.io/gate-preparation/) instead; it writes to the same files.
 2. Edit `daily-logs/2026-09-14.md` in the planner (later days: use "Edit daily log" on the planner page).
 3. Fill in sessions as you go.
 4. Don't skip the Reflection section — even if it's one-line answers.
@@ -107,7 +108,7 @@ Don't ask the coach to *do the studying for you*. Ask the coach to plan, review,
 ## Two-Track Roadmap
 
 - **Track A — Content (done):** Plan, syllabus, curriculum, daily-log template, trackers, reviews — all the markdown that lets you start tomorrow.
-- **Track B — Webapp:** the day-by-day planner page is built (`webapp/`). Dashboard features (charts, auto-rollups) are deferred until manual tracker upkeep is eating study time.
+- **Track B — Webapp:** the day-by-day planner page is built (`webapp/`) and hosted, so sessions can be ticked from a phone. Dashboard features (charts, auto-rollups) are deferred until manual tracker upkeep is eating study time.
 
 See `docs/architecture.md` for the rationale.
 

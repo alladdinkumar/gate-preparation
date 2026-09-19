@@ -11,9 +11,9 @@ How this prep system is built and why.
 This means:
 - The files in `daily-logs/`, `trackers/`, `plan/`, `reviews/`, `notes/` are *the system*.
 - You can edit them in any editor — VS Code, Notepad++, vim, Obsidian.
-- Git (if you initialise it) gives free version history and backup.
+- Git gives free version history and backup: [https://github.com/alladdinkumar/gate-preparation](https://github.com/alladdinkumar/gate-preparation).
 - Claude Code reads and writes the same markdown.
-- A future webapp (Track B) is a *thin shell over markdown*, not a replacement.
+- The webapp (Track B) is a *thin shell over markdown*, not a replacement — including the hosted copy, which commits to this same repo rather than keeping its own database.
 
 This mirrors `D:\Projects\Study\` (the FAANG prep system), which itself borrowed the pattern from `D:\Projects\Fitness and SkinCare\`. Same skeleton, GATE content.
 
@@ -57,7 +57,34 @@ All markdown:
 
 ### Track B — Webapp (planner page built early; dashboard features deferred)
 
-The day-by-day planner page (`webapp/`, see `webapp/README.md`) was built on request before Week 1: it reads `plan/phase-*.md`, stores checkboxes in `webapp/progress.json`, and uses only the Python standard library — no Flask, no build step. The dashboard features below remain deferred.
+The day-by-day planner page (`webapp/`, see `webapp/README.md`) was built on request before Week 1: it reads
+`plan/phase-*.md`, stores checkboxes in `webapp/progress.json`, and uses only the Python standard library —
+no Flask, no dependencies.
+
+It later gained a hosted twin so sessions can be ticked away from the desk. The rule that markdown is the
+source of truth is what shaped the design: rather than give the hosted page a database, **the repository is
+the database.**
+
+```
+plan/phase-*.md ──► server.py parse_plan() ──┬─► /api/plan            (local, per request)
+                                             └─► site/data/plan.json  (built in CI)
+
+index.html ──► lib/backend.js ──┬─► backend-local.js  ──► server.py  ──► D: drive
+                                └─► backend-github.js ──► GitHub API ──► the repo
+```
+
+- The hosted page is static. A GitHub Action runs `server.py`'s own parser to bake `plan.json`, so the two
+  copies cannot disagree about what the plan says.
+- Writes go through the GitHub Contents API with a fine-grained token held in that browser's localStorage.
+  Every tick becomes a commit, so the laptop sees it on the next pull and a Claude Code session reads
+  current data.
+- `server.py` pulls on startup and pushes after each save, so the desk copy never drifts behind the phone.
+- Progress is synced by **replaying an ordered op log**, not by merging two states: unticking removes a key,
+  and a naive merge would resurrect it. The last action wins, whichever device made it.
+- The only logic that exists twice is the file-creation templates (`lib/templates.js` mirrors `server.py`),
+  so a test asserts the two produce byte-identical Markdown, and CI will not deploy if they diverge.
+
+The dashboard features below remain deferred.
 
 Dashboard features get built only if, after ~6 weeks of real use:
 - Daily logging habit is established
