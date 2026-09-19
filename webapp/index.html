@@ -218,6 +218,16 @@
     .daymeta .date { font-size: 1rem; }
     .daymeta .week { font-size: .85rem; }
 
+    /* The open topic is tall here because every chip claims its own row. Tighten
+       the ones inside it so two fit side by side, and let the long GO-search
+       label wrap instead of forcing a full-width chip. */
+    .topic > summary { padding: 9px 10px; }
+    .topic .tsum { flex-basis: 100%; margin-left: 0; }
+    .topicbody { gap: 10px; }
+    .topicbody .links { gap: 6px 8px; }
+    .topicbody .chip { padding: 7px 10px; font-size: .86rem; }
+    .topicbody .chip.practice { max-width: 100%; }
+
     .controls { gap: 6px; margin: 14px 0 6px; }
     .controls .btn { flex: 1 1 auto; min-height: 44px; padding: 8px 10px; }
     .controls .btn.primary { flex-basis: 100%; }
@@ -479,9 +489,9 @@
   function renderTopics(task, day) {
     const topics = (task.topics || []).map((id) => state.plan.topics[id]).filter(Boolean);
     if (!topics.length) return "";
-    // On a phone the chips stack one per row, so an open topic pushes the next
-    // session off the screen. Start closed there; on a wide screen show the first.
-    const openFirst = !window.matchMedia("(max-width: 620px)").matches;
+    // The first topic is open everywhere, phone included. Collapsing it on narrow
+    // screens kept the day short and made the links invisible on the device they
+    // exist for - a one-line row reads as a label, not as something to tap.
     return `<div class="topics">${topics.map((topic, i) => {
       const lectures = topic.lectures.map(chip).join("");
       const practice = topic.practice.map(chip).join("");
@@ -490,7 +500,7 @@
         : "";
       const gem = state.plan.geminiPrompts.map((g, gi) =>
         `<a class="chip gem" href="https://gemini.google.com/app" target="_blank" rel="noopener noreferrer" data-gem="${esc(topic.id)}" data-task="${esc(task.id)}" data-day="${day.dayNumber}" data-prompt="${gi}" title="Copies the prompt (with today's context), then opens Gemini">${ICONS.gem}${esc(g.label)}</a>`).join("");
-      return `<details class="topic"${i === 0 && openFirst ? " open" : ""}>
+      return `<details class="topic"${i === 0 ? " open" : ""}>
         <summary><span class="tid">${esc(topic.id)}</span> ${esc(topic.short)}<span class="tsum">${topic.lectures.length} lectures &middot; ${topic.practice.length} practice</span></summary>
         <div class="topicbody">
           ${topic.name === topic.short ? "" : `<p class="tfull">${esc(topic.name)}</p>`}

@@ -67,7 +67,7 @@ covers, and each topic carries:
 | Questions on this topic | The GATE Overflow tags for that topic, a GO search, and the subject's full PYQ list |
 | Ask Gemini · your notes | Five prompts (below) and the topic's note file |
 
-Open on a desktop, one tap on a phone.
+The first topic on each session is open; the rest are one tap away.
 
 ### The Gemini prompts
 
