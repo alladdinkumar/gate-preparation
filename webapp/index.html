@@ -4,6 +4,13 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>GATE 2028 Study Plan</title>
+<!-- The hosted page holds a GitHub token in localStorage, so it loads no
+     third-party code and talks to nothing but the GitHub API. -->
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://api.github.com; form-action 'none'; base-uri 'none'">
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="theme-color" content="#2B5797">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="GATE plan">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 16 16%22%3E%3Crect width=%2216%22 height=%2216%22 rx=%223%22 fill=%22%232E8540%22/%3E%3Cpath d=%22M4 8.5l2.5 2.5 5.5-6%22 stroke=%22white%22 stroke-width=%222%22 fill=%22none%22/%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -150,6 +157,25 @@
   .editor-actions p { margin: 0; color: var(--muted); font-size: .88rem; flex: 1; }
   .loading, .fatal { max-width: 640px; margin: 64px auto; padding: 0 24px; }
 
+  /* Token setup + settings */
+  .band .settings { border: 1px solid rgba(255,255,255,.45); background: transparent; color: inherit; border-radius: 6px; padding: 5px 12px; cursor: pointer; font-size: .88rem; }
+  .band .settings:hover { background: rgba(255,255,255,.14); }
+  .setup { border-left: 4px solid var(--partial); background: var(--surface); padding: 12px 14px; border-radius: 0 6px 6px 0; margin: 0 0 16px; }
+  .setup p { margin: 0 0 8px; }
+  .setup p:last-child { margin-bottom: 0; }
+  .panel { width: min(520px, 100%); padding: 20px; border: 1px solid var(--line); border-radius: 10px; background: var(--surface); box-shadow: 0 18px 50px rgba(0,0,0,.28); }
+  .panel h2 { margin: 0 0 4px; font-size: 1.05rem; }
+  .panel .sub { margin: 0 0 16px; color: var(--muted); font-size: .88rem; }
+  .panel label { display: block; font-size: .88rem; margin-bottom: 6px; }
+  .panel input { width: 100%; padding: 9px 10px; border: 1px solid var(--line); border-radius: 6px; background: var(--paper); font-family: ui-monospace, SFMono-Regular, Consolas, monospace; font-size: .88rem; }
+  .panel .row { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin-top: 14px; }
+  .panel .row .btn:last-child { margin-left: auto; }
+  .panel .help { margin: 14px 0 0; padding-top: 14px; border-top: 1px solid var(--line); color: var(--muted); font-size: .85rem; }
+  .panel .help ol { margin: 6px 0 0; padding-left: 20px; }
+  .panel .state { margin: 12px 0 0; font-size: .88rem; }
+  .panel .state.error { color: var(--missed); font-weight: 700; }
+  .palette-toggle { display: none; }
+
   @media (max-width: 900px) {
     .layout { grid-template-columns: minmax(0, 1fr); padding: 16px; }
     .palette { position: static; max-height: none; order: 2; }
@@ -157,6 +183,48 @@
     .meter { width: 120px; }
     .jump { margin-left: 0; }
     .editor { max-height: calc(100vh - 24px); }
+  }
+  /* Phone: being usable here is the whole point of hosting it. */
+  @media (max-width: 620px) {
+    body { font-size: 15px; }
+    .band { padding: 10px 14px; gap: 8px 14px; }
+    .band h1 { font-size: .95rem; }
+    .band .overall { width: 100%; gap: 8px; }
+    .meter { flex: 1; width: auto; }
+    .layout { padding: 12px 14px 32px; gap: 18px; }
+
+    /* Keep the date and the done count visible while scrolling sessions. */
+    .dayhead { position: sticky; top: 0; z-index: 5; background: var(--paper); padding: 8px 0 6px; margin: -8px 0 0; gap: 0 14px; box-shadow: 0 6px 12px -10px rgba(0,0,0,.7); }
+    .daynum { font-size: 2.6rem; }
+    .daymeta .date { font-size: 1rem; }
+    .daymeta .week { font-size: .85rem; }
+
+    .controls { gap: 6px; margin: 14px 0 6px; }
+    .controls .btn { flex: 1 1 auto; min-height: 44px; padding: 8px 10px; }
+    .controls .btn.primary { flex-basis: 100%; }
+    .jump { flex-basis: 100%; }
+
+    /* Fitts's law beats density on a touch screen. */
+    .session { grid-template-columns: 52px minmax(0, 1fr); gap: 4px 10px; padding: 16px 0; }
+    .tick { width: 40px; height: 40px; }
+    .tick input:checked + span::after { width: 15px; height: 9px; }
+    .chip { padding: 8px 12px; font-size: .9rem; }
+
+    /* 72 weeks of squares is a wall on a phone - keep it behind a tap. */
+    .palette-toggle { display: block; width: 100%; min-height: 44px; margin-bottom: 8px; border: 1px solid var(--line); background: var(--surface); border-radius: 8px; cursor: pointer; }
+    .palette { padding: 12px; }
+    .palette.collapsed > *:not(.palette-toggle) { display: none; }
+    .tabs button { min-height: 40px; }
+
+    .weekstrip { gap: 4px; }
+    .weekstrip button { padding: 8px 2px; }
+    .weekstrip .n { font-size: 1.05rem; }
+
+    .modal-backdrop { padding: 0; }
+    .editor { width: 100%; height: 100dvh; max-height: none; border-radius: 0; border: 0; }
+    .editor textarea { font-size: 16px; }  /* under 16px makes iOS zoom on focus */
+    .panel { border-radius: 0; height: 100dvh; overflow-y: auto; }
+    .toast { bottom: 12px; }
   }
   @media (prefers-reduced-motion: reduce) {
     * { transition: none !important; }
@@ -170,6 +238,7 @@
     <span id="overallText">Loading plan…</span>
     <div class="meter" aria-hidden="true"><span id="overallBar"></span></div>
     <span class="save-state" id="saveState"></span>
+    <button class="settings" id="settingsBtn" type="button" hidden>Settings</button>
   </div>
 </header>
 
@@ -198,6 +267,11 @@
     </div>
     <p class="dayprogress" id="dayProgress"></p>
 
+    <div class="setup" id="setupBanner" hidden>
+      <p><strong>Read-only.</strong> Add a GitHub token to tick sessions and edit notes from this device.</p>
+      <p><button class="btn primary" id="setupBtn" type="button">Add token</button></p>
+    </div>
+
     <div id="notices"></div>
     <ul class="sessions" id="sessions"></ul>
 
@@ -210,6 +284,7 @@
   </main>
 
   <aside class="palette" aria-label="Day palette">
+    <button class="palette-toggle" id="paletteToggle" type="button" aria-expanded="true">Day palette</button>
     <h2 id="paletteTitle">Phase 1</h2>
     <p class="phase-name" id="phaseName"></p>
     <div class="tabs" role="tablist" id="tabs"></div>
@@ -220,6 +295,29 @@
 </div>
 
 <div class="toast" id="toast" role="status" hidden></div>
+
+<div class="modal-backdrop" id="settingsModal" hidden>
+  <section class="panel" role="dialog" aria-modal="true" aria-labelledby="settingsTitle">
+    <h2 id="settingsTitle">Sync settings</h2>
+    <p class="sub" id="settingsRepo"></p>
+    <label for="tokenInput">GitHub fine-grained token</label>
+    <input id="tokenInput" type="password" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="github_pat_...">
+    <p class="state" id="settingsState"></p>
+    <div class="row">
+      <button class="btn primary" id="tokenSave" type="button">Save token</button>
+      <button class="btn" id="tokenClear" type="button">Remove from this device</button>
+      <button class="btn" id="settingsClose" type="button">Close</button>
+    </div>
+    <div class="help">
+      <p>The token is stored in this browser only and is never committed. Create one under
+      <strong>github.com &rarr; Settings &rarr; Developer settings &rarr; Personal access tokens &rarr; Fine-grained tokens</strong>:</p>
+      <ol>
+        <li>Repository access: <strong>Only select repositories</strong> &rarr; this repo.</li>
+        <li>Permissions &rarr; Repository &rarr; <strong>Contents: Read and write</strong>. Nothing else.</li>
+      </ol>
+    </div>
+  </section>
+</div>
 
 <div class="modal-backdrop" id="editorModal" hidden>
   <section class="editor" role="dialog" aria-modal="true" aria-labelledby="editorTitle">
@@ -271,6 +369,7 @@
   // Set during boot by selectBackend(): either the local planner server or
   // the GitHub Contents API. Every read and write below goes through it.
   let backend = null;
+  const canWrite = () => !backend || !backend.canWrite || backend.canWrite();
 
   // ---- status helpers -----------------------------------------------------
   function dayStats(day) {
@@ -346,7 +445,7 @@
       const checked = !!state.done[task.id];
       const links = [...task.links, ...task.outputs];
       return `<li class="session${checked ? " is-done" : ""}">
-        <label class="tick"><input type="checkbox" data-task="${task.id}" ${checked ? "checked" : ""} aria-label="Mark ${esc(task.slot)} ${esc(task.time)} done"><span></span></label>
+        <label class="tick"><input type="checkbox" data-task="${task.id}" ${checked ? "checked" : ""} ${canWrite() ? "" : "disabled"} aria-label="Mark ${esc(task.slot)} ${esc(task.time)} done"><span></span></label>
         <div>
           <p class="when"><strong>${esc(task.slot)}</strong> ${esc(task.time)}</p>
           <p class="focus">${md(task.focus)}</p>
@@ -462,6 +561,58 @@
     }
   }
 
+  // ---- sync settings (hosted page only) -----------------------------------
+  function refreshAccess() {
+    const hosted = backend && backend.kind === "github";
+    $("settingsBtn").hidden = !hosted;
+    $("setupBanner").hidden = !(hosted && backend.needsSetup());
+    if (hosted) {
+      const queued = backend.offlineCount();
+      $("settingsRepo").textContent = backend.needsSetup()
+        ? `${backend.describe()} \u2014 read-only until you add a token.`
+        : `Saving to ${backend.describe()}${queued ? `, ${queued} change${queued > 1 ? "s" : ""} waiting to sync` : ""}.`;
+    }
+  }
+
+  function setSettingsState(text, error) {
+    const el = $("settingsState");
+    el.textContent = text;
+    el.classList.toggle("error", Boolean(error));
+  }
+
+  function openSettings() {
+    refreshAccess();
+    setSettingsState(backend.needsSetup() ? "" : "A token is saved on this device.");
+    $("tokenInput").value = "";
+    $("settingsModal").hidden = false;
+    $("tokenInput").focus();
+  }
+
+  async function saveToken() {
+    const button = $("tokenSave");
+    button.disabled = true;
+    setSettingsState("Checking the token\u2026");
+    try {
+      await backend.setToken($("tokenInput").value);
+      $("tokenInput").value = "";
+      setSettingsState("Token saved. This device can now write to the repo.");
+      refreshAccess();
+      renderDay();
+      toast("Token saved");
+    } catch (err) {
+      setSettingsState(err.message, true);
+    } finally {
+      button.disabled = false;
+    }
+  }
+
+  function clearToken() {
+    backend.clearToken();
+    setSettingsState("Token removed from this device.");
+    refreshAccess();
+    renderDay();
+  }
+
   let editorPath = "";
   function showEditor(path, content, created) {
     editorPath = path;
@@ -548,12 +699,27 @@
   $("todayBtn").addEventListener("click", () => go(currentIndex() + 1));
   $("logBtn").addEventListener("click", openDailyLog);
   $("progressBtn").addEventListener("click", () => saveDailyProgress());
+  $("settingsBtn").addEventListener("click", openSettings);
+  $("setupBtn").addEventListener("click", openSettings);
+  $("settingsClose").addEventListener("click", () => { $("settingsModal").hidden = true; });
+  $("settingsModal").addEventListener("click", (e) => { if (e.target === $("settingsModal")) $("settingsModal").hidden = true; });
+  $("tokenSave").addEventListener("click", saveToken);
+  $("tokenClear").addEventListener("click", clearToken);
+  $("tokenInput").addEventListener("keydown", (e) => { if (e.key === "Enter") saveToken(); });
+  $("paletteToggle").addEventListener("click", (e) => {
+    const collapsed = document.querySelector(".palette").classList.toggle("collapsed");
+    e.currentTarget.setAttribute("aria-expanded", String(!collapsed));
+  });
   $("editorSave").addEventListener("click", saveEditor);
   $("editorClose").addEventListener("click", closeEditor);
   $("editorModal").addEventListener("click", (e) => { if (e.target === $("editorModal")) closeEditor(); });
   $("jumpInput").addEventListener("change", (e) => { const n = Number(e.target.value); if (n) go(n); });
   document.addEventListener("keydown", (e) => {
     if (e.target.closest("input, textarea") || e.altKey || e.ctrlKey || e.metaKey) return;
+    if (e.key === "Escape") {
+      if (!$("settingsModal").hidden) { $("settingsModal").hidden = true; return; }
+      if (!$("editorModal").hidden) { closeEditor(); return; }
+    }
     if (e.key === "ArrowLeft") go(state.index);
     else if (e.key === "ArrowRight") go(state.index + 2);
     else if (e.key.toLowerCase() === "t") go(currentIndex() + 1);
@@ -567,7 +733,15 @@
   (async () => {
     try {
       backend = await selectBackend();
-      if (backend.onStatus) backend.onStatus((text, kind) => setSave(text, kind === "error"));
+      if (backend.onStatus) {
+        backend.onStatus((text, kind) => { setSave(text, kind === "error"); refreshAccess(); });
+      }
+      // The palette starts collapsed on a phone; the media query hides the
+      // toggle entirely on anything wider, so this is a no-op there.
+      if (window.matchMedia("(max-width: 620px)").matches) {
+        document.querySelector(".palette").classList.add("collapsed");
+        $("paletteToggle").setAttribute("aria-expanded", "false");
+      }
       const [plan, progress] = await Promise.all([backend.getPlan(), backend.getProgress()]);
       state.plan = plan;
       state.done = progress.done || {};
@@ -575,6 +749,7 @@
       state.index = m ? Math.min(Math.max(1, Number(m[1])), plan.days.length) - 1 : currentIndex();
       $("loading").hidden = true;
       $("app").hidden = false;
+      refreshAccess();
       renderOverall();
       renderDay();
     } catch (err) {

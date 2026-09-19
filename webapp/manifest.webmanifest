@@ -1,0 +1,19 @@
+{
+  "name": "GATE 2028 Study Plan",
+  "short_name": "GATE plan",
+  "description": "Day-by-day GATE CS plan with session tracking, saved straight to the repo.",
+  "start_url": ".",
+  "scope": ".",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "background_color": "#F3F5F8",
+  "theme_color": "#2B5797",
+  "icons": [
+    {
+      "src": "icon.svg",
+      "type": "image/svg+xml",
+      "sizes": "any",
+      "purpose": "any maskable"
+    }
+  ]
+}

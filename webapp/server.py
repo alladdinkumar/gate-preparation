@@ -28,6 +28,8 @@ START = dt.date(2026, 9, 14)
 DAY_NAMES = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]
 WRITE_LOCK = threading.Lock()
 
+import gitsync  # noqa: E402  (needs nothing from this module, kept beside it)
+
 # ---------------------------------------------------------------------------
 # Link table (mirrors plan/resources.md)
 # ---------------------------------------------------------------------------
@@ -665,6 +667,7 @@ class Handler(BaseHTTPRequestHandler):
                 else:
                     data["done"].pop(task_id, None)
                 write_progress(data)
+            gitsync.touch()
             self.send_json({"ok": True, "done": data["done"]})
         elif path == "/api/file":
             target = safe_path(str(payload.get("path", "")))
@@ -681,6 +684,7 @@ class Handler(BaseHTTPRequestHandler):
                     self.send_json({"error": f"{target.name} doesn't exist yet."}, 404)
                     return
                 target.write_text(content, encoding="utf-8")
+            gitsync.touch()
             self.send_json({"ok": True, "created": bool(created), "path": target.relative_to(ROOT).as_posix()})
         elif path == "/api/daily-log":
             try:
@@ -688,6 +692,8 @@ class Handler(BaseHTTPRequestHandler):
             except ValueError:
                 self.send_json({"error": "Invalid date"}, 400)
                 return
+            if created:
+                gitsync.touch()
             self.send_json({"ok": True, "created": created, "path": target.relative_to(ROOT).as_posix(),
                             "content": target.read_text(encoding="utf-8")})
         elif path == "/api/daily-progress":
@@ -696,6 +702,7 @@ class Handler(BaseHTTPRequestHandler):
             except ValueError as exc:
                 self.send_json({"error": str(exc)}, 400)
                 return
+            gitsync.touch()
             self.send_json({"ok": True, "created": created, "completed": completed, "total": total,
                             "path": target.relative_to(ROOT).as_posix(), "content": content})
         else:
@@ -703,6 +710,9 @@ class Handler(BaseHTTPRequestHandler):
 
 
 def main():
+    # Pull before serving: the hosted planner may have been ticking sessions
+    # from a phone since the last time this ran.
+    print(gitsync.init(ROOT))
     server = ThreadingHTTPServer((HOST, PORT), Handler)
     url = f"http://{HOST}:{PORT}"
     print(f"GATE study planner running at {url}  (Ctrl+C to stop)")
@@ -711,6 +721,8 @@ def main():
     try:
         server.serve_forever()
     except KeyboardInterrupt:
+        # Commit whatever this session produced rather than leaving it behind.
+        gitsync.flush()
         print("\nStopped.")
 
 
