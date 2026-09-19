@@ -517,6 +517,7 @@
     return `<div class="topics">${topics.map((topic, i) => {
       const lectures = topic.lectures.map(chip).join("");
       const searches = (topic.search || []).map(chip).join("");
+      const pyq = (topic.pyqVideos || []).map(chip).join("");
       const practice = topic.practice.map(chip).join("");
       const notes = topic.notes
         ? chip({ label: topic.notes.split("/").pop(), path: topic.notes, kind: "file" })
@@ -524,12 +525,13 @@
       const gem = state.plan.geminiPrompts.map((g, gi) =>
         `<a class="chip gem" href="${esc(promptUrl(topic, task, day, gi))}" target="_blank" rel="noopener noreferrer" data-gem="${esc(topic.id)}" data-task="${esc(task.id)}" data-day="${day.dayNumber}" data-prompt="${gi}" title="Opens Gemini with this prompt and today's context already filled in">${ICONS.gem}${esc(g.label)}</a>`).join("");
       return `<details class="topic"${i === 0 ? " open" : ""}>
-        <summary><span class="tid">${esc(topic.id)}</span> ${esc(topic.short)}<span class="tsum">${topic.lectures.length} lectures &middot; ${topic.practice.length} practice</span></summary>
+        <summary><span class="tid">${esc(topic.id)}</span> ${esc(topic.short)}<span class="tsum">${topic.lectures.length} lectures &middot; ${(topic.pyqVideos || []).length} solved &middot; ${topic.practice.length} practice</span></summary>
         <div class="topicbody">
           ${topic.name === topic.short ? "" : `<p class="tfull">${esc(topic.name)}</p>`}
           <div><h5>Watch &mdash; ${topic.lectures.length} ${topic.lectures.length === 1 ? "lecture" : "lectures"} on this topic</h5><div class="links vids">${lectures}</div></div>
           ${searches ? `<div><h5>If none of those land</h5><div class="links">${searches}</div></div>` : ""}
           <div><h5>Questions on this topic</h5><div class="links">${practice}</div></div>
+          ${pyq ? `<div><h5>GATE questions solved on video &mdash; watch after you attempt</h5><div class="links vids">${pyq}</div></div>` : ""}
           <div><h5>Ask Gemini${notes ? " &middot; your notes" : ""}</h5><div class="links">${gem}${notes}</div></div>
         </div>
       </details>`;

@@ -77,7 +77,7 @@ def main():
                     off_topic.append((tid, v["channel"], v["title"]))
                 if TRUSTED and not trusted(v["channel"]):
                     untrusted.append((tid, v["channel"], v["title"]))
-            for link in entry["lectures"]:
+            for link in entry["lectures"] + entry.get("pyqVideos", []):
                 if link.get("video") and not WATCH.match(link["url"]):
                     problems.append((d["date"], t["id"], f"not a watch link: {link['url']}"))
             # Everything the session renders, not just the videos. The chips built by
@@ -85,7 +85,8 @@ def main():
             # twice: a subject with no playlist fell back to a channel page, and the
             # fallback row linked channel-scoped searches. Checking the catalogue
             # alone missed both, because neither lives in the catalogue's videos.
-            for link in entry["lectures"] + entry.get("search", []) + entry["practice"]:
+            for link in (entry["lectures"] + entry.get("search", [])
+                         + entry.get("pyqVideos", []) + entry["practice"]):
                 url = link.get("url", "")
                 if CHANNEL_PAGE.search(url) or PLAYLIST.search(url):
                     problems.append((d["date"], t["id"],
@@ -117,6 +118,26 @@ def main():
     print(f"topics                     {len(catalogue)}")
     print(f"  with videos              {sum(1 for t in catalogue if cat_videos.get(t))}")
     print(f"  with 3 or more           {sum(1 for t in catalogue if len(cat_videos.get(t, [])) >= 3)}")
+    pyq = topics.load_pyq_videos()
+    print(f"  with solved-question vids {sum(1 for t in catalogue if pyq.get(t))}")
+    print(f"solved-question videos     {sum(len(v) for v in pyq.values())}")
+
+    # A topic is a list of concepts, not one idea. Report how many of those concepts
+    # a video actually mentions, because "every topic has three videos" hides the
+    # case where all three are about the first item in the list.
+    try:
+        import cover_topics
+        named = covered = 0
+        for tid, entry in catalogue.items():
+            blobs = [v["title"] for v in cat_videos.get(tid, [])]
+            for c in cover_topics.concepts(entry["name"]):
+                named += 1
+                covered += 1 if cover_topics.covers(c, blobs) else 0
+        pct = covered / named * 100 if named else 0
+        print(f"concepts named by topics   {named}")
+        print(f"  mentioned by a video     {covered} ({pct:.0f}%, titles only)")
+    except Exception as exc:
+        print(f"concept coverage           (not computed: {exc})")
     # Count the rows in topic-videos.md, not the times a row is shown: a video on a
     # topic that recurs across twenty sessions is still one video.
     rows = [(t, v) for t, vs in cat_videos.items() for v in vs]

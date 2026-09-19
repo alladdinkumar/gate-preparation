@@ -25,8 +25,20 @@ import server                   # noqa: E402
 import topics as topic_mod      # noqa: E402
 
 ROOT = HERE.parent.parent
-OUT = ROOT / "plan" / "topic-videos.md"
-CACHE = HERE / "video-cache.json"          # gitignored; delete it to start clean
+
+# Two kinds of video, gathered the same way but asked for differently. Lectures
+# teach the topic; PYQ videos work through the questions GATE has actually asked on
+# it. They are different things and the planner shows them in different rows, so
+# they live in different files.
+PYQ = "--pyq" in sys.argv
+OUT = ROOT / "plan" / ("topic-pyq-videos.md" if PYQ else "topic-videos.md")
+CACHE = HERE / ("pyq-cache.json" if PYQ else "video-cache.json")   # both gitignored
+
+# A PYQ video says so in its title. Without this the searches come back full of
+# ordinary lectures, which are already in topic-videos.md.
+PYQ_MARKER = re.compile(
+    r"(\bpyq|previous[- ]year|prev[- ]year|gate\s*(19|20)\d{2}|solved|solution|"
+    r"\bquestions?\b|numericals?|problems? on)", re.I)
 
 # Channels worth sending Sandeep to, best first. Tier 1 are the ones resources.md
 # already vouches for; tier 2 are large free GATE/CS teaching channels used only
@@ -137,6 +149,8 @@ def accept(v, entry):
         return None                       # a chapter trailer, not a lecture
     if OFF_DOMAIN.search(det["title"]) or BAD_TITLE.search(det["title"]):
         return None
+    if PYQ and not PYQ_MARKER.search(det["title"]):
+        return None                       # an ordinary lecture, not question practice
     blob = det["title"] + " " + " ".join(det["keywords"][:40]) + " " + det["description"][:800]
     hits = topic_mod._words(blob) & entry["_words"]
     if not hits & entry["_rare"] and len(hits) < 2:
@@ -145,8 +159,13 @@ def accept(v, entry):
             "channel": det["channel"].strip(), "duration": v["duration"]}
 
 
-def pick(topic, entry, want=4):
+def pick(topic, entry, want=None):
     """Search, score, verify. Returns up to `want` confirmed videos."""
+    # "All you can find" for PYQs: a topic can have six worthwhile solution videos
+    # and several will be Part 1 / Part 2 from one teacher, so the distinct-channel
+    # rule is relaxed below too.
+    if want is None:
+        want = 8 if PYQ else 4
     words = entry["_words"]
     rare = entry["_rare"]
     phrase = entry["phrase"]
@@ -154,11 +173,25 @@ def pick(topic, entry, want=4):
     # Three angles on the same topic. The long phrase is precise but skews results
     # toward its tail words; the short name plus the subject finds the canonical
     # lecture that every channel has; the bare phrase catches the rest.
-    queries = [
-        f"{phrase} GATE",
-        f"{entry['short'].rstrip('.')} {entry['subjectName']} GATE",
-        phrase,
-    ]
+    short = entry["short"].rstrip(".")
+    if PYQ:
+        # Ask for the questions three ways, because channels label them differently:
+        # "PYQ", "previous year questions", and plain "solved questions".
+        queries = [
+            f"{short} GATE previous year questions solved",
+            f"{short} {entry['subjectName']} GATE PYQ",
+            f"{phrase} GATE questions solution",
+            # Two more for the topics where the first three come back thin: some
+            # channels label these "numericals" or just "important questions".
+            f"{short} {entry['subjectName']} numerical questions solved",
+            f"{short} important questions GATE {entry['subjectName']}",
+        ]
+    else:
+        queries = [
+            f"{phrase} GATE",
+            f"{short} {entry['subjectName']} GATE",
+            phrase,
+        ]
     candidates, seen = [], set()
     for query in queries:
         try:
@@ -199,7 +232,7 @@ def pick(topic, entry, want=4):
         if len(chosen) >= want:
             break
         ch = v["channel"].lower()
-        if ch and ch in used_channels:
+        if ch and ch in used_channels and not PYQ:
             continue                      # three teachers, not one teacher three times
         accepted = accept(v, entry)
         if not accepted:
@@ -250,7 +283,45 @@ def main():
 
 
 def write(catalogue, cache):
+    if PYQ:
+        lines = [
+            "# Topic PYQ Videos \u2014 GATE questions worked through on video",
+            "",
+            "One row per video, per syllabus topic. These are not lectures: every one is",
+            "someone solving GATE questions on that topic. `topic-videos.md` teaches it;",
+            "this file is what to watch after you have attempted the questions yourself and",
+            "want to see where your reasoning went.",
+            "",
+            "**How these were chosen.** Searched three ways per topic (\"previous year",
+            "questions solved\", \"PYQ\", \"questions solution\"), then every candidate had to",
+            "say so in its own title *and* pass the same checks as the lecture videos: the id",
+            "confirmed against YouTube, the duration over two and a half minutes, and the",
+            "topic's vocabulary present in the uploader's title, keywords and description.",
+            "",
+            "Unlike the lecture file, one teacher may appear several times here - a Part 1",
+            "and Part 2 of the same PYQ series are both worth having.",
+            "",
+            "Regenerate with `python webapp/tools/build_videos.py --pyq`, or pass topic ids",
+            "to redo only those.",
+            "",
+            "| # | Video ID | Channel | Title |",
+            "|---|----------|---------|-------|",
+        ]
+        total = 0
+        for tid in catalogue:
+            for v in cache.get(tid, []):
+                title = v["title"].replace("|", "/").strip()
+                chan = v["channel"].replace("|", "/").strip()
+                lines.append(f"| {tid} | {v['id']} | {chan} | {title} |")
+                total += 1
+        lines.append("")
+        OUT.write_text("\n".join(lines), encoding="utf-8")
+        covered = sum(1 for t in catalogue if cache.get(t))
+        print(f"\nwrote {OUT.name}: {total} videos, {covered}/{len(catalogue)} topics covered")
+        return
+
     lines = [
+        "# Topic Videos \u2014 the actual lecture for each topic",
         "# Topic Videos — the actual lecture for each topic",
         "",
         "One row per video: **the video itself**, not a playlist and not a channel.",

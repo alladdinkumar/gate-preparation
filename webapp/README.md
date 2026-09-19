@@ -66,6 +66,7 @@ covers, and each topic carries:
 | Watch | Up to three **named videos** — the actual lecture, one link each, from three different teachers |
 | If none of those land | Topic-scoped searches on the same channels, as a fallback when a video is pulled |
 | Questions on this topic | The GATE Overflow tags for that topic, a GO search, and the subject's full PYQ list |
+| GATE questions solved on video | People working through GATE's actual questions on this topic — for *after* you have attempted them |
 | Ask Gemini · your notes | Five prompts (below) and the topic's note file |
 
 The first topic on each session is open; the rest are one tap away.
@@ -119,7 +120,8 @@ Three files, none repeating another:
 | File | Holds |
 |------|-------|
 | `plan/curriculum-*.md` | The topic text, its week, its note file, its GATE Overflow tags |
-| `plan/topic-videos.md` | **The videos** — id, channel and title, one row per video |
+| `plan/topic-videos.md` | **The lectures** — id, channel and title, one row per video |
+| `plan/topic-pyq-videos.md` | **The solved questions** — same shape, found and checked the same way |
 | `plan/topic-lectures.md` | The search phrase and which channels to search, used as the fallback |
 
 `webapp/topics.py` joins them and works out which topics a session is about — by the ids
@@ -142,6 +144,15 @@ outranked everything until that rule existed.
 
 It matches on **titles, not descriptions**. A title that lies will get through. If a link
 is wrong, delete its row and the planner falls back to the channel search for that topic.
+
+**Two kinds of video, deliberately separate.** `topic-videos.md` teaches the topic;
+`topic-pyq-videos.md` is someone solving GATE's questions on it. Mixing them would
+hide the teaching video behind eight solution videos, and they are used at different
+points: watch the lecture first, attempt the PYQs from GATE Overflow, *then* watch
+someone else's working. A PYQ video has to say so in its own title — "PYQ",
+"previous year", "GATE 2015", "solved" — or it is treated as an ordinary lecture and
+rejected. Unlike the lecture file, one teacher may appear several times: Part 1 and
+Part 2 of the same PYQ series are both worth having.
 
 **To fix one topic:** `python webapp/tools/build_videos.py PD-3` after deleting its rows.
 **To change which channels are trusted:** the `TIER1` / `TIER2` tables in that script.
@@ -181,7 +192,8 @@ index.html ──► lib/backend.js ──┬─► backend-local.js  ──► 
 python webapp/build_site.py             # build site/
 python webapp/tests/topics_test.py      # assert every topic still has its links
 python webapp/tests/videos_audit.py     # walk all 504 days: on-topic videos, no channel pages
-python webapp/tools/build_videos.py     # re-find the videos (slow, hits YouTube)
+python webapp/tools/build_videos.py     # re-find the lectures (slow, hits YouTube)
+python webapp/tools/build_videos.py --pyq   # re-find the solved-question videos
 python webapp/tools/verify_videos.py    # check each video against its own description
 python webapp/tests/make_fixtures.py # dump what server.py produces
 node webapp/tests/parity.mjs         # assert the JS twins match it byte for byte

@@ -36,6 +36,8 @@
       if (topics.length) withTopics++;
 
       const vids = [...s.querySelectorAll(".links.vids .chip")];
+      // Every .vids chip is a lecture or a solved-question video; both must be
+      // real watch links, which the loop below enforces.
       if (vids.length) withVideo++;
       for (const a of vids) {
         chips++;

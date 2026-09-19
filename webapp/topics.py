@@ -114,6 +114,16 @@ def load_lectures():
     return lectures
 
 
+def load_pyq_videos():
+    """Topic id -> [{id, channel, title}] from plan/topic-pyq-videos.md.
+
+    Videos of someone working through GATE questions on the topic, as opposed to
+    teaching it. Same provenance as the lecture file - written by build_videos.py
+    --pyq, every id confirmed against YouTube before it lands.
+    """
+    return _read_video_file(PLAN / "topic-pyq-videos.md")
+
+
 def load_videos():
     """Topic id -> [{id, channel, title}] from plan/topic-videos.md.
 
@@ -121,8 +131,11 @@ def load_videos():
     YouTube's oEmbed endpoint before it is allowed into the file. Missing file or
     missing topic is not an error - the channel searches cover it.
     """
+    return _read_video_file(PLAN / "topic-videos.md")
+
+
+def _read_video_file(path):
     videos = {}
-    path = PLAN / "topic-videos.md"
     if not path.exists():
         return videos
     for line in path.read_text(encoding="utf-8").splitlines():
@@ -329,6 +342,7 @@ def build_catalogue(subjects):
     lectures = load_lectures()
     sources = load_sources()
     videos = load_videos()
+    pyq_videos = load_pyq_videos()
     catalogue = {}
 
     for tid, topic in curriculum.items():
@@ -372,6 +386,14 @@ def build_catalogue(subjects):
             # there is, so promote them rather than show an empty row.
             entry["lectures"] = entry["search"]
             entry["search"] = []
+
+        # Questions on this topic, worked through on video. Shown beside the GATE
+        # Overflow links, not among the lectures: these are for after an attempt.
+        entry["pyqVideos"] = [
+            {"label": f"{v['channel']} — {v['title']}",
+             "url": WATCH.format(v["id"]), "kind": "practice", "video": True}
+            for v in pyq_videos.get(tid, [])
+        ]
 
         entry["practice"] = [
             {"label": f"PYQs tagged {tag}", "url": GO_TAG.format(tag), "kind": "practice"}
