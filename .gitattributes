@@ -1,0 +1,7 @@
+# Markdown is the source of truth and is written by the Python server, the
+# hosted page (GitHub API) and editors alike. Keep it LF everywhere so syncing
+# between them never produces whole-file line-ending diffs.
+* text=auto eol=lf
+
+*.bat text eol=crlf
+*.png binary

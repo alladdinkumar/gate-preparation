@@ -1,0 +1,588 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>GATE 2028 Study Plan</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 16 16%22%3E%3Crect width=%2216%22 height=%2216%22 rx=%223%22 fill=%22%232E8540%22/%3E%3Cpath d=%22M4 8.5l2.5 2.5 5.5-6%22 stroke=%22white%22 stroke-width=%222%22 fill=%22none%22/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=Barlow+Condensed:wght@500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --paper: #F3F5F8;
+    --surface: #FFFFFF;
+    --ink: #1C2633;
+    --muted: #5B6778;
+    --line: #D8DEE6;
+    --band: #2B5797;
+    --band-ink: #FFFFFF;
+    --done: #2E8540;
+    --partial: #C07A12;
+    --missed: #C0392B;
+    --upcoming: #E4E8EE;
+    --upcoming-ink: #5B6778;
+    --today: #6B46C1;
+    --chip: #EEF2F7;
+    --focus: #2B5797;
+    --body: "Atkinson Hyperlegible", "Segoe UI", system-ui, sans-serif;
+    --digits: "Barlow Condensed", "Arial Narrow", "Segoe UI", sans-serif;
+    color-scheme: light;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --paper: #121821; --surface: #1A222D; --ink: #E6EBF2; --muted: #9AA6B5; --line: #2C3746;
+      --band: #24446F; --band-ink: #F2F5FA; --done: #3FA55A; --partial: #D99A2B; --missed: #D9534F;
+      --upcoming: #263140; --upcoming-ink: #9AA6B5; --today: #9B7BE3; --chip: #222C39; --focus: #7FA6E0;
+      color-scheme: dark;
+    }
+  }
+  * { box-sizing: border-box; }
+  html { -webkit-text-size-adjust: 100%; }
+  body { margin: 0; background: var(--paper); color: var(--ink); font: 400 16px/1.55 var(--body); }
+  a { color: inherit; }
+  button, input, textarea { font: inherit; color: inherit; }
+  :focus-visible { outline: 3px solid var(--focus); outline-offset: 2px; border-radius: 4px; }
+  [hidden] { display: none !important; }
+
+  /* Top band — echoes the blue header of the GATE exam interface */
+  .band { background: var(--band); color: var(--band-ink); padding: 12px 24px; display: flex; flex-wrap: wrap; align-items: center; gap: 12px 32px; }
+  .band h1 { margin: 0; font-size: 1.05rem; font-weight: 700; letter-spacing: .01em; }
+  .band .overall { display: flex; align-items: center; gap: 12px; margin-left: auto; font-size: .92rem; }
+  .meter { width: 180px; height: 8px; border-radius: 4px; background: rgba(255,255,255,.25); overflow: hidden; }
+  .meter > span { display: block; height: 100%; background: #FFFFFF; width: 0; transition: width .3s ease; }
+  .save-state { font-size: .85rem; opacity: .85; min-width: 9ch; }
+  .save-state.error { opacity: 1; font-weight: 700; }
+
+  .layout { display: grid; grid-template-columns: minmax(0, 1fr) 340px; gap: 28px; max-width: 1240px; margin: 0 auto; padding: 24px; align-items: start; }
+
+  /* Palette */
+  .palette { background: var(--surface); border: 1px solid var(--line); border-radius: 8px; padding: 16px; position: sticky; top: 16px; max-height: calc(100vh - 32px); display: flex; flex-direction: column; }
+  .palette h2 { margin: 0 0 4px; font-size: 1rem; }
+  .palette .phase-name { margin: 0 0 12px; color: var(--muted); font-size: .9rem; }
+  .tabs { display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; margin-bottom: 12px; }
+  .tabs button { border: 1px solid var(--line); background: transparent; border-radius: 6px; padding: 4px 0; font-family: var(--digits); font-size: 1.05rem; font-weight: 600; cursor: pointer; }
+  .tabs button[aria-selected="true"] { background: var(--band); color: var(--band-ink); border-color: var(--band); }
+  .weekgrid { overflow-y: auto; padding-right: 4px; }
+  .weekrow { display: grid; grid-template-columns: 38px repeat(7, 1fr); gap: 4px; align-items: center; margin-bottom: 4px; }
+  .weekrow .wk { font-family: var(--digits); font-size: .95rem; color: var(--muted); }
+  .dayheads { display: grid; grid-template-columns: 38px repeat(7, 1fr); gap: 4px; font-size: .72rem; color: var(--muted); text-align: center; margin-bottom: 4px; }
+  .sq { aspect-ratio: 1; min-width: 0; border-radius: 5px; border: 0; cursor: pointer; font-family: var(--digits); font-size: .95rem; font-weight: 600; background: var(--upcoming); color: var(--upcoming-ink); display: grid; place-items: center; position: relative; padding: 0; }
+  .sq.done { background: var(--done); color: #fff; }
+  .sq.partial { background: var(--partial); color: #fff; }
+  .sq.missed { background: var(--missed); color: #fff; }
+  .sq.today { box-shadow: 0 0 0 2px var(--surface), 0 0 0 4px var(--today); }
+  .sq.selected { outline: 2px solid var(--ink); outline-offset: 1px; }
+  .legend { display: grid; grid-template-columns: 1fr 1fr; gap: 6px 12px; margin-top: 14px; padding-top: 12px; border-top: 1px solid var(--line); font-size: .82rem; color: var(--muted); }
+  .legend span { display: flex; align-items: center; gap: 8px; }
+  .legend i { width: 14px; height: 14px; border-radius: 3px; display: inline-block; flex: none; }
+
+  /* Day view */
+  .dayhead { display: grid; grid-template-columns: auto 1fr; gap: 4px 24px; align-items: end; }
+  .daynum { font-family: var(--digits); font-weight: 600; font-size: clamp(3.4rem, 8vw, 5.2rem); line-height: .9; margin: 0; }
+  .daymeta p { margin: 0; }
+  .daymeta .date { font-size: 1.15rem; font-weight: 700; }
+  .daymeta .week { color: var(--muted); }
+  .controls { display: flex; flex-wrap: wrap; gap: 8px; margin: 20px 0 8px; align-items: center; }
+  .btn { border: 1px solid var(--line); background: var(--surface); border-radius: 6px; padding: 7px 14px; cursor: pointer; }
+  .btn:hover { border-color: var(--muted); }
+  .btn.primary { background: var(--band); color: var(--band-ink); border-color: var(--band); }
+  .btn:disabled { opacity: .45; cursor: default; }
+  .jump { display: flex; align-items: center; gap: 6px; margin-left: auto; font-size: .9rem; color: var(--muted); }
+  .jump input { width: 5.5em; padding: 6px 8px; border: 1px solid var(--line); border-radius: 6px; background: var(--surface); }
+  .dayprogress { color: var(--muted); font-size: .95rem; margin: 4px 0 18px; }
+
+  .notice { border-left: 4px solid var(--today); background: var(--surface); padding: 10px 14px; border-radius: 0 6px 6px 0; margin: 0 0 12px; }
+  .notice.catchup { border-left-color: var(--missed); display: flex; flex-wrap: wrap; gap: 8px 16px; align-items: center; }
+  .notice p { margin: 0; }
+
+  .sessions { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--line); }
+  .session { display: grid; grid-template-columns: 44px minmax(0, 1fr); gap: 4px 12px; padding: 18px 0; border-bottom: 1px solid var(--line); }
+  .session .when { font-size: .9rem; color: var(--muted); margin: 0 0 2px; }
+  .session .when strong { color: var(--ink); }
+  .session .focus { margin: 0 0 10px; max-width: 72ch; }
+  .required { margin: 0 0 10px; padding: 8px 10px; max-width: 78ch; border-left: 3px solid var(--focus); background: var(--chip); font-size: .92rem; }
+  .required strong { display: block; font-size: .8rem; color: var(--muted); text-transform: uppercase; letter-spacing: .04em; }
+  .session.is-done .focus { color: var(--muted); }
+  .session.is-done .focus strong, .session.is-done .when strong { color: var(--muted); }
+  code { font-family: var(--body); font-size: .92em; background: var(--chip); padding: 1px 5px; border-radius: 4px; }
+
+  /* Big answer-bubble checkbox */
+  .tick { position: relative; width: 32px; height: 32px; margin-top: 2px; }
+  .tick input { position: absolute; inset: 0; opacity: 0; margin: 0; cursor: pointer; }
+  .tick span { position: absolute; inset: 0; border: 2px solid var(--muted); border-radius: 50%; display: grid; place-items: center; background: var(--surface); transition: background .15s ease, border-color .15s ease; pointer-events: none; }
+  .tick input:checked + span { background: var(--done); border-color: var(--done); }
+  .tick input:checked + span::after { content: ""; width: 12px; height: 7px; border: 3px solid #fff; border-top: 0; border-right: 0; transform: translateY(-2px) rotate(-45deg); }
+  .tick input:focus-visible + span { outline: 3px solid var(--focus); outline-offset: 2px; }
+
+  .links { display: flex; flex-wrap: wrap; gap: 6px; }
+  .chip { display: inline-flex; align-items: center; gap: 6px; padding: 4px 10px; border-radius: 14px; background: var(--chip); border: 1px solid transparent; font-size: .88rem; text-decoration: none; cursor: pointer; line-height: 1.35; }
+  .chip:hover { border-color: var(--line); }
+  .chip svg { width: 13px; height: 13px; flex: none; }
+  .chip.video svg { color: var(--missed); }
+  .chip.practice svg { color: var(--done); }
+  .chip.material svg, .chip.tool svg { color: var(--band); }
+  .chip.file { background: transparent; border-color: var(--line); }
+  .chip.file svg { color: var(--today); }
+  .chip.text { cursor: default; background: transparent; color: var(--muted); padding-left: 0; }
+
+  .section-title { font-size: 1.05rem; margin: 32px 0 10px; }
+  .weekstrip { display: grid; grid-template-columns: repeat(7, 1fr); gap: 6px; }
+  .weekstrip button { border: 1px solid var(--line); background: var(--surface); border-radius: 6px; padding: 8px 4px; cursor: pointer; text-align: center; }
+  .weekstrip button[aria-current="date"] { border-color: var(--ink); border-width: 2px; padding: 7px 3px; }
+  .weekstrip .d { display: block; font-size: .8rem; color: var(--muted); }
+  .weekstrip .n { display: block; font-family: var(--digits); font-weight: 600; font-size: 1.25rem; line-height: 1.1; }
+  .weekstrip .bar { display: block; height: 4px; border-radius: 2px; background: var(--upcoming); margin: 6px 6px 0; overflow: hidden; }
+  .weekstrip .bar > i { display: block; height: 100%; background: var(--done); }
+  .weekmeta { color: var(--muted); font-size: .9rem; margin: 8px 0 0; }
+
+  .subjectlinks { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 12px 24px; }
+  .subjectlinks h4 { margin: 0 0 6px; font-size: .95rem; }
+
+  .toast { position: fixed; left: 50%; bottom: 24px; transform: translateX(-50%); background: var(--ink); color: var(--paper); padding: 10px 16px; border-radius: 6px; font-size: .92rem; max-width: calc(100vw - 32px); z-index: 10; }
+  .modal-backdrop { position: fixed; inset: 0; z-index: 20; display: grid; place-items: center; padding: 20px; background: rgba(12, 19, 29, .62); }
+  .editor { width: min(960px, 100%); max-height: calc(100vh - 40px); display: grid; grid-template-rows: auto minmax(260px, 1fr) auto; gap: 12px; padding: 18px; border: 1px solid var(--line); border-radius: 10px; background: var(--surface); box-shadow: 0 18px 50px rgba(0,0,0,.28); }
+  .editor-head, .editor-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; }
+  .editor-head h2 { margin: 0; font-size: 1.05rem; }
+  .editor-path { margin: 0; color: var(--muted); font-size: .85rem; }
+  .editor-head .btn { margin-left: auto; }
+  .editor textarea { min-height: 260px; width: 100%; resize: vertical; padding: 12px; border: 1px solid var(--line); border-radius: 6px; background: var(--paper); line-height: 1.45; font-family: ui-monospace, SFMono-Regular, Consolas, monospace; font-size: .9rem; }
+  .editor-actions p { margin: 0; color: var(--muted); font-size: .88rem; flex: 1; }
+  .loading, .fatal { max-width: 640px; margin: 64px auto; padding: 0 24px; }
+
+  @media (max-width: 900px) {
+    .layout { grid-template-columns: minmax(0, 1fr); padding: 16px; }
+    .palette { position: static; max-height: none; order: 2; }
+    .band .overall { margin-left: 0; }
+    .meter { width: 120px; }
+    .jump { margin-left: 0; }
+    .editor { max-height: calc(100vh - 24px); }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    * { transition: none !important; }
+  }
+</style>
+</head>
+<body>
+<header class="band">
+  <h1>GATE 2028 study plan</h1>
+  <div class="overall" aria-live="polite">
+    <span id="overallText">Loading plan…</span>
+    <div class="meter" aria-hidden="true"><span id="overallBar"></span></div>
+    <span class="save-state" id="saveState"></span>
+  </div>
+</header>
+
+<p class="loading" id="loading">Loading your plan from the <code>plan/</code> folder…</p>
+<div class="fatal" id="fatal" hidden></div>
+
+<div class="layout" id="app" hidden>
+  <main id="main">
+    <div class="dayhead">
+      <p class="daynum" id="dayNum">Day 1</p>
+      <div class="daymeta">
+        <p class="date" id="dayDate"></p>
+        <p class="week" id="dayWeek"></p>
+      </div>
+    </div>
+
+    <div class="controls">
+      <button class="btn" id="prevBtn" type="button">Previous day</button>
+      <button class="btn" id="todayBtn" type="button">Today</button>
+      <button class="btn" id="nextBtn" type="button">Next day</button>
+      <button class="btn" id="logBtn" type="button">Edit daily log</button>
+      <button class="btn primary" id="progressBtn" type="button">Save daily progress</button>
+      <label class="jump">Go to day
+        <input id="jumpInput" type="number" min="1" inputmode="numeric">
+      </label>
+    </div>
+    <p class="dayprogress" id="dayProgress"></p>
+
+    <div id="notices"></div>
+    <ul class="sessions" id="sessions"></ul>
+
+    <h3 class="section-title" id="weekTitle">This week</h3>
+    <div class="weekstrip" id="weekStrip"></div>
+    <p class="weekmeta" id="weekMeta"></p>
+
+    <h3 class="section-title">Links for this subject</h3>
+    <div class="subjectlinks" id="subjectLinks"></div>
+  </main>
+
+  <aside class="palette" aria-label="Day palette">
+    <h2 id="paletteTitle">Phase 1</h2>
+    <p class="phase-name" id="phaseName"></p>
+    <div class="tabs" role="tablist" id="tabs"></div>
+    <div class="dayheads" aria-hidden="true"><span></span><span>M</span><span>T</span><span>W</span><span>T</span><span>F</span><span>S</span><span>S</span></div>
+    <div class="weekgrid" id="weekGrid"></div>
+    <div class="legend" id="legend"></div>
+  </aside>
+</div>
+
+<div class="toast" id="toast" role="status" hidden></div>
+
+<div class="modal-backdrop" id="editorModal" hidden>
+  <section class="editor" role="dialog" aria-modal="true" aria-labelledby="editorTitle">
+    <div class="editor-head">
+      <div><h2 id="editorTitle">Edit Markdown</h2><p class="editor-path" id="editorPath"></p></div>
+      <button class="btn" id="editorClose" type="button">Close</button>
+    </div>
+    <textarea id="editorText" spellcheck="false" aria-label="Markdown editor"></textarea>
+    <div class="editor-actions">
+      <p id="editorState">Changes stay in this browser until you save.</p>
+      <button class="btn primary" id="editorSave" type="button">Save Markdown</button>
+    </div>
+  </section>
+</div>
+
+<script>
+(() => {
+  const $ = (id) => document.getElementById(id);
+  const WEEKDAY_LONG = { Mon: "Monday", Tue: "Tuesday", Wed: "Wednesday", Thu: "Thursday", Fri: "Friday", Sat: "Saturday", Sun: "Sunday" };
+  const ICONS = {
+    video: '<svg viewBox="0 0 16 16" aria-hidden="true"><path fill="currentColor" d="M4 2.5v11l9-5.5z"/></svg>',
+    practice: '<svg viewBox="0 0 16 16" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2" d="M2.5 8.5l3.5 3.5 7.5-8"/></svg>',
+    material: '<svg viewBox="0 0 16 16" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="1.6" d="M4 1.8h5.5L13 5.3v8.9H4z M9.3 1.8v3.7H13"/></svg>',
+    file: '<svg viewBox="0 0 16 16" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="1.6" d="M3 13l1-3.5L11 2.5l2.5 2.5-7 7z"/></svg>',
+  };
+  ICONS.tool = ICONS.material;
+
+  const state = { plan: null, done: {}, index: 0, byDate: new Map(), tab: 1 };
+
+  const pad = (n) => String(n).padStart(2, "0");
+  const isoLocal = (d) => `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`;
+  const todayIso = () => isoLocal(new Date());
+  const fmtDate = (iso) => new Date(iso + "T00:00:00").toLocaleDateString(undefined, { weekday: "long", day: "numeric", month: "long", year: "numeric" });
+  const esc = (s) => s.replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+  const md = (s) => esc(s).replace(/`([^`]+)`/g, "<code>$1</code>").replace(/\*\*([^*]+)\*\*/g, "<strong>$1</strong>");
+
+  let toastTimer;
+  function toast(msg) {
+    const t = $("toast");
+    t.textContent = msg; t.hidden = false;
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => { t.hidden = true; }, 3200);
+  }
+
+  async function api(path, body) {
+    const opts = body === undefined ? {} : { method: "POST", headers: { "Content-Type": "application/json", "X-Gate-Planner": "1" }, body: JSON.stringify(body) };
+    const res = await fetch(path, opts);
+    const data = await res.json().catch(() => ({}));
+    if (!res.ok) throw new Error(data.error || `Request failed (${res.status})`);
+    return data;
+  }
+
+  // ---- status helpers -----------------------------------------------------
+  function dayStats(day) {
+    const total = day.tasks.length;
+    const done = day.tasks.filter((t) => state.done[t.id]).length;
+    return { total, done };
+  }
+  function dayStatus(day) {
+    const { total, done } = dayStats(day);
+    if (total && done === total) return "done";
+    if (done > 0) return "partial";
+    if (day.date < todayIso()) return "missed";
+    return "upcoming";
+  }
+  function currentIndex() {
+    const t = todayIso(), days = state.plan.days;
+    if (t <= days[0].date) return 0;
+    if (t >= days[days.length - 1].date) return days.length - 1;
+    return days.findIndex((d) => d.date === t);
+  }
+
+  // ---- rendering ----------------------------------------------------------
+  function chip(l) {
+    const kind = l.kind;
+    if (kind === "text") return `<span class="chip text">${esc(l.label)}</span>`;
+    if (kind === "file") return `<button type="button" class="chip file" data-open="${esc(l.path)}" title="Edit ${esc(l.path)} here">${ICONS.file}${esc(l.label)}</button>`;
+    return `<a class="chip ${kind}" href="${esc(l.url)}" target="_blank" rel="noopener noreferrer">${ICONS[kind] || ""}${esc(l.label)}</a>`;
+  }
+
+  function renderOverall() {
+    const days = state.plan.days;
+    let total = 0, done = 0;
+    for (const d of days) { const s = dayStats(d); total += s.total; done += s.done; }
+    const pct = total ? Math.round((done / total) * 100) : 0;
+    $("overallText").textContent = `${done} of ${total} sessions done (${pct}%)`;
+    $("overallBar").style.width = pct + "%";
+  }
+
+  function renderDay() {
+    const days = state.plan.days;
+    const day = days[state.index];
+    const phase = state.plan.phases.find((p) => p.number === day.phase);
+    const week = phase.weeks.find((w) => w.number === day.week);
+    const { total, done } = dayStats(day);
+
+    $("dayNum").textContent = `Day ${day.dayNumber}`;
+    $("dayDate").textContent = fmtDate(day.date);
+    $("dayWeek").textContent = `Week ${day.week} of 72 — ${week.title}. Phase ${phase.number}: ${phase.title}.`;
+    $("dayProgress").textContent = total === 1 ? (done ? "Session done." : "1 session today.") : `${done} of ${total} sessions done.`;
+    $("prevBtn").disabled = state.index === 0;
+    $("nextBtn").disabled = state.index === days.length - 1;
+    $("jumpInput").max = days.length;
+    $("jumpInput").value = day.dayNumber;
+    document.title = `Day ${day.dayNumber} — GATE 2028 Study Plan`;
+    history.replaceState(null, "", `#day-${day.dayNumber}`);
+
+    // notices
+    const notices = [];
+    const t = todayIso();
+    if (t < days[0].date && state.index === 0) {
+      const n = Math.round((new Date(days[0].date) - new Date(t)) / 86400000);
+      notices.push(`<div class="notice"><p>The plan starts on ${fmtDate(days[0].date)} — ${n === 1 ? "tomorrow" : `in ${n} days`}. Do the Day 0 checklist in <code>plan/exam-info.md</code> first.</p></div>`);
+    }
+    for (const note of week.notes) notices.push(`<div class="notice"><p>${md(note)}</p></div>`);
+    const missed = days.filter((d) => d.date < t).flatMap((d) => d.tasks.filter((x) => !state.done[x.id]).map(() => d));
+    if (missed.length) {
+      notices.push(`<div class="notice catchup"><p>${missed.length} unfinished ${missed.length === 1 ? "session" : "sessions"} from earlier days. Log skipped sessions honestly rather than doubling up.</p><button type="button" class="btn" data-goto="${missed[0].dayNumber}">Go to day ${missed[0].dayNumber}</button></div>`);
+    }
+    $("notices").innerHTML = notices.join("");
+
+    // sessions
+    $("sessions").innerHTML = day.tasks.map((task) => {
+      const checked = !!state.done[task.id];
+      const links = [...task.links, ...task.outputs];
+      return `<li class="session${checked ? " is-done" : ""}">
+        <label class="tick"><input type="checkbox" data-task="${task.id}" ${checked ? "checked" : ""} aria-label="Mark ${esc(task.slot)} ${esc(task.time)} done"><span></span></label>
+        <div>
+          <p class="when"><strong>${esc(task.slot)}</strong> ${esc(task.time)}</p>
+          <p class="focus">${md(task.focus)}</p>
+          ${task.outputText ? `<div class="required"><strong>Required study record</strong>${md(task.outputText)}</div>` : ""}
+          ${links.length ? `<div class="links">${links.map(chip).join("")}</div>` : ""}
+        </div>
+      </li>`;
+    }).join("");
+
+    // week strip
+    const weekDays = days.filter((d) => d.week === day.week);
+    $("weekTitle").textContent = `Week ${day.week}`;
+    $("weekStrip").innerHTML = weekDays.map((d) => {
+      const s = dayStats(d);
+      const pct = s.total ? (s.done / s.total) * 100 : 0;
+      return `<button type="button" data-goto="${d.dayNumber}" ${d.date === day.date ? 'aria-current="date"' : ""} aria-label="Day ${d.dayNumber}, ${WEEKDAY_LONG[d.weekday]}, ${s.done} of ${s.total} done">
+        <span class="d">${d.weekday}</span><span class="n">${d.dayNumber}</span><span class="bar"><i style="width:${pct}%"></i></span></button>`;
+    }).join("");
+    const wkTotals = weekDays.reduce((a, d) => { const s = dayStats(d); return [a[0] + s.done, a[1] + s.total]; }, [0, 0]);
+    $("weekMeta").innerHTML = `${wkTotals[0]} of ${wkTotals[1]} sessions done this week.${week.meta ? " " + esc(week.meta.replace(/\*\*/g, "").replace(/\s\|\s/g, "; ")) : ""}`;
+
+    // subject links
+    const blocks = week.subjects.map((key) => {
+      const s = state.plan.subjects[key];
+      const items = [];
+      if (s.video) items.push({ label: key === "calc" || key === "prob" ? "GO Classes free courses" : `GO Classes ${s.name} lectures`, url: s.video, kind: "video" });
+      if (s.pyq && key !== "mixed") items.push({ label: `${s.name} PYQs`, url: s.pyq, kind: "practice" });
+      for (const [label, url] of s.backup) items.push({ label, url, kind: "video" });
+      items.push({ label: key === "mixed" ? "Formula sheets" : `${s.name} notes`, path: s.notes, kind: "file" });
+      if (key === "mixed") items.push({ label: "mocks.md", path: "trackers/mocks.md", kind: "file" });
+      if (s.sheet) items.push({ label: s.sheet.split("/").pop(), path: s.sheet, kind: "file" });
+      return `<div><h4>${esc(s.name)}</h4><div class="links">${items.map(chip).join("")}</div></div>`;
+    });
+    blocks.push(`<div><h4>Every day</h4><div class="links">${[...state.plan.common, { label: "Aptitude PYQs", url: state.plan.subjects.ga.pyq, kind: "practice" }, { label: "error-log.md", path: "trackers/error-log.md", kind: "file" }].map(chip).join("")}</div></div>`);
+    $("subjectLinks").innerHTML = blocks.join("");
+
+    if (state.tab !== day.phase) state.tab = day.phase;
+    renderPalette();
+  }
+
+  function renderPalette() {
+    const { plan } = state;
+    const selected = plan.days[state.index];
+    const phase = plan.phases.find((p) => p.number === state.tab);
+    $("paletteTitle").textContent = `Phase ${phase.number}`;
+    $("phaseName").textContent = `${phase.title}, weeks ${phase.weeks[0].number}–${phase.weeks[phase.weeks.length - 1].number}`;
+
+    $("tabs").innerHTML = plan.phases.map((p) =>
+      `<button type="button" role="tab" data-tab="${p.number}" aria-selected="${p.number === state.tab}" title="Phase ${p.number}: ${esc(p.title)}">${p.number}</button>`).join("");
+
+    const t = todayIso();
+    const counts = { done: 0, partial: 0, missed: 0, upcoming: 0 };
+    $("weekGrid").innerHTML = phase.weeks.map((w) => {
+      const wd = plan.days.filter((d) => d.week === w.number);
+      const cells = wd.map((d) => {
+        const st = dayStatus(d); counts[st]++;
+        const cls = ["sq", st, d.date === t ? "today" : "", d.date === selected.date ? "selected" : ""].join(" ").trim();
+        const s = dayStats(d);
+        const label = { done: "completed", partial: "partly done", missed: "missed", upcoming: "upcoming" }[st];
+        return `<button type="button" class="${cls}" data-goto="${d.dayNumber}" aria-label="Day ${d.dayNumber}, ${WEEKDAY_LONG[d.weekday]} ${d.date}, ${label}, ${s.done} of ${s.total}"${d.date === selected.date ? ' aria-current="date"' : ""}>${d.dayNumber}</button>`;
+      }).join("");
+      return `<div class="weekrow"><span class="wk" title="${esc(w.title)}">W${w.number}</span>${cells}</div>`;
+    }).join("");
+
+    $("legend").innerHTML = [
+      ["done", "Completed"], ["partial", "Partly done"], ["missed", "Missed"], ["upcoming", "Upcoming"],
+    ].map(([k, label]) => `<span><i style="background:var(--${k === "done" ? "done" : k})"></i>${counts[k]} ${label.toLowerCase()}</span>`).join("")
+      + `<span><i style="box-shadow:inset 0 0 0 2px var(--today)"></i>Today</span>`;
+
+    // Keep the selected day visible inside the palette without scrolling the page.
+    const grid = $("weekGrid");
+    const sel = grid.querySelector(".selected");
+    if (sel && grid.scrollHeight > grid.clientHeight) {
+      const g = grid.getBoundingClientRect(), s = sel.getBoundingClientRect();
+      grid.scrollTop += s.top - g.top - grid.clientHeight / 2 + s.height / 2;
+    }
+  }
+
+  function go(dayNumber) {
+    const i = Math.min(Math.max(1, dayNumber), state.plan.days.length) - 1;
+    state.index = i;
+    renderDay();
+  }
+
+  // ---- actions ------------------------------------------------------------
+  let pending = 0;
+  function setSave(text, error) {
+    const el = $("saveState");
+    el.textContent = text;
+    el.classList.toggle("error", !!error);
+  }
+
+  async function toggleTask(id, done, input) {
+    const prev = state.done[id];
+    if (done) state.done[id] = new Date().toISOString(); else delete state.done[id];
+    renderOverall(); renderDay();
+    pending++; setSave("Saving…");
+    try {
+      const res = await api("/api/progress", { id, done });
+      state.done = res.done;
+      if (--pending === 0) setSave("Saved");
+      const day = state.plan.days[state.index];
+      const stats = dayStats(day);
+      if (stats.total && stats.done === stats.total) await saveDailyProgress(true);
+    } catch (err) {
+      pending--;
+      if (prev) state.done[id] = prev; else delete state.done[id];
+      renderOverall(); renderDay();
+      setSave("Not saved", true);
+      toast(`Couldn't save: ${err.message}. Check that the planner server is still running.`);
+    }
+  }
+
+  let editorPath = "";
+  function showEditor(path, content, created) {
+    editorPath = path;
+    $("editorTitle").textContent = path.startsWith("daily-logs/") ? "Daily log" : "Edit Markdown";
+    $("editorPath").textContent = path;
+    $("editorText").value = content;
+    $("editorState").textContent = created ? "Created from its template. Edit and save it here." : "Changes stay in this browser until you save.";
+    $("editorModal").hidden = false;
+    $("editorText").focus();
+  }
+
+  function closeEditor() {
+    $("editorModal").hidden = true;
+    editorPath = "";
+  }
+
+  async function openFile(path) {
+    try {
+      const res = await fetch(`/api/file?path=${encodeURIComponent(path)}`, { cache: "no-store" });
+      const data = await res.json().catch(() => ({}));
+      if (!res.ok) throw new Error(data.error || `Request failed (${res.status})`);
+      showEditor(data.path, data.content, data.created);
+    } catch (err) {
+      toast(err.message);
+    }
+  }
+
+  async function openDailyLog() {
+    const day = state.plan.days[state.index];
+    try {
+      const res = await api("/api/daily-log", { date: day.date });
+      showEditor(res.path, res.content, res.created);
+    } catch (err) {
+      toast(`Couldn't load the daily log: ${err.message}`);
+    }
+  }
+
+  async function saveEditor() {
+    if (!editorPath) return;
+    const button = $("editorSave");
+    button.disabled = true;
+    $("editorState").textContent = "Saving…";
+    try {
+      const res = await api("/api/file", { path: editorPath, content: $("editorText").value });
+      $("editorState").textContent = `Saved ${res.path}.`;
+      toast(`Saved ${res.path}`);
+    } catch (err) {
+      $("editorState").textContent = `Not saved: ${err.message}`;
+    } finally {
+      button.disabled = false;
+    }
+  }
+
+  async function saveDailyProgress(silent = false) {
+    const day = state.plan.days[state.index];
+    try {
+      const logPath = `daily-logs/${day.date}.md`;
+      // Preserve text currently being edited before replacing its planner snapshot.
+      if (editorPath === logPath) await api("/api/file", { path: editorPath, content: $("editorText").value });
+      const res = await api("/api/daily-progress", { date: day.date });
+      if (editorPath === res.path) {
+        $("editorText").value = res.content;
+        $("editorState").textContent = "Checklist snapshot updated from the planner.";
+      }
+      if (!silent) toast(`Saved ${res.completed}/${res.total} sessions to ${res.path}`);
+      else toast(`All sessions complete — daily progress saved to ${res.path}`);
+    } catch (err) {
+      if (!silent) toast(`Couldn't save daily progress: ${err.message}`);
+    }
+  }
+
+  document.addEventListener("change", (e) => {
+    const input = e.target.closest("input[data-task]");
+    if (input) toggleTask(input.dataset.task, input.checked, input);
+  });
+  document.addEventListener("click", (e) => {
+    const g = e.target.closest("[data-goto]");
+    if (g) { go(Number(g.dataset.goto)); return; }
+    const tab = e.target.closest("[data-tab]");
+    if (tab) { state.tab = Number(tab.dataset.tab); renderPalette(); return; }
+    const f = e.target.closest("[data-open]");
+    if (f) openFile(f.dataset.open);
+  });
+  $("prevBtn").addEventListener("click", () => go(state.index));
+  $("nextBtn").addEventListener("click", () => go(state.index + 2));
+  $("todayBtn").addEventListener("click", () => go(currentIndex() + 1));
+  $("logBtn").addEventListener("click", openDailyLog);
+  $("progressBtn").addEventListener("click", () => saveDailyProgress());
+  $("editorSave").addEventListener("click", saveEditor);
+  $("editorClose").addEventListener("click", closeEditor);
+  $("editorModal").addEventListener("click", (e) => { if (e.target === $("editorModal")) closeEditor(); });
+  $("jumpInput").addEventListener("change", (e) => { const n = Number(e.target.value); if (n) go(n); });
+  document.addEventListener("keydown", (e) => {
+    if (e.target.closest("input, textarea") || e.altKey || e.ctrlKey || e.metaKey) return;
+    if (e.key === "ArrowLeft") go(state.index);
+    else if (e.key === "ArrowRight") go(state.index + 2);
+    else if (e.key.toLowerCase() === "t") go(currentIndex() + 1);
+  });
+  window.addEventListener("hashchange", () => {
+    const m = location.hash.match(/^#day-(\d+)$/);
+    if (m && Number(m[1]) !== state.index + 1) go(Number(m[1]));
+  });
+
+  // ---- boot ---------------------------------------------------------------
+  (async () => {
+    try {
+      const [plan, progress] = await Promise.all([api("/api/plan"), api("/api/progress")]);
+      state.plan = plan;
+      state.done = progress.done || {};
+      const m = location.hash.match(/^#day-(\d+)$/);
+      state.index = m ? Math.min(Math.max(1, Number(m[1])), plan.days.length) - 1 : currentIndex();
+      $("loading").hidden = true;
+      $("app").hidden = false;
+      renderOverall();
+      renderDay();
+    } catch (err) {
+      $("loading").hidden = true;
+      const f = $("fatal");
+      f.hidden = false;
+      f.innerHTML = `<h2>The plan didn't load</h2><p>${esc(err.message)}</p><p>Start the planner with <code>webapp\\start.bat</code> (or <code>python webapp/server.py</code>) and open <code>http://127.0.0.1:8765</code> — opening <code>index.html</code> directly won't work.</p>`;
+    }
+  })();
+})();
+</script>
+</body>
+</html>

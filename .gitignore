@@ -1,0 +1,12 @@
+# Python build litter
+__pycache__/
+*.pyc
+
+# Playwright MCP scratch output
+.playwright-mcp/
+
+# Machine-local Claude Code permissions
+.claude/settings.local.json
+
+# Pages build output (produced by webapp/build_site.py in CI)
+site/
