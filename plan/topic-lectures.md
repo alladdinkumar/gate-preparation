@@ -125,7 +125,7 @@ nothing is typed twice.
 
 | # | Search phrase | Alternatives |
 |---|---------------|--------------|
-| CA-1 | limits L'Hopital rule standard limits | goclasses-site, smashers, 3b1b-calc |
+| CA-1 | limits continuity indeterminate forms L Hospital rule engineering mathematics | goclasses-site, smashers, 3b1b-calc |
 | CA-2 | continuity and differentiability conditions | goclasses-site, smashers, 3b1b-calc |
 | CA-3 | maxima minima first second derivative test | goclasses-site, smashers, 3b1b-calc |
 | CA-4 | Rolle theorem Lagrange mean value theorem | goclasses-site, smashers, yt |
@@ -248,10 +248,10 @@ nothing is typed twice.
 |---|---------------|--------------|
 | GA-1 | English grammar tenses articles prepositions subject verb agreement | yt, indiabix, smashers |
 | GA-2 | vocabulary idioms phrases in context aptitude | yt, indiabix, smashers |
-| GA-3 | reading comprehension narrative sequencing aptitude | yt, indiabix, smashers |
+| GA-3 | reading comprehension passage para jumbles sentence rearrangement aptitude | yt, indiabix, smashers |
 | GA-4 | ratio percentage exponents logarithms series aptitude | yt, indiabix, smashers |
 | GA-5 | data interpretation bar graph pie chart tables | yt, indiabix, smashers |
-| GA-6 | mensuration geometry aptitude | yt, indiabix, smashers |
+| GA-6 | mensuration area volume surface triangle circle geometry aptitude | yt, indiabix, smashers |
 | GA-7 | elementary statistics probability permutations aptitude | yt, indiabix, smashers |
 | GA-8 | logical reasoning deduction induction analogy | yt, indiabix, smashers |
 | GA-9 | spatial aptitude paper folding cutting 3D patterns | yt, indiabix, smashers |

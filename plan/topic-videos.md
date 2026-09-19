@@ -39,7 +39,10 @@ ids to redo only those.
 | GA-2 | HOrU4zQrnds | TalentSprint Aptitude Prep | Idioms and Phrases / Part 2 / Vocabulary / Grammar / English / TalentSprint Aptitude Prep |
 | GA-2 | rXjqAYUqO9A | VAIR TISS Community | TISSNET 2024: Top 50 Idioms and Phrases You Must Know  Part 2 / Vocabulary / Verbal Ability |
 | GA-2 | e9MnOfg7jbA | BYJU'S Exam Prep GATE & ESE: EE,EC,IN,CS | English Vocabulary for GATE Exam / Vocabulary Words / Learn with Fun / BYJU'S GATE |
+| GA-3 | y_hbaEhs00I | MBA Express by Unacademy | Para Jumbles - 4 L14 l Reading Comprehension l Verbal Ability l CAT 2021 l Gaurav Bhatia |
+| GA-3 | 31-TE_bk_7w | BYJU'S Exam Prep: CAT & MBA | Prepare for MAHCET MBA 2022 / Para Jumbles / Verbal Ability and Reading Comprehension / BYJU'S MBA |
 | GA-3 | MQ_q8dL3I0E | Unacademy Computer Science | Comprehension / L 54 / Udaan Batch / GATE 2022 CSE / Mita Ma'am |
+| GA-3 | lNhx2PRx5g8 | KG Government & Placement Exams by Yash Jain Sir🥇 | TCS 2025 - PARA JUMBLES (SENTENCE RE-ARRANGEMENT) / Actual TCS Questions and Tricks |
 | GA-4 | hxXA4gTeQRM | BYJU'S Exam Prep GATE & ESE: EE,EC,IN,CS | Exponents & Logarithm / Engineering Aptitude for GATE 2021 / Part 2 / Rakesh Talreja / Gradeup |
 | GA-4 | -h83f3J1jR4 | PRERANA Scheme | Numerical Computation and Estimation - Series |
 | GA-4 | le5D8_q094U | Jobs & Careers | Aptitude Made Easy – Problems on Logarithms Full series, Learn maths #withme #StayHome |
@@ -48,7 +51,10 @@ ids to redo only those.
 | GA-5 | VknbMLNXXBY | Vidyagram | UPSSSC PET 2025 / 📊Data Interpretation (Bar Graph) 📈 & Pie Chart / हलवा Solutions/ Aditya Ranjan Sir |
 | GA-5 | xtj2ylwGwrg | imran sir maths | Data interpretation Tricks / Pie Chart / How to Solve Data interpretation Questions Easily |
 | GA-5 | 3x7yEL78n10 | CVCORP | Data Interpretation(Part -1) // Pie Chart // Most Frequently Asked Questions in TCS NQT #cvcorp |
+| GA-6 | Zgz4vEAfAA0 | Education 4u | Mensuration Circle / Aptitude / Part-13 / Pratik Shrivastava |
 | GA-6 | FQlBpl3DE9Y | BYJU'S Exam Prep GATE & ESE: CE, ME & XE | Mensuration & Geometry / General Aptitude / GATE 2023 Exam / Rakesh Sir |
+| GA-6 | PlhpRSZZgBo | Kreatryx GATE - EE, ECE & IN by Unacademy | Aptitude for GATE/ESE/SSC/Geometry/Mensuration/Lec 16/Triangles Quadrilaterals Circles Mensuration16 |
+| GA-6 | 8I2Ovc2itrE | J Chemistry | Mensuration complete concept for csirnet Gate(Part-1)/Aptitude series for net gate/Area Volume |
 | GA-7 | Q_u3Lt5AV3c | Gate Smashers | Lec-1: Fundamental Principle Of Counting (Basic Permutation) / Probability and Statistics |
 | GA-7 | 2iH-An5dKA4 | CSE concepts with Parinita | 20. Probability and Statistics for gate / Probability aptitude tricks/ Permutations and Combinations |
 | GA-7 | lhbuJ5i0sgo | BYJU'S Exam Prep GATE & ESE: EE,EC,IN,CS | Principle of Counting / Permutations & Combinations / GATE, ESE & PSU 2023 Exam / Rakesh Talreja |
@@ -165,7 +171,9 @@ ids to redo only those.
 | LA-5 | QI3sYryDxr8 | NPTEL-NOC IITM | Gauss Jordan and LU Decomposition |
 | LA-5 | GguYHV8Xov0 | BYJU'S Exam Prep GATE & ESE: EE,EC,IN,CS | LU Decomposition / Linear Algebra / Engineering Mathematics for GATE 2023 Exam Prep / BYJU'S GATE |
 | CA-1 | hA585QAk83s | GO Classes for GATE CS | Limit and Continuity with ALL GATE PYQs / Revision and Practice / Calculus |
+| CA-1 | RiaK8fgubvk | BYJU'S Exam Prep GATE & ESE: EE,EC,IN,CS | Indeterminate Forms & Limits / GATE 2023 Engineering Mathematics Preparation Online / Rakesh Talreja |
 | CA-1 | bh2tJyVTc80 | Prof. Ravindrababu Ravula | EM / Calculus / Limits / Introduction to limits / Ravindrababu Ravula / Free GATE CS Classes |
+| CA-1 | pFPxdPd9epc | Dr. Anil P. Hiwarekar | Indeterminate Forms (Evaluation of Limits) L6 (Engineering Mathematics) |
 | CA-2 | hA585QAk83s | GO Classes for GATE CS | Limit and Continuity with ALL GATE PYQs / Revision and Practice / Calculus |
 | CA-2 | IXft4RWtTlQ | BYJU'S Exam Prep GATE & ESE: EE,EC,IN,CS | Continuity & Differentiability / GATE 2023 Engineering Mathematics / Complete Concept / BYJU'S GATE |
 | CA-2 | LAMVK-eiqVs | BYJU'S Exam Prep GATE & ESE: EE,EC,IN,CS | Continuity & Differentiability / GATE 2023 Engineering Mathematics Questions Practice / BYJU'S GATE |

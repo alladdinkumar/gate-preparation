@@ -200,3 +200,23 @@ def details(video_id, tries=3):
         except Exception:
             time.sleep(2 + 3 * attempt)
     return None
+
+
+def channel_playlists(handle):
+    """[{id, title}] from a channel's Playlists tab. handle like '@abdul_bari'."""
+    data = initial_data(get(f"https://www.youtube.com/{handle}/playlists"))
+    if not data:
+        return []
+    out, seen = [], set()
+    lockups = []
+    _walk(data, "lockupViewModel", lockups)
+    for lk in lockups:
+        pid = lk.get("contentId", "")
+        if not pid.startswith("PL") or pid in seen:
+            continue
+        md = lk.get("metadata", {}).get("lockupMetadataViewModel", {})
+        title = _text(md.get("title", {}))
+        if title:
+            seen.add(pid)
+            out.append({"id": pid, "title": title.strip()})
+    return out

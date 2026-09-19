@@ -611,7 +611,9 @@
       const items = [];
       if (s.video) items.push({ label: key === "calc" || key === "prob" ? "GO Classes free courses" : `GO Classes ${s.name} lectures`, url: s.video, kind: "video" });
       if (s.pyq && key !== "mixed") items.push({ label: `${s.name} PYQs`, url: s.pyq, kind: "practice" });
-      for (const [label, url] of s.backup) items.push({ label, url, kind: "video" });
+      // A backup with no URL is a teacher named by the plan whose only page is a
+      // channel: show the name, let the session's topic videos carry the links.
+      for (const [label, url] of s.backup) items.push(url ? { label, url, kind: "video" } : { label, kind: "text" });
       items.push({ label: key === "mixed" ? "Formula sheets" : `${s.name} notes`, path: s.notes, kind: "file" });
       if (key === "mixed") items.push({ label: "mocks.md", path: "trackers/mocks.md", kind: "file" });
       if (s.sheet) items.push({ label: s.sheet.split("/").pop(), path: s.sheet, kind: "file" });

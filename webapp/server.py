@@ -62,7 +62,7 @@ SUBJECTS = {
              "video": "https://www.youtube.com/playlist?list=PLIPZ2_p3RNHjUCHdJp-_soSSmhgmO4i0T",
              "pyq": "https://gateoverflow.in/questions/algorithms?sort=gate",
              "backup": [("NPTEL DAA (Mukund)", "https://nptel.ac.in/courses/106106131"),
-                        ("Abdul Bari", "https://www.youtube.com/@abdul_bari")]},
+                        ("Abdul Bari Algorithms", "https://www.youtube.com/playlist?list=PLDN4rrl48XKpZkf03iYFl-O29szjTrs_O")]},
     "la": {"name": "Linear Algebra", "notes": "maths", "sheet": "engineering-maths",
            "video": "https://www.youtube.com/playlist?list=PLIPZ2_p3RNHhGLQ1ZT37KLpBMAD90CM4_",
            "pyq": "https://gateoverflow.in/questions/mathematics/linear-algebra?sort=gate",
@@ -78,7 +78,7 @@ SUBJECTS = {
     "dl": {"name": "Digital Logic", "notes": "digital-logic", "sheet": "digital-logic",
            "video": "https://www.youtube.com/playlist?list=PLIPZ2_p3RNHiwFGR4fqKlj9C_eo8R6hbY",
            "pyq": "https://gateoverflow.in/questions/digital-logic?sort=gate",
-           "backup": [("Neso Academy", "https://www.youtube.com/channel/UCQYMhOMi_Cdj1CEAU-fv80A")]},
+           "backup": [("Neso Academy Digital Electronics", "https://www.youtube.com/playlist?list=PLBlnK6fEyqRjMH3mWf6kwqiTbT798eAOm")]},
     "coa": {"name": "COA", "notes": "coa", "sheet": "coa",
             "video": "https://www.youtube.com/playlist?list=PLIPZ2_p3RNHjMdZR3GYQ2KZio0NKczrik",
             "pyq": "https://gateoverflow.in/questions/co-and-architecture?sort=gate",
@@ -87,7 +87,7 @@ SUBJECTS = {
            "video": "https://www.youtube.com/playlist?list=PLIPZ2_p3RNHixlIaarIXGPy-eggJQMxd_",
            "pyq": "https://gateoverflow.in/questions/operating-system?sort=gate",
            "backup": [("NPTEL Intro to OS (Rebeiro)", "https://nptel.ac.in/courses/106106144"),
-                      ("Gate Smashers", "https://www.youtube.com/@GateSmashers/playlists")]},
+                      ("Gate Smashers OS", "https://www.youtube.com/playlist?list=PLxCzCOWd7aiGz9donHRrE9I3Mwn6XdP8p")]},
     "dbms": {"name": "DBMS", "notes": "dbms", "sheet": "dbms",
              "video": "https://www.youtube.com/playlist?list=PLIPZ2_p3RNHhUXFx03wy3uFeCXRw6qlm8",
              "pyq": "https://gateoverflow.in/questions/databases?sort=gate",
@@ -104,7 +104,7 @@ SUBJECTS = {
            "video": "https://www.youtube.com/playlist?list=PLIPZ2_p3RNHjy3eH_qRImIs5dVUTpr9ga",
            "pyq": "https://gateoverflow.in/questions/compiler-design?sort=gate",
            "backup": [("NPTEL Compiler Design", "https://nptel.ac.in/courses/106105190"),
-                      ("Ravindrababu Ravula", "https://www.youtube.com/channel/UCJjC1hn78yZqTf0vdTC6wAQ")]},
+                      ("Ravindrababu Ravula — see topic videos", None)]},
     "ga": {"name": "General Aptitude", "notes": "aptitude", "sheet": None,
            "video": None,
            "pyq": "https://gateoverflow.in/questions/general-aptitude?sort=gate",
@@ -144,7 +144,7 @@ NAMED_LINKS = [
     ("res.6-012", "MIT RES.6-012", "https://ocw.mit.edu/courses/res-6-012-introduction-to-probability-spring-2018/", "video"),
     ("tsitsiklis", "MIT RES.6-012", "https://ocw.mit.edu/courses/res-6-012-introduction-to-probability-spring-2018/", "video"),
     ("3blue1brown", "3Blue1Brown Essence of Calculus", "https://www.3blue1brown.com/topics/calculus", "video"),
-    ("abdul bari", "Abdul Bari", "https://www.youtube.com/@abdul_bari", "video"),
+    ("abdul bari", "Abdul Bari — see the topic videos below", None, "text"),
     ("nptel daa", "NPTEL DAA (Mukund)", "https://nptel.ac.in/courses/106106131", "video"),
     ("nptel coa", "NPTEL COA (Sengupta)", "https://nptel.ac.in/courses/106105163", "video"),
     ("nptel intro to os", "NPTEL Intro to OS", "https://nptel.ac.in/courses/106106144", "video"),
@@ -154,9 +154,9 @@ NAMED_LINKS = [
     ("nptel compiler", "NPTEL Compiler Design", "https://nptel.ac.in/courses/106105190", "video"),
     ("nptel c", "NPTEL courses", "https://nptel.ac.in/courses", "video"),
     ("neso academy toc", "Neso Academy TOC", "https://www.youtube.com/playlist?list=PLBlnK6fEyqRgp46KUv4ZY69yXmpwKOIev", "video"),
-    ("neso academy", "Neso Academy", "https://www.youtube.com/channel/UCQYMhOMi_Cdj1CEAU-fv80A", "video"),
+    ("neso academy", "Neso Academy — see the topic videos below", None, "text"),
     ("gate smashers ds", "Gate Smashers Data Structure", "https://www.youtube.com/playlist?list=PLxCzCOWd7aiEwaANNt3OqJPVIxwp2ebiT", "video"),
-    ("gate smashers", "Gate Smashers playlists", "https://www.youtube.com/@GateSmashers/playlists", "video"),
+    ("gate smashers", "Gate Smashers — see the topic videos below", None, "text"),
     ("official gate 2028 site", "Official GATE site", OFFICIAL_SITE, "material"),
     ("go graph theory", "GO Classes Graph Theory", "https://www.youtube.com/playlist?list=PLIPZ2_p3RNHjQoj0k-BlI9zXE0QKdl-lI", "video"),
     ("go exams page", "GO exams (test mode)", GO_EXAMS, "practice"),
@@ -177,6 +177,8 @@ def subject_from_text(text):
 
 
 def link(label, url, kind):
+    if url is None:
+        return {"label": label, "kind": "text"}
     return {"label": label, "url": url, "kind": kind}
 
 
@@ -212,10 +214,16 @@ def resolve_resources(cell, week_subjects):
             elif subj["video"]:
                 label = f"GO Classes {subj['name']}" + (" (segment)" if "segment" in low else "")
                 links.append(link(label, subj["video"], "video"))
-            else:
-                # Mock phases: the subject is whatever the last mock exposed.
-                links.append(link("GO Classes playlists", "https://www.youtube.com/@GOClassesforGATECS/playlists", "video"))
+            elif key == "mixed":
+                # Mock phases: what to watch depends on what the last mock exposed,
+                # so there is no video to name here. The weak-areas tracker is the
+                # actual answer to "what do I revise tonight"; a channel page is not.
+                links.append(link("GO Classes — pick from your weak areas", None, "text"))
                 links.append(file_link("Weak-areas tracker", "trackers/weak-areas.md"))
+            # Otherwise: a real subject with no playlist worth linking (C - GO
+            # Classes' "C Programming" playlist is nine videos about structs). Emit
+            # nothing rather than fall back to the channel page. The session's own
+            # topic block lists the actual lectures, which is the point of it.
             if "notes" in low:
                 links.append(file_link(f"{subj['name']} notes", f"notes/{subj['notes']}/_index.md"))
             continue
