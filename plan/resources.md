@@ -28,37 +28,44 @@ Single curated list. Every resource is free. **One primary per subject** — bac
 
 ## Primary Lecture Series by Subject
 
-> **Counted on 2026-09-19.** Every playlist below was opened and its videos listed.
-> The previous version of this table called the GO Classes playlist the primary for
-> all fourteen subjects. That was wrong for five of them, and one link was **empty**.
-> Numbers in brackets are the video count on that date.
+> **Opened and counted on 2026-09-19.** The "Playlist's own title" column is the
+> title YouTube returns for that playlist, not a name this file made up, and the
+> count is its actual number of videos. The previous version of this table called
+> the GO Classes playlist the primary course for all fourteen subjects. It was wrong
+> for five of them, and the Theory of Computation link was **empty**.
+>
+> The clearest case: the playlist this file called *"GO Classes — C Programming"* is
+> titled **"Structures in C"** and holds nine videos. It was never a C course. It is
+> now attached to PD-6 (structures, unions, dynamic memory) and nowhere else.
 
-**GO Classes free playlists are a full course for some subjects and a set of PYQ
-analysis sessions for others.** That distinction matters when you are learning a
-subject for the first time, so it is spelled out per row.
+**A GO Classes playlist is a full course for some subjects and a revision/PYQ set for
+others** — the titles say which. That decides whether you can learn a subject from it
+or only practise with it after learning elsewhere.
 
-| Subject | Primary (free) | What it actually is | URL |
-|---------|----------------|---------------------|-----|
-| C Programming | **No free GO course exists** | The "GO Classes C Programming" playlist is **9 videos, all about structs**. Use the per-topic videos in `topic-videos.md`; the struct playlist is attached to PD-6 where it belongs | (see `topic-videos.md`) |
-| Data Structures | Gate Smashers — Data Structure [66] | A full course, Lec-1 onward | https://www.youtube.com/playlist?list=PLxCzCOWd7aiEwaANNt3OqJPVIxwp2ebiT |
-| Discrete Maths | GO Classes — Discrete Mathematics [71] | Full course, summaries + PYQs per topic | https://www.youtube.com/playlist?list=PLIPZ2_p3RNHgjPQN2GtCVOCgrkH2zCkSU |
-| Graph Theory | GO Classes — Graph Theory [63] | Full course, numbered lectures | https://www.youtube.com/playlist?list=PLIPZ2_p3RNHjQoj0k-BlI9zXE0QKdl-lI |
-| Algorithms | GO Classes — Algorithms [17] | **PYQ analysis, not a course.** Pair with Abdul Bari or NPTEL DAA for first-pass teaching | https://www.youtube.com/playlist?list=PLIPZ2_p3RNHjUCHdJp-_soSSmhgmO4i0T |
-| Linear Algebra | GO Classes — Linear Algebra [45] | Full course | https://www.youtube.com/playlist?list=PLIPZ2_p3RNHhGLQ1ZT37KLpBMAD90CM4_ |
-| Calculus | GO Classes free Engineering Mathematics course | On goclasses.in, not YouTube | https://www.goclasses.in/s/store/courses |
-| Probability & Statistics | GO Classes free Engineering Mathematics course | On goclasses.in, not YouTube | https://www.goclasses.in/s/store/courses |
-| Digital Logic | GO Classes — Digital Logic [64] | Full course, from number systems onward | https://www.youtube.com/playlist?list=PLIPZ2_p3RNHiwFGR4fqKlj9C_eo8R6hbY |
-| COA | GO Classes — COA [29] | **Pipeline-heavy**, not full COA. Pair with NPTEL COA for cache, I/O, control unit | https://www.youtube.com/playlist?list=PLIPZ2_p3RNHjMdZR3GYQ2KZio0NKczrik |
-| Operating Systems | GO Classes — OS [11] | **PYQ sets, not a course.** Pair with NPTEL Intro to OS or Gate Smashers | https://www.youtube.com/playlist?list=PLIPZ2_p3RNHixlIaarIXGPy-eggJQMxd_ |
-| DBMS | GO Classes — DBMS [90] | Full course | https://www.youtube.com/playlist?list=PLIPZ2_p3RNHhUXFx03wy3uFeCXRw6qlm8 |
-| Computer Networks | GO Classes — CN [22] | **Partial** — strong on flow control. Pair with NPTEL CN & IP | https://www.youtube.com/playlist?list=PLIPZ2_p3RNHim3NUSNOb7ffyhaE5MSkmE |
-| Theory of Computation | Neso Academy — TOC [100] | **The GO Classes TOC playlist is empty.** Neso is the primary | https://www.youtube.com/playlist?list=PLBlnK6fEyqRgp46KUv4ZY69yXmpwKOIev |
-| Compiler Design | GO Classes — Compiler Design [22] | **Partial** — strong on SDT and parsing. Pair with NPTEL Compiler Design | https://www.youtube.com/playlist?list=PLIPZ2_p3RNHjy3eH_qRImIs5dVUTpr9ga |
-| General Aptitude | GATE Overflow GA PYQs (GO PDF Volume 1) | No single free video course worth naming | https://github.com/GATEOverflow/GO-PDFs/releases |
+| Subject | Playlist's own title | Videos | Use it for | URL |
+|---------|----------------------|--------|------------|-----|
+| C Programming | — | — | **Not a C course.** No free GO course exists for C — use the per-topic videos in `topic-videos.md` | (see `topic-videos.md`) |
+| C — structs only | **Structures in C** | 9 | PD-6 only: structures, unions, alignment | https://www.youtube.com/playlist?list=PLIPZ2_p3RNHgzQutUHGzqMjA1z7XJ_Uya |
+| Data Structures | **Data Structure** | 66 | **Primary.** Full course, Lec-1 onward (Gate Smashers) | https://www.youtube.com/playlist?list=PLxCzCOWd7aiEwaANNt3OqJPVIxwp2ebiT |
+| Data Structures — extra | **Standard Resources Questions - Data Structures Playlist** | 3 | Question sessions on linked lists, stacks, queues. Not teaching | https://www.youtube.com/playlist?list=PLIPZ2_p3RNHi_0QW5bavzLyAJZ0ozFTJ3 |
+| Discrete Maths | **Discrete Mathematics - Compact Course & GATE PYQs** | 71 | **Primary.** Compact course + PYQs per topic | https://www.youtube.com/playlist?list=PLIPZ2_p3RNHgjPQN2GtCVOCgrkH2zCkSU |
+| Graph Theory | **Graph Theory Complete Course - Discrete Mathematics** | 63 | **Primary** for DM-10. Numbered lectures | https://www.youtube.com/playlist?list=PLIPZ2_p3RNHjQoj0k-BlI9zXE0QKdl-lI |
+| Linear Algebra | **Linear Algebra** | 45 | **Primary.** Titled a complete course | https://www.youtube.com/playlist?list=PLIPZ2_p3RNHhGLQ1ZT37KLpBMAD90CM4_ |
+| Digital Logic | **Digital Logic Playlist** | 64 | **Primary.** Full course from number systems | https://www.youtube.com/playlist?list=PLIPZ2_p3RNHiwFGR4fqKlj9C_eo8R6hbY |
+| DBMS | **DBMS (Database Management System) Complete Playlist - GO Classes** | 90 | **Primary.** Titled a complete playlist | https://www.youtube.com/playlist?list=PLIPZ2_p3RNHhUXFx03wy3uFeCXRw6qlm8 |
+| Theory of Computation | **Theory of Computation & Automata Theory** | 100 | **Primary** (Neso). The GO Classes TOC playlist is empty | https://www.youtube.com/playlist?list=PLBlnK6fEyqRgp46KUv4ZY69yXmpwKOIev |
+| COA | **Computer Organization and Architecture** | 29 | Pipeline-heavy. Pair with NPTEL COA for cache, I/O, control unit | https://www.youtube.com/playlist?list=PLIPZ2_p3RNHjMdZR3GYQ2KZio0NKczrik |
+| Compiler Design | **Compiler Design** | 22 | Partial — strong on SDT and parsing. Pair with NPTEL | https://www.youtube.com/playlist?list=PLIPZ2_p3RNHjy3eH_qRImIs5dVUTpr9ga |
+| Computer Networks | **Computer Networks GATE PYQs, Revision Playlist** | 22 | **Revision/PYQs, by its own title.** Learn from NPTEL CN & IP first | https://www.youtube.com/playlist?list=PLIPZ2_p3RNHim3NUSNOb7ffyhaE5MSkmE |
+| Operating Systems | **Operating Systems GATE PYQs, Revision Playlist** | 11 | **Revision/PYQs, by its own title.** Learn from NPTEL Intro to OS first | https://www.youtube.com/playlist?list=PLIPZ2_p3RNHixlIaarIXGPy-eggJQMxd_ |
+| Algorithms | **Algorithms - Revision, GATE PYQs Complete Analysis** | 17 | **Revision/PYQs, by its own title.** Learn from Abdul Bari or NPTEL DAA first | https://www.youtube.com/playlist?list=PLIPZ2_p3RNHjUCHdJp-_soSSmhgmO4i0T |
+| Calculus | GO Classes free Engineering Mathematics | — | On goclasses.in, not YouTube | https://www.goclasses.in/s/store/courses |
+| Probability & Statistics | GO Classes free Engineering Mathematics | — | On goclasses.in, not YouTube | https://www.goclasses.in/s/store/courses |
+| General Aptitude | — | — | No free video course worth naming; use GO PDF Volume 1 | https://github.com/GATEOverflow/GO-PDFs/releases |
 
-**Backups by subject:** NPTEL DAA (Mukund) https://nptel.ac.in/courses/106106131 ·
-NPTEL COA (Sengupta) https://nptel.ac.in/courses/106105163 · NPTEL Intro to OS
-(Rebeiro) https://nptel.ac.in/courses/106106144 · NPTEL DBMS (Das)
+**Backups:** NPTEL DAA (Mukund) https://nptel.ac.in/courses/106106131 · NPTEL COA
+(Sengupta) https://nptel.ac.in/courses/106105163 · NPTEL Intro to OS (Rebeiro)
+https://nptel.ac.in/courses/106106144 · NPTEL DBMS (Das)
 https://nptel.ac.in/courses/106105175 · NPTEL CN & IP
 https://nptel.ac.in/courses/106105183 · NPTEL TOC (Tewari)
 https://onlinecourses.nptel.ac.in/noc21_cs83/preview · NPTEL Compiler Design
@@ -68,14 +75,9 @@ https://ocw.mit.edu/courses/6-042j-mathematics-for-computer-science-fall-2010/ �
 MIT RES.6-012 https://ocw.mit.edu/courses/res-6-012-introduction-to-probability-spring-2018/ ·
 Abdul Bari https://www.youtube.com/@abdul_bari
 
-**Why GO Classes where it is a real course:** built for GATE CS, run with GATE
-Overflow, and the PYQ discussion lines up with GO tags. Where the playlist is only
-PYQ analysis, watch the teaching video first and use GO Classes for the exam-shaped
-practice afterwards.
-
-**Don't start from this table day to day.** `topic-videos.md` names the specific
-video for each of the 124 syllabus topics, and the planner shows it under the
-session. This table is for when you want the whole course.
+**Don't start from this table day to day.** `topic-videos.md` names the specific videos
+for each of the 124 syllabus topics, every one checked against its own description, and
+the planner shows them under the session. This table is for when you want a whole course.
 
 ---
 

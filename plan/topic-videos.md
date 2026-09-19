@@ -12,8 +12,18 @@ YouTube's oEmbed endpoint**, which rejects anything that does not exist or canno
 be embedded — the title and channel columns are the ones YouTube returned, not the
 ones the search page claimed. Nothing here was typed from memory.
 
-**What this does not do:** it matches on titles, not on full video descriptions.
-A title that lies will get through. If a link is wrong, delete the row — the
+**Then checked against the video's own description.** `verify_videos.py` pulls each
+video's uploader-written title, keywords, duration and description from YouTube and
+confirms the topic's vocabulary actually appears in them. Videos that failed were
+deleted and replaced: chapter trailers under three minutes, a whole-subject marathon,
+and three filed under the wrong topic (a *Program Control Instructions* lecture under
+CO-4 control unit, a *Projection Matrix* lecture under LA-1 matrix rank).
+
+**What this does not do:** a description cannot rule a video *out*. Nearly every
+channel ends one with course links, an app download and thirty hashtags, so reading
+domain keywords there failed 92 of 389 videos including GO Classes' own lecture on
+minimum spanning trees. Descriptions are positive evidence only; the title decides
+whether a video is off-syllabus. If a link is still wrong, delete the row — the
 planner falls back to the channel search in `topic-lectures.md` for that topic.
 
 Regenerate with `python webapp/tools/build_videos.py` (all topics) or pass topic
@@ -39,12 +49,12 @@ ids to redo only those.
 | GA-5 | xtj2ylwGwrg | imran sir maths | Data interpretation Tricks / Pie Chart / How to Solve Data interpretation Questions Easily |
 | GA-5 | 3x7yEL78n10 | CVCORP | Data Interpretation(Part -1) // Pie Chart // Most Frequently Asked Questions in TCS NQT #cvcorp |
 | GA-6 | FQlBpl3DE9Y | BYJU'S Exam Prep GATE & ESE: CE, ME & XE | Mensuration & Geometry / General Aptitude / GATE 2023 Exam / Rakesh Sir |
-| GA-6 | Zgz4vEAfAA0 | Education 4u | Mensuration Circle / Aptitude / Part-13 / Pratik Shrivastava |
 | GA-7 | Q_u3Lt5AV3c | Gate Smashers | Lec-1: Fundamental Principle Of Counting (Basic Permutation) / Probability and Statistics |
 | GA-7 | 2iH-An5dKA4 | CSE concepts with Parinita | 20. Probability and Statistics for gate / Probability aptitude tricks/ Permutations and Combinations |
 | GA-7 | lhbuJ5i0sgo | BYJU'S Exam Prep GATE & ESE: EE,EC,IN,CS | Principle of Counting / Permutations & Combinations / GATE, ESE & PSU 2023 Exam / Rakesh Talreja |
 | GA-7 | o-1_ajA3RqI | Unacademy Computer Science | Probability / Lec 9 / General Aptitude / Sankalp Batch / GATE 2021 CSE |
 | GA-8 | taDtnU4CyWk | BYJU'S Exam Prep GATE & ESE: EE,EC,IN,CS | Deductive Reasoning / General Aptitude / NIELIT & ISRO 2023 / BYJU'S GATE |
+| GA-8 | k29kpRuwQrA | rachel | SCIENTIFIC REASONING: INDUCTION, DEDUCTION, ANALOGY, AND CAUSALITY. |
 | GA-8 | vfOk8LAah0E | S Chand Academy | Logic / PART-I: VERBAL REASONING / Section-II: Logical Deduction / Chapter-1 / Reasoning |
 | GA-9 | pxsVnSTMDrg | GO Classes for GATE CS | Spatial Aptitude / Transformation of shapes / GO Classes |
 | GA-9 | J5JqXvOu6Wg | EXAM DOST - Ankit Goyal | Transformation of shapes Translation, Rotation, Scaling, Reflection / General Aptitude / GATE 2024 |
@@ -84,9 +94,9 @@ ids to redo only those.
 | CO-3 | meSn0UXmgac | Neso Academy | The Concept of Booth’s Algorithm |
 | CO-3 | M0znE3jqaxs | Gate Smashers | L-1.9: Arithmetic Instructions(Data Manipulation) in Computer Organisation and Architecture |
 | CO-3 | DIp4GqSCZho | Education 4u | Booths algoritham in Computer Organization / Multiplication / COA / Lec-31 / Bhanu Priya |
-| CO-4 | OXz7wKHr0_I | Gate Smashers | L-1.12: Program Control Instructions(Types of Control Instructions) / Computer Organization |
-| CO-4 | 7QJxchHoa_w | Unacademy Computer Science | COA / Control Unit: Hardwired & Microprogrammed / Lec 7 / GATE CSE/IT 2021 Crash Course |
-| CO-4 | Bsh_WYIlLXs | Sudhakar Atchala | Timing and Control // Design Of Hardwired Control Unit // Computer Organization |
+| CO-4 | nT08cZb6IT4 | Prof. Ravindrababu Ravula | COA / ALU,Data‐path & Control Unit / Units of a CPU / Ravindrababu Ravula / Free GATE CS Classes |
+| CO-4 | gXXVX64yhME | Unacademy Computer Science | Control Unit Organization: Hardwired Control Unit /  L 15 / COA 2.0 / GATE 2022 #VishvadeepGothi |
+| CO-4 | MxvZQLR6zqM | Education 4u | Hardwired Control unit in Computer Organization / COA / Lec-41 / Bhanu Priya |
 | CO-5 | v49Qv5CrgdY | GO Classes for GATE CS | Average Memory Access Time AMAT - Part 1 / Cache Memory / Complete Lecture |
 | CO-5 | lQcU4WwVALI | Neso Academy | Memory Hierarchy & Interfacing |
 | CO-5 | zwovvWfkuSg | Gate Smashers | L-3.1: Memory Hierarchy in Computer Architecture / Access time, Speed, Size, Cost / All Imp Points |
@@ -107,7 +117,6 @@ ids to redo only those.
 | CO-10 | Gp2cwH740O0 | NPTEL IIT Guwahati | Lec 9: Control Hazards and Branch Prediction |
 | DM-1 | HcS4lqXxrV4 | Neso Academy | Rules of Inference - Definition & Types of Inference Rules |
 | DM-1 | B6xo-2A8ano | GO Classes for GATE CS | Propositional Logic - GATE PYQs Part 1 / Discrete Mathematics / GO Classes / Deepak Poonia |
-| DM-1 | dzUXeAmddZE | Gate Smashers | Question on Mathematical Logic / Discrete Maths / UGC NTA NET May/June 2021 |
 | DM-1 | udp92HTtVLc | Sudhakar Atchala | Rules of Inference // 8 Solved Examples // Rule P // Rule  T // Rule  CP // DMS // MFCS |
 | DM-2 | IeCiksHTzjA | GO Classes for GATE CS | English to First Order Logic Translation Part 3 / Numerical Quantification / Discrete Mathematics |
 | DM-2 | UN6Hd4UlrnM | Neso Academy | Quantifiers |
@@ -139,7 +148,6 @@ ids to redo only those.
 | DM-10 | 5eKDQmTzX2A | Gate Smashers | Introduction to Graph Theory / Basics of Graph Theory / Imp for GATE and UGC NET |
 | DM-10 | 052VkKhIaQ4 | Abdul Bari | 6.3 Graph Coloring Problem - Backtracking |
 | LA-1 | HOKCXJGgTYw | Gate Smashers | Lec-13: Rank of Matrix (Echelon Form Method) / Linear Algebra |
-| LA-1 | rFYr4V3zFxQ | GO Classes for GATE DA | Lecture 20: Projection Matrix / GATE DA /  Linear Algebra  / Sachin Mittal |
 | LA-1 | uaZg1tinVVg | ADITYA Higher Mathematics | Properties of Rank of Matrices // CSIR NET mathematics linear algebra // GATE mathematics tricks |
 | LA-1 | I5fFV5mz7so | Santoshi Classes | Properties of some special Unitary Matrices Involutory Matrices Idempotent Matrices csir net gate du |
 | LA-2 | 2Vz52J4YSMk | Gate Smashers | Lec-7: Properties Of Determinants / Linear Algebra |
@@ -215,7 +223,8 @@ ids to redo only those.
 | PD-8 | o6vj5l_W2h8 | Jenny's Lectures CS IT | 3.9 Evaluation of Prefix and Postfix expressions using Stack / Data Structures |
 | PD-9 | HqPJF2L5h9U | Abdul Bari | 2.6.3 Heap - Heap Sort - Heapify - Priority Queues |
 | PD-9 | YMzZTTO2MpE | Gate Smashers | Lec-46: Introduction to Queue Data structure with real life example / Data Structure #queue |
-| PD-9 | D80AB1WkzRk | Neso Academy | Queues / Chapter-7 / Data Structures / nesoacademy.org |
+| PD-9 | dn01XST9-bI | Jenny's Lectures CS IT | 4.4 Circular Queue in Data Structure / Circular Queue using Arrays in C / DSA Tutorials |
+| PD-9 | Yb3Y9v0MYlk | Sudhakar Atchala | circular queues in data structures |
 | PD-10 | Sn_9Nrrks0w | Gate Smashers | Lec-79: Deletion in Linked List |
 | PD-10 | jgqg6Qw68_Q | Neso Academy | Single Linked List (Inserting a Node at the Beginning) |
 | PD-10 | 7yNUXcOcHwE | Jenny's Lectures CS IT | 2.12 Deletion from Doubly Linked List (beginning,end,specific position) / Data Structures Tutorials |
@@ -328,7 +337,8 @@ ids to redo only those.
 | DB-11 | uh2rEWZnztY | Unacademy Computer Science | DBMS / Lecture - 31 / Locking Protocols: Shared & Exclusive Locks / Vishvadeep Gothi / GATE 2023 |
 | CN-1 | rW1jPlYgp_0 | Gate Smashers | Lec-41: Network Layer / Responsibilities of Network Layer / OSI Model / Computer Networks |
 | CN-1 | FewtLNsjtRA | Neso Academy | Layering in Computer Networks |
-| CN-1 | APVCgkqWcQ4 | KnowledgeGATE by Sanchit Sir | Computer Networks / CN in one shot / Complete GATE Course / Hindi #withsanchitsir |
+| CN-1 | WggFT5UMaro | BYJU'S Exam Prep GATE & ESE: EE,EC,IN,CS | GATE CSE 2022 // Computer Networks // Concept of Layering // Ankit Sir // Gradeup |
+| CN-1 | kAty4mKczEg | Gate Smashers | Lec-67: Transport  Layer / Responsibilities of Transport  Layer / OSI Model / Computer Networks |
 | CN-2 | _0mE6PH1E4c | Gate Smashers | Lec-18: Packet Switching In Computer Networks / Imp for GATE and UGC NET |
 | CN-2 | -HlJ4psu5aU | Neso Academy | Switching Techniques in Computer Networks |
 | CN-2 | W0K_LR4_Q7E | Education 4u | Packet switching / CN / Computer Networks / Lec-48 / Bhanu Priya |
@@ -351,9 +361,10 @@ ids to redo only those.
 | CN-8 | 7MBmSzQ_TA4 | GO Classes for GATE CS | Marathon: CN / Topic 3:  (Subnetting, Supernetting, Distance Vector Routing, and Link State Routing) |
 | CN-8 | 5ZuP5qjbKSI | Gate Smashers | Lec-62: Distance vector routing algorithm in hindi / Computer Networks |
 | CN-8 | JMzbdR9iBFY | Sudhakar Atchala | Distance Vector Routing Algorithm in Computer Networks |
-| CN-9 | ZFk-SJk7pp4 | GO Classes for GATE CS | Marathon Series : CN / Topic 4: Transport Layer (UDP, TCP Flow, Error and Congestion Control) |
-| CN-9 | 0bc_T_pEZmo | Gate Smashers | Lec-74: TCP Congestion Control in Computer Networks in Hindi |
-| CN-9 | wvPe4Zb0tUA | Neso Academy | The TCP/IP Protocol Suite |
+| CN-9 | c8aet11HNxg | Gate Smashers | Lec-69: TCP: Transmission control protocol / TCP Header / Transport layer / part -1 |
+| CN-9 | WqV0TRTvvqA | Sudhakar Atchala | TCP Connection Establishment // Three Way Handshake // Transport layer // Computer Networks |
+| CN-9 | wiMZsWUxopg | Education 4u | TCP Congestion control / Slow start / MC / Mobile Computing / Lec-45 / Bhanu Priya |
+| CN-9 | SHO9eeWxPxY | NPTEL IIT Kharagpur | Lecture 22: Transmission Control Protocol IV – Congestion Control |
 | CN-10 | uagKTbohimU | Neso Academy | Sockets in Operating System |
 | CN-10 | XTVTlEhGS6w | Gate Smashers | Lec-86: Socket Programming in Computer Networks |
 | CN-10 | x7obJLN7FcQ | NPTEL IIT Kharagpur | Lecture 24 : Socket Programming – I |
@@ -399,8 +410,9 @@ ids to redo only those.
 | CD-4 | _CloXDbYAAg | Gate Smashers | Lec-17: What is SDT(Syntax Directed Translation) & its Applications / Semantic Analysis |
 | CD-4 | rdnAJBoFKOw | Prof. Ravindrababu Ravula | CD / Syntax Directed Translation / S attributed and L attributed definitions / Ravindrababu Ravula |
 | CD-5 | kx2cnll1p4E | Prof. Ravindrababu Ravula | CD / Runtime environment / Introduction to Runtime environment / Ravindrababu Ravula / Free GATE CS |
-| CD-5 | SaKfQX_tQrs | Neso Academy | Runtime Environment & Code Optimization / Chapter-7 / Compiler Design / nesoacademy.org |
 | CD-5 | 0bS7KhVvZFc | NPTEL - Special Lecture Series | Runtime Environments I |
+| CD-5 | RS822U7naxQ | NPTEL IIT Kharagpur | Lecture 47: Runtime Environment |
+| CD-5 | mMK-TlvH5c4 | nptelhrd | Mod-02 Lec-03 Run-time Environments-Part 2 |
 | CD-6 | -ybmWJ3i-mw | Unacademy Computer Science | Intermediate code: Quadruples, Triples ,DAG |
 | CD-6 | _4e3rmt_NoA | GO Classes for GATE CS | Intermediate Codes : Three Address Codes(TAC) and Static Single Assignment(SSA) |
 | CD-6 | j-bLeUysUiE | Gate Smashers | Lec-22: Intermediate Code Generation with example |

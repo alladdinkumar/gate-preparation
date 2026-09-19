@@ -118,6 +118,33 @@ def score(video, words, rare, subject=None):
     return base * 2 + overlap, base
 
 
+MIN_SECONDS = 150
+
+
+def accept(v, entry):
+    """Confirm a candidate against the video itself, or return None.
+
+    Search results lie by omission: they do not say a video is a 27-second chapter
+    trailer, and their title can match a topic the video never covers. This asks
+    YouTube for the uploader's own title, duration, keywords and description before
+    the video is allowed into the file. Running it here rather than as a later pass
+    is what stops a re-run quietly reinstating something a previous pass rejected.
+    """
+    det = yt.details(v["id"])
+    if not det:
+        return None                       # removed, private, or region locked
+    if det["seconds"] and det["seconds"] < MIN_SECONDS:
+        return None                       # a chapter trailer, not a lecture
+    if OFF_DOMAIN.search(det["title"]) or BAD_TITLE.search(det["title"]):
+        return None
+    blob = det["title"] + " " + " ".join(det["keywords"][:40]) + " " + det["description"][:800]
+    hits = topic_mod._words(blob) & entry["_words"]
+    if not hits & entry["_rare"] and len(hits) < 2:
+        return None                       # the video never mentions this topic
+    return {"id": v["id"], "title": det["title"].strip(),
+            "channel": det["channel"].strip(), "duration": v["duration"]}
+
+
 def pick(topic, entry, want=4):
     """Search, score, verify. Returns up to `want` confirmed videos."""
     words = entry["_words"]
@@ -174,14 +201,11 @@ def pick(topic, entry, want=4):
         ch = v["channel"].lower()
         if ch and ch in used_channels:
             continue                      # three teachers, not one teacher three times
-        ok, real_title, real_channel = yt.verify(v["id"])
-        if not ok:
+        accepted = accept(v, entry)
+        if not accepted:
             continue
         used_channels.add(ch)
-        chosen.append({"id": v["id"],
-                       "title": (real_title or v["title"]).strip(),
-                       "channel": (real_channel or v["channel"]).strip(),
-                       "duration": v["duration"]})
+        chosen.append(accepted)
         time.sleep(0.25)
 
     # If three distinct channels was too strict, allow repeats to fill the gap.
@@ -192,13 +216,10 @@ def pick(topic, entry, want=4):
                 break
             if v["id"] in have:
                 continue
-            ok, real_title, real_channel = yt.verify(v["id"])
-            if not ok:
+            accepted = accept(v, entry)
+            if not accepted:
                 continue
-            chosen.append({"id": v["id"],
-                           "title": (real_title or v["title"]).strip(),
-                           "channel": (real_channel or v["channel"]).strip(),
-                           "duration": v["duration"]})
+            chosen.append(accepted)
             time.sleep(0.25)
     return chosen
 
@@ -244,8 +265,18 @@ def write(catalogue, cache):
         "be embedded — the title and channel columns are the ones YouTube returned, not the",
         "ones the search page claimed. Nothing here was typed from memory.",
         "",
-        "**What this does not do:** it matches on titles, not on full video descriptions.",
-        "A title that lies will get through. If a link is wrong, delete the row — the",
+        "**Then checked against the video's own description.** `verify_videos.py` pulls each",
+        "video's uploader-written title, keywords, duration and description from YouTube and",
+        "confirms the topic's vocabulary actually appears in them. Videos that failed were",
+        "deleted and replaced: chapter trailers under three minutes, a whole-subject marathon,",
+        "and three filed under the wrong topic (a *Program Control Instructions* lecture under",
+        "CO-4 control unit, a *Projection Matrix* lecture under LA-1 matrix rank).",
+        "",
+        "**What this does not do:** a description cannot rule a video *out*. Nearly every",
+        "channel ends one with course links, an app download and thirty hashtags, so reading",
+        "domain keywords there failed 92 of 389 videos including GO Classes' own lecture on",
+        "minimum spanning trees. Descriptions are positive evidence only; the title decides",
+        "whether a video is off-syllabus. If a link is still wrong, delete the row — the",
         "planner falls back to the channel search in `topic-lectures.md` for that topic.",
         "",
         "Regenerate with `python webapp/tools/build_videos.py` (all topics) or pass topic",

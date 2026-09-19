@@ -153,3 +153,50 @@ def verify(video_id, retries=2):
         except Exception:
             time.sleep(1 + attempt)
     return False, "", ""
+
+
+_PLAYER = {"key": None, "ver": "2.20240101.00.00"}
+
+
+def _innertube():
+    """Scrape the public web client key once; it is in every watch page."""
+    if _PLAYER["key"]:
+        return _PLAYER["key"], _PLAYER["ver"]
+    html = get("https://www.youtube.com/watch?v=dQw4w9WgXcQ")
+    k = re.search(r'"INNERTUBE_API_KEY":"([^"]+)"', html)
+    v = re.search(r'"clientVersion":"([\d.]+)"', html)
+    if k:
+        _PLAYER["key"] = k.group(1)
+    if v:
+        _PLAYER["ver"] = v.group(1)
+    return _PLAYER["key"], _PLAYER["ver"]
+
+
+def details(video_id, tries=3):
+    """{title, channel, seconds, keywords, description} or None.
+
+    oEmbed proves a video exists. This is what proves it is about the right thing:
+    the uploader's own description and keywords, not the search page's guess.
+    """
+    key, ver = _innertube()
+    if not key:
+        return None
+    body = json.dumps({"context": {"client": {"clientName": "WEB", "clientVersion": ver}},
+                       "videoId": video_id}).encode()
+    req = urllib.request.Request(
+        f"https://www.youtube.com/youtubei/v1/player?key={key}", data=body,
+        headers={"User-Agent": UA, "Content-Type": "application/json"})
+    for attempt in range(tries):
+        try:
+            with urllib.request.urlopen(req, timeout=30) as r:
+                d = json.loads(r.read().decode("utf-8", "replace"))
+            vd = d.get("videoDetails")
+            if not vd:
+                return None
+            return {"title": vd.get("title", ""), "channel": vd.get("author", ""),
+                    "seconds": int(vd.get("lengthSeconds") or 0),
+                    "keywords": vd.get("keywords") or [],
+                    "description": vd.get("shortDescription") or ""}
+        except Exception:
+            time.sleep(2 + 3 * attempt)
+    return None

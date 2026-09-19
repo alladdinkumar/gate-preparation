@@ -56,6 +56,12 @@ def _words(text):
         if len(raw) < 3 or raw in STOPWORDS:
             continue
         out.add(raw)
+        # British and American spellings both turn up in these titles: the syllabus
+        # says "synchronization", GO Classes titles a lecture "Synchronisation".
+        for a, b in (("isation", "ization"), ("ise", "ize"), ("yse", "yze"),
+                     ("our", "or"), ("ll", "l")):
+            if a in raw:
+                out.add(raw.replace(a, b))
         if raw.endswith("ies") and len(raw) > 4:
             out.add(raw[:-3] + "y")
         elif raw.endswith("es") and len(raw) > 4:
