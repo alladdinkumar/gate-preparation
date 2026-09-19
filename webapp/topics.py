@@ -450,7 +450,10 @@ def expand_ids(text):
 
 ID_RE = re.compile(r"\b([A-Z]{2})-(\d+)(?:\s*(?:\.\.\.|\u2026|\u2013|\u2014)\s*(?:[A-Z]{2}-)?(\d+))?\b")
 NON_STUDY = re.compile(r"weekly review|monthly review|rest day|score with|record section", re.I)
-APTITUDE = re.compile(r"\bGA\b|aptitude|rotation", re.I)
+# The Saturday aptitude hour is written "GA rotation 2 - Grammar". Matching on a
+# bare "rotation" caught it, and also caught "AVL rotations" and "Booth's shifting
+# rotation", handing BST and COA sessions a pool of English-grammar topics.
+APTITUDE = re.compile(r"\bGA\b|\baptitude\b|GA rotation", re.I)
 
 
 def find_ids(text):

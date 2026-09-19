@@ -101,7 +101,6 @@ to redo only those.
 | CO-2 | lZjBl5GEQBo | Unacademy Computer Science | Instruction & Addressing Modes: GATE 1987-2004 / Lec. - 11 / COA GATE 2022 PYQ / Vishvadeep Gothi |
 | CO-2 | bm0ATHA5VUg | Unacademy Computer Science | Questions on Addressing Modes /  L 12 / COA 2.0 / GATE 2022 #VishvadeepGothi |
 | CO-3 | v0fTFXme35I | BYJU'S Exam Prep GATE & ESE: EE,EC,IN,CS | COA GATE Questions / ALU, Data Path, Control Unit GATE Questions / GATE 2019 |
-| CO-3 | 4wKdjlgRGJY | Unacademy Computer Science | Datapath GATE 2001-2020 / Lec. - 10 / COA GATE PYQ / GATE 2022 / Vishvadeep Gothi |
 | CO-3 | DHhcnjEKEFo | Last moment tuitions | Booth's Algorithm with Solved Example in Hindi / part 1 / COA Lectures |
 | CO-4 | gXXVX64yhME | Unacademy Computer Science | Control Unit Organization: Hardwired Control Unit /  L 15 / COA 2.0 / GATE 2022 #VishvadeepGothi |
 | CO-4 | rCOkiO1gArs | BYJU'S Exam Prep GATE & ESE: EE,EC,IN,CS | GATE 2023 Computer Science (CSE) Exam / Hardwired Control Unit (Class 1) / Computer Architecture |
@@ -200,7 +199,6 @@ to redo only those.
 | LA-4 | 9g0NNscB3e8 | Dr.Gajendra Purohit - GATE / IIT JAM / CSIR NET | Eigenvalues & Eigenvectors / Properties of Eigenvalues / PYQs Of GATE & IIT-JAM |
 | LA-4 | Kl0nUWAz_Hs | Santoshi Classes | Eigenvalues and Eigenvectors Previous Year Paper Solution Gate 2021 Mathematics Jam 2005 |
 | LA-5 | GguYHV8Xov0 | BYJU'S Exam Prep GATE & ESE: EE,EC,IN,CS | LU Decomposition / Linear Algebra / Engineering Mathematics for GATE 2023 Exam Prep / BYJU'S GATE |
-| LA-5 | MuNKQ6qJP-I | Unacademy Computer Science | PYQ's: Matrices - 2 / Linear Algebra / Lec 14 / Engineering Mathematics / GATE CSE |
 | CA-1 | hA585QAk83s | GO Classes for GATE CS | Limit and Continuity with ALL GATE PYQs / Revision and Practice / Calculus |
 | CA-1 | RiaK8fgubvk | BYJU'S Exam Prep GATE & ESE: EE,EC,IN,CS | Indeterminate Forms & Limits / GATE 2023 Engineering Mathematics Preparation Online / Rakesh Talreja |
 | CA-1 | Gh6OfeRQ2m4 | Unacademy Computer Science | Indeterminate Form / Calculus / L:3 / Engineering Mathematics / GATE 2021 CSE/IT Exam |
@@ -231,7 +229,6 @@ to redo only those.
 | PS-2 | x4lmuliL8b0 | BYJU'S Exam Prep GATE & ESE: EE,EC,IN,CS | GATE 2023 Electronics (EC) Exam / GATE Questions on Random Variables in Communication / BYJU'S GATE |
 | PS-2 | V0Y1BrMLnyI | BYJU'S Exam Prep GATE & ESE: EE,EC,IN,CS | Random Variables in Probability / Engineering Mathematics for GATE 2023 Exam / BYJU'S GATE |
 | PS-3 | NEH_dBaXh1Y | GATE CSE LECTURES BY AMIT KHURANA | Averages in aptitude for GATE / GATE 2023 / PART 3 / standard deviation / mean / median / mode |
-| PS-4 | hvqk00SAoyk | GO Classes for GATE CS | Probability Revision with GATE PYQs |
 | PS-4 | OsswLm_znGE | BYJU'S Exam Prep GATE & ESE: EE,EC,IN,CS | Poisson Distribution / Probability & Statistics / Engineering Mathematics for GATE 2023 Exam Prep |
 | PS-4 | GxgMVGggn6g | BYJU'S Exam Prep GATE & ESE: EE,EC,IN,CS | IISC Bangalore PYQs / Discrete Mathematics Previous Year Questions / GATE 2024 CSE / BYJU'S GATE |
 | PS-4 | gp6vBsqq0To | BYJU'S Exam Prep GATE & ESE: EE,EC,IN,CS | 31 Most Expected Questions of Probability Distributions / BYJU'S GATE |
@@ -239,7 +236,6 @@ to redo only those.
 | PS-5 | j0F7JlE9ljo | BYJU'S Exam Prep GATE & ESE: EE,EC,IN,CS | Normal Distribution / Probability / Engineering Mathematics for GATE 2021 / Ankit Sir / Gradeup |
 | PS-5 | gp6vBsqq0To | BYJU'S Exam Prep GATE & ESE: EE,EC,IN,CS | 31 Most Expected Questions of Probability Distributions / BYJU'S GATE |
 | PD-1 | 5Mmj84vyRTA | Unacademy Computer Science | Array: Practice Questions / L9 / GATE 2024/25 / Data Structure in C / Vishvadeep Gothi |
-| PD-1 | V9Ks13F6EfM | Unacademy Computer Science | 50 Most Important C Output Programs for GATE 2026 / Must-Solve Questions / Sweta Kumari |
 | PD-2 | 1ZicYbTSAD4 | Unacademy Computer Science | Storage Classes / Auto Extern Register Static / L 13 / GATE 2024/25 / C Language / Vishvadeep Gothi |
 | PD-2 | H68DUS--mUY | Neso Academy | Static and Dynamic Scoping (Solved Question 2) |
 | PD-2 | v-OGOC-3njI | Unacademy Computer Science | Storage Classes / Lec 2 / C Language / Sankalp Batch / GATE 2021 CSE / Mallesham Sir |
@@ -295,8 +291,6 @@ to redo only those.
 | PD-14 | QcgMH4g2lw0 | GO Classes for GATE CS | Algo -5 - Breadth First Search BFS - GATE PYQs Complete Analysis / Graph Traversals / Sachin Mittal |
 | PD-14 | 226yEA0fWmA | GO Classes for GATE CS | Lecture 1: Binary Trees PYQs / DS and Algorithms PYQ Series / MANY GATE PYQs |
 | PD-14 | Tz-p8klADWA | Unacademy Computer Science | Tree GATE / 2007 - 2011 / Data Structure GATE PYQ / L - 9 / GATE-2023 / Vishvadeep Gothi |
-| PD-14 | 804ML4KSmVc | Unacademy Computer Science | Hashing / 2010 - 2022 / Data Structure GATE PYQ / L - 15 / GATE-2023 / Vishvadeep Gothi |
-| PD-14 | roHx4MPnDdM | Unacademy Computer Science | 50 Most Important GATE PYQ's On Data Structures / GATE Exam |
 | AL-1 | uoy3iGQBg7k | GO Classes for GATE CS | 20 Loop Time Complexity Questions with Many Variations  / Nested loops / Sachin Mittal sir |
 | AL-1 | -uO5ngF9WuY | Neso Academy | Big Omega and Big Theta Notations (Solved Problems) |
 | AL-1 | -l0Gy_i47NE | GO Classes for GATE CS | Asymptotic Notations in Algorithms ALL GATE PYQs/ Revision & Practice/ O(), o(), Ω(), ω()/With NOTES |
@@ -395,10 +389,7 @@ to redo only those.
 | DB-5 | zb6vXpZVo1E | GO Classes for GATE CS | SQL GATE Questions - Part 1 - Complete Analysis / DBMS / GO Classes / Deepak Poonia |
 | DB-5 | 7X1ZospJ5gU | GO Classes for GATE CS | SQL - GATE PYQs - Part 2 - Complete Analysis / DBMS / With NOTES / Deepak Poonia |
 | DB-5 | 5O9Hk46boGI | GO Classes for GATE CS | SQL Standard Practice Questions - DBMS / SQL Exercises / GO Classes / Deepak Poonia |
-| DB-5 | KknAgz0xGSU | Gate Smashers | Lec-13: Question on Foreign Key / ये Question Competition Exams में अक्सर पूछा गया है |
 | DB-6 | l8OLJIw8Dq0 | GO Classes for GATE CS | Functional Dependency - ALL GATE CS PYQs / Normalization / DBMS |
-| DB-6 | HrggFKi-awQ | GO Classes for GATE CS | GATE CSE 2021 Set 1 / Decomposition - Lossless, Lossy / Question 33 / DBMS / GO Classes |
-| DB-6 | ldl47NMWciE | GO Classes for GATE CS | GATE CSE 2008 - Normal Forms Question / 2NF, 3NF, BCNF - Library Database / UGC NET 2014 / DBMS |
 | DB-6 | JRS78_vH6w0 | Unacademy Computer Science | PYQ of Key Concepts and Functional Dependencies / L 7 /  DBMS / Infinity Batch / GATE 2022 |
 | DB-6 | tvNzHV8-_dw | BYJU'S Exam Prep GATE & ESE: EE,EC,IN,CS | Importance of Functional Dependencies in DBMS / DBMS for GATE 2024 / GATE CSE Exam / BYJU'S GATE |
 | DB-7 | ldl47NMWciE | GO Classes for GATE CS | GATE CSE 2008 - Normal Forms Question / 2NF, 3NF, BCNF - Library Database / UGC NET 2014 / DBMS |
@@ -425,7 +416,6 @@ to redo only those.
 | DB-11 | _X6CX2i3PRk | BYJU'S Exam Prep GATE & ESE: EE,EC,IN,CS | Practice Questions on Transactions & Concurrency Control / DBMS / GATE 2024 CSE / BYJU'S GATE CSE |
 | CN-2 | TBD_Bj9PCOw | Neso Academy | Delay (Solved Problem) |
 | CN-2 | karhbKL2WqE | BYJU'S Exam Prep GATE & ESE: EE,EC,IN,CS | Trick to Find Network Delay of Multiple Packets / Computer Networks / GATE 2024 Computer Science |
-| CN-2 | r1XUmqQXaBE | BYJU'S Exam Prep GATE & ESE: EE,EC,IN,CS | 11 Top Questions on Counters / Digital Electronics / GATE 2024 EE/ECE/CSE / BYJU'S GATE |
 | CN-3 | ql5iv_PvFXU | GO Classes for GATE CS | Data Link Layer Error Control - Hamming Code and CRC / GATE PYQs / Computer Networks Revision |
 | CN-3 | abBoVc3UCK8 | GO Classes for GATE CS | Data Link Layer Flow Control -2 (Sliding window protocol) / GATE PYQs / Computer Networks Revision |
 | CN-3 | w8VZUrs2Qm4 | GO Classes for GATE CS | Data Link Layer Flow Control (Sliding window protocol) / GATE PYQs / Computer Networks Revision |
@@ -437,7 +427,6 @@ to redo only those.
 | CN-4 | 5pSat-Xpgms | GO Classes for GATE CS | More Questions on Stop Wait Protocol / GATE PYQs 2016, 2017, 2006, 2023 MIT, Berkeley / With NOTES |
 | CN-5 | oNOVfVcWBXc | Gate Smashers | Lec-38: GATE Question on CSMA/CD / GATE-2015 |
 | CN-5 | 8i7dyojFOP4 | Neso Academy | Ethernet (Solved Question 1) |
-| CN-6 | ejx0JO4V9Mo | GO Classes for GATE CS | IP Fragmentation / ALL GATE PYQs / Stanford, CMU Questions / Computer Networks / Sachin Mittal |
 | CN-6 | jXioURQ2v8E | Gate Smashers | Lec-52: Numerical Question on CIDR / Classless Addressing / Very Imp for all Competitive Exams |
 | CN-6 | 87TiQ6mIy9w | Prof. Ravindrababu Ravula | CN / IP address Subnetting Supernetting / Subnet Masking question / Ravindrababu Ravula |
 | CN-6 | EZTQ61njgKI | Neso Academy | Subnetting (Solved Problem 1) |
@@ -445,16 +434,12 @@ to redo only those.
 | CN-7 | ejx0JO4V9Mo | GO Classes for GATE CS | IP Fragmentation / ALL GATE PYQs / Stanford, CMU Questions / Computer Networks / Sachin Mittal |
 | CN-7 | RKtJUFuv59g | Gate Smashers | Most Expected 30 Questions for GATE 2022 CSE / Question No #20 on Fragmentation in IP Header |
 | CN-7 | dYjdfwbmb3Y | BYJU'S Exam Prep GATE & ESE: EE,EC,IN,CS | Fragmentation of IPv4 / Computer Network / GATE 2024 CSE / Computer Science Engineering #ByjusGate |
-| CN-8 | jXioURQ2v8E | Gate Smashers | Lec-52: Numerical Question on CIDR / Classless Addressing / Very Imp for all Competitive Exams |
 | CN-8 | 1SkZBX-LLIc | BYJU'S Exam Prep GATE & ESE: EE,EC,IN,CS | Link State Routing / Computer Network for GATE 2024 / BYJU'S GATE |
 | CN-8 | 6zT_Ah9qDo8 | BYJU'S Exam Prep GATE & ESE: EE,EC,IN,CS | Routing Algorithms (Part-4) / Computer Networks / GATE 2023 Computer Science (CSE) Exam Preparation |
 | CN-8 | QiV5FeQ_fy8 | BYJU'S Exam Prep GATE & ESE: EE,EC,IN,CS | Shortest Path Routing / Computer Network / GATE 2024 Coffee with Concept / BYJU'S GATE |
 | CN-9 | qh2fuvviclk | WILP Wallah | TCP Numerical Problems Explained 🔥 / 3-Way Handshake, Sequence Numbers & Congestion Window / CN Exam |
-| CN-11 | oNOVfVcWBXc | Gate Smashers | Lec-38: GATE Question on CSMA/CD / GATE-2015 |
 | CN-11 | vTzrn_M77mo | Gate Smashers | Lec-46: Find Range, Network Id, Host, Broadcast address with Numerical Examples in Hindi |
-| CN-11 | TBD_Bj9PCOw | Neso Academy | Delay (Solved Problem) |
 | CN-11 | hTikjJ5CQAE | Trickfy CS | #16 #CN Application Layer PYQs for GATE CS & UGC NET / HTTP, DNS, SMTP & FTP PYQs Explained #ugcnet |
-| CN-11 | NL_I5HCX_OA | Unacademy Computer Science | Computer Networks FULL REVISION in 25 Most Expected Questions 🔥 / CN GATE 2026 / PYQs + Concepts |
 | TC-1 | nagYqfzY2HE | GO Classes for GATE CS | DFA - ALL GATE PYQs / Finite Automata / Theory of Computation / With NOTES |
 | TC-1 | hxUZRgARn-g | GO Classes for GATE CS | Minimal DFA - ALL GATE PYQs / DFA Minimization / Theory of Computation / With NOTES |
 | TC-1 | FF8qFPnt-a0 | GO Classes for GATE CS | Regular Expressions - ALL GATE PYQs - Part 1 / Finite Automata / Theory of Computation / With NOTES |
@@ -500,10 +485,6 @@ to redo only those.
 | CD-5 | XlSzzwKiZ94 | BYJU'S Exam Prep GATE & ESE: EE,EC,IN,CS | GATE 2024 CSE / Compiler Design / Liveness Analysis, Runtime Environment / BYJU'S GATE |
 | CD-6 | EHP7AZVSSm4 | GO Classes for GATE CS | Intermediate Code - GATE PYQs, Ullman Exercises / Quadruples, Triples, Basic Block / Compiler Design |
 | CD-6 | OFuJK7dBdo4 | BYJU'S Exam Prep GATE & ESE: EE,EC,IN,CS | Intermediate Code Generation / GATE 2023 Computer Science (CSE) Exam Preparation / Compiler Design |
-| CD-6 | Pr4hxfuG3iU | Unacademy Computer Science | 50 Most Important GATE PYQ's On Compiler Design / GATE Exam |
 | CD-7 | kdpLBNPg_ZE | Gate Smashers | Lec-27: Question on Code Optimization in Compiler |
 | CD-7 | MF01GojnQ8w | BYJU'S Exam Prep GATE & ESE: EE,EC,IN,CS | GATE 2024 / Compiler Design / Most Important Question on ICG & Code Optimization / BYJU'S GATE |
 | CD-8 | AI1Fsi-nvik | GO Classes for GATE CS | Liveness Analysis Questions / Code Optimization / Compiler Design / GATE, TIFR Questions |
-| CD-8 | 81m7fEfkXxE | Unacademy Computer Science | Code Optimization / Lec 5 / Compiler Design / GATE 2021 CSE / Mallesham Sir |
-| CD-8 | nQJ4UVUeWdA | BYJU'S Exam Prep GATE & ESE: EE,EC,IN,CS | IISC Bangalore PYQs / Compiler Design Previous Year Question / GATE 2024 CSE / BYJU'S GATE |
-| CD-8 | MF01GojnQ8w | BYJU'S Exam Prep GATE & ESE: EE,EC,IN,CS | GATE 2024 / Compiler Design / Most Important Question on ICG & Code Optimization / BYJU'S GATE |

@@ -39,7 +39,6 @@ ids to redo only those.
 | GA-1 | gQnHdu67OI8 | Unacademy Computer Science | Parts of Speech Verbal Aptitude-3 (Adjectives, Conjunctions) / Lec 6 / General Aptitude GATE |
 | GA-2 | pF0DxztZV48 | BBM English Classes | Many Words from One Word( Word is the Gate of Knowledge), including related words (Phrases, Idioms) |
 | GA-2 | HOrU4zQrnds | TalentSprint Aptitude Prep | Idioms and Phrases / Part 2 / Vocabulary / Grammar / English / TalentSprint Aptitude Prep |
-| GA-2 | rXjqAYUqO9A | VAIR TISS Community | TISSNET 2024: Top 50 Idioms and Phrases You Must Know  Part 2 / Vocabulary / Verbal Ability |
 | GA-2 | e9MnOfg7jbA | BYJU'S Exam Prep GATE & ESE: EE,EC,IN,CS | English Vocabulary for GATE Exam / Vocabulary Words / Learn with Fun / BYJU'S GATE |
 | GA-3 | y_hbaEhs00I | MBA Express by Unacademy | Para Jumbles - 4 L14 l Reading Comprehension l Verbal Ability l CAT 2021 l Gaurav Bhatia |
 | GA-3 | 31-TE_bk_7w | BYJU'S Exam Prep: CAT & MBA | Prepare for MAHCET MBA 2022 / Para Jumbles / Verbal Ability and Reading Comprehension / BYJU'S MBA |
@@ -198,7 +197,6 @@ ids to redo only those.
 | DM-5 | FeJf6ZmUu3I | Neso Academy | Complete and Bounded Lattice |
 | DM-5 | y7KQnBerCIU | Neso Academy | Complemented Lattice |
 | DM-5 | W0aOoC6rag8 | Neso Academy | Distributive Lattice |
-| DM-6 | Zb4OWjHL3yU | GO Classes for GATE CS | Group Theory - Marathon - Part 3 / ALL in ONE / GATE PYQs |
 | DM-6 | _i_XRDXcCJY | Gate Smashers | Algebraic structure in Discrete Mathematics |
 | DM-6 | cpYaUnqKXWc | KnowledgeGATE by Sanchit Sir | 2 / Closure property / Algebraic Structures in Discrete Mathematics in HINDI / Group theory |
 | DM-6 | CxffkidIty4 | Gate Smashers | Semigroup in Group Theory / Discrete Mathematics |
@@ -284,7 +282,6 @@ ids to redo only those.
 | PS-1 | SktJqrYereQ | Gate Smashers | Lec-48: Bayes Theorem & Total Probability with Examples |
 | PS-1 | SfVwSAQyGmk | BYJU'S Exam Prep GATE & ESE: EE,EC,IN,CS | Bayes Theorem Probability / Engineering Mathematics / Probability for GATE 2024 / BYJU'S GATE |
 | PS-1 | R7HsuQXI6yo | GO Classes for GATE DA | Probability for GATE DA/CS: L9 / Independence of Events / Sachin Mittal / Ex Amazon |
-| PS-2 | tYOdYmzBZyY | GO Classes for GATE CS | Marathon Series : EM / Topic Random Variables In Probability |
 | PS-2 | 2n1hapVMHL0 | Gate Smashers | Lec-15: Random Variable / Probability and Statistics |
 | PS-2 | 4nTkK5C3ObU | BYJU'S Exam Prep GATE & ESE: EE,EC,IN,CS | Discrete Random Variables / Probability & Distributions / GATE Engineering Mathematics / BYJU'S GATE |
 | PS-2 | CsJiTIsix68 | Falcon Edufin | PMF PDF CDF in Random Variables / FRM Part I / 2021 |
@@ -498,7 +495,6 @@ ids to redo only those.
 | DB-1 | nWbDVV5PPN4 | Sudhakar Atchala | Strong Entity and Weak Entity in DBMS |
 | DB-2 | YTJdBA9wZro | Gate Smashers | Lec-8: Integrity Constraints in Database with Examples |
 | DB-2 | uPOGPL2C0_8 | Neso Academy | Relational Model Constraints |
-| DB-2 | u9AbgVyV0fI | GO Classes for GATE CS | The Relational Model - Complete Summary & GATE PYQs / ALL In One / DBMS / With NOTES / Deepak Poonia |
 | DB-2 | DM2lAomoDrg | Gate Smashers | Lec-12: Insert, Update & Delete from Foreign Key table / Referential Integrity |
 | DB-2 | Br2FInlVKcs | Gate Smashers | Lec-14: Foreign Key🔑 with On Delete Cascade with Execution |
 | DB-3 | Zzjy-q667r0 | GO Classes for GATE CS | Division Operation in Relational Algebra / BEST Detailed Complete Explanation / DBMS / Deepak Poonia |
@@ -523,7 +519,6 @@ ids to redo only those.
 | DB-6 | eIH7zRVelnw | Jenny's Lectures CS IT | Lec 5: Armstrong's axioms in DBMS / Inference rules of Functional Dependency |
 | DB-6 | sS-LJMTVVj8 | Gate Smashers | Lec-34: Minimal Cover in DBMS With Example / Canonical cover |
 | DB-6 | L0LEtrIDYrE | Jenny's Lectures CS IT | Lec 7: How to Find Number of Candidate Keys in a Relation - part 1 / DBMS Tutorials |
-| DB-7 | EGEwkad_llA | Gate Smashers | Lec-33: All Normal Forms with Real life examples / 1NF 2NF 3NF BCNF 4NF 5NF / All in One |
 | DB-7 | ouhXEFJORTo | GO Classes for GATE CS | Normalization Lecture 2 - 3NF Normal Forms / DBMS / Transitive Dependency / Deepak Poonia |
 | DB-7 | O16btnzfuYU | Jenny's Lectures CS IT | Lec 11: Second Normal Form in DBMS / 2NF in DBMS / Normalization in DBMS |
 | DB-7 | iktJq5AdirA | GO Classes for GATE CS | Decomposition of a relation - Complete Summary / Lossless, Lossy, Dependency Preserving / Chase Test |
@@ -566,7 +561,6 @@ ids to redo only those.
 | CN-2 | PqDLVnXLlb4 | BYJU'S Exam Prep GATE & ESE: EE,EC,IN,CS | GATE 2023 Computer Science (CSE) Preparation / Efficiency & Utilization in Computer Networks |
 | CN-3 | 2U6kPu0dfqI | Gate Smashers | Lec-27: Framing in Data Link Layer / Bit Stuffing vs Byte(Character) Stuffing |
 | CN-3 | 1A_NcXxdoCc | Neso Academy | Hamming Code / Error Detection |
-| CN-3 | wE0quzvXDMM | GO Classes for GATE CS | Marathon Series : Computer Networks / Topic 1: Data Link Layer (Stop-Wait and Sliding Window) |
 | CN-3 | 5Q-Yv6_0Qcw | Gate Smashers | Lec-30: Cyclic Redundancy Check(CRC)  for Error Detection and Correction  / Computer Networks |
 | CN-3 | VKemv9u40gc | Neso Academy | Binary Division |
 | CN-3 | AtVWnyDDaDI | Neso Academy | Checksum |
@@ -592,7 +586,6 @@ ids to redo only those.
 | CN-7 | 47PUj7OSGkA | Gate Smashers | Lec-66: NAT Explained - Network Address Translation with example in Hindi |
 | CN-7 | zoFSxIuS5Ro | Gate Smashers | Lec-54: IPv4 Header Format – All Fields Explained in Hindi / Computer Networks |
 | CN-7 | vTzrn_M77mo | Gate Smashers | Lec-46: Find Range, Network Id, Host, Broadcast address with Numerical Examples in Hindi |
-| CN-8 | 7MBmSzQ_TA4 | GO Classes for GATE CS | Marathon: CN / Topic 3:  (Subnetting, Supernetting, Distance Vector Routing, and Link State Routing) |
 | CN-8 | 5ZuP5qjbKSI | Gate Smashers | Lec-62: Distance vector routing algorithm in hindi / Computer Networks |
 | CN-8 | JMzbdR9iBFY | Sudhakar Atchala | Distance Vector Routing Algorithm in Computer Networks |
 | CN-8 | lNIqzVbuXtk | GO Classes for GATE CS | Bellman-Ford Proof / Most Intuitive Proof WITHOUT Induction / GATE CSE and DA  / Sachin Mittal |

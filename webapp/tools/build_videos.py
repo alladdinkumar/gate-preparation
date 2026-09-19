@@ -70,7 +70,12 @@ BAD_TITLE = re.compile(r"\b(shorts?|#shorts|motivation|strategy|time table|cut ?
                        # Whole-subject marathons: relevant, but they are exactly the
                        # generic link that naming individual videos exists to replace.
                        r"one shot|all in one|complete course|full course|crash course|"
-                       r"in one video|marathon|entire syllabus)\b", re.I)
+                       r"in one video|marathon|entire syllabus)\b|"
+                       # Compilations: "50 Most Important ...", "Top 50 ...",
+                       # "FULL REVISION in 25 questions". Real videos, but a
+                       # grab-bag for a whole subject, not the lecture for a topic.
+                       r"(\b\d{2,}\s+most important|\btop\s*\d{2,}\b|\ball in one\b|"
+                       r"full revision|\bquestion bank\b)", re.I)
 
 # GATE code questions are C. A video teaching the same concept in Python or C++ is
 # the wrong video however well its title matches - "Operators in Python" outscored
